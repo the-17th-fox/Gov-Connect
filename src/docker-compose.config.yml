@@ -1,0 +1,19 @@
+version: "3.9"
+services:      
+  authorities-accounts:
+    ports:
+      - "9997:9997"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:9997/    
+      
+  civilians-accounts:
+    ports:
+      - "9998:9998"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:9998/    
+      
+  communications:
+    ports:
+      - "9999:9999"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:9999/

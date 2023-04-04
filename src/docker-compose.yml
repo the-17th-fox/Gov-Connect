@@ -4,21 +4,13 @@ services:
     build:
       context: .
       dockerfile: AuthoritiesAccountsMicroservice/Dockerfile
-    ports:
-      - "9997:9997"
-    environment:
-      ASPNETCORE_URLS: http://0.0.0.0:9997/    
     networks:
       - gov-alert-net
       
   civilians-accounts:
     build:
       context: .
-      dockerfile: CiviliansAccountsMicroservice/Dockerfile
-    ports:
-      - "9998:9998"
-    environment:
-      ASPNETCORE_URLS: http://0.0.0.0:9998/    
+      dockerfile: CiviliansAccountsMicroservice/Dockerfile 
     networks:
       - gov-alert-net
       
@@ -26,10 +18,6 @@ services:
     build:
       context: .
       dockerfile: CommunicationsMicroservice/Dockerfile
-    ports:
-      - "9999:9999"
-    environment:
-      ASPNETCORE_URLS: http://0.0.0.0:9999/  
     networks:
       - gov-alert-net
       
