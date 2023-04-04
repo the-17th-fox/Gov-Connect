@@ -7,7 +7,7 @@ services:
     ports:
       - "9997:9997"
     environment:
-      ASPNETCORE_URLS: http://0.0.0.0:9999/    
+      ASPNETCORE_URLS: http://0.0.0.0:9997/    
     networks:
       - gov-alert-net
       
@@ -18,7 +18,7 @@ services:
     ports:
       - "9998:9998"
     environment:
-      ASPNETCORE_URLS: http://0.0.0.0:9999/    
+      ASPNETCORE_URLS: http://0.0.0.0:9998/    
     networks:
       - gov-alert-net
       
