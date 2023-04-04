@@ -4,13 +4,13 @@ WORKDIR /app
 
 COPY AuthoritiesAccountsMicroservice/*.sln ./
 
-COPY AuthoritiesAccountsMicroservice/Core/ ./Core/
-COPY AuthoritiesAccountsMicroservice/Infrastructure/ ./Infrastructure/
-COPY AuthoritiesAccountsMicroservice/Web/ ./Web/
+COPY AuthoritiesAccountsMicroservice/Authorities.Core/ ./Authorities.Core/
+COPY AuthoritiesAccountsMicroservice/Authorities.Infrastructure/ ./Authorities.Infrastructure/
+COPY AuthoritiesAccountsMicroservice/Authorities.Api/ ./Authorities.Api/
 
-RUN dotnet publish Web/Web.csproj -c Release -o out /p:UseAppHost=false
+RUN dotnet publish Authorities.Api/Authorities.Api.csproj -c Release -o out /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "Web.dll"]
+ENTRYPOINT ["dotnet", "Authorities.Api.dll"]

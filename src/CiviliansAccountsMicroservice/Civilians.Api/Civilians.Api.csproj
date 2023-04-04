@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>fd964b20-608b-4bc6-8b61-a8d21ff0d53f</UserSecretsId>
+    <UserSecretsId>55235577-64c1-498c-9bce-04133a061b33</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Civilians.Core\Civilians.Core.csproj" />
+    <ProjectReference Include="..\Civilians.Infrastructure\Civilians.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

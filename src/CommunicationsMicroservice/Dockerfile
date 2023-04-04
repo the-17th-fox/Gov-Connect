@@ -4,13 +4,13 @@ WORKDIR /app
 
 COPY CommunicationsMicroservice/*.sln ./
 
-COPY CommunicationsMicroservice/Core/ ./Core/
-COPY CommunicationsMicroservice/Infrastructure/ ./Infrastructure/
-COPY CommunicationsMicroservice/Web/ ./Web/
+COPY CommunicationsMicroservice/Communications.Core/ ./Communications.Core/
+COPY CommunicationsMicroservice/Communications.Infrastructure/ ./Communications.Infrastructure/
+COPY CommunicationsMicroservice/Communications.Api/ ./Communications.Api/
 
-RUN dotnet publish Web/Web.csproj -c Release -o out /p:UseAppHost=false
+RUN dotnet publish Communications.Api/Communications.Api.csproj -c Release -o out /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "Web.dll"]
+ENTRYPOINT ["dotnet", "Communications.Api.dll"]
