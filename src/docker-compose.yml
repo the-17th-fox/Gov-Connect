@@ -1,0 +1,38 @@
+version: "3.9"
+services:      
+  authorities-accounts:
+    build:
+      context: .
+      dockerfile: AuthoritiesAccountsMicroservice/Dockerfile
+    ports:
+      - "9997:9997"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:9999/    
+    networks:
+      - gov-alert-net
+      
+  civilians-accounts:
+    build:
+      context: .
+      dockerfile: CiviliansAccountsMicroservice/Dockerfile
+    ports:
+      - "9998:9998"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:9999/    
+    networks:
+      - gov-alert-net
+      
+  communications:
+    build:
+      context: .
+      dockerfile: CommunicationsMicroservice/Dockerfile
+    ports:
+      - "9999:9999"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:9999/  
+    networks:
+      - gov-alert-net
+      
+networks:
+  gov-alert-net:
+    driver: bridge
