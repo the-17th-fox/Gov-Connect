@@ -1,4 +1,4 @@
-﻿using SharedLib.Pagination.ViewModels;
+﻿using Civilians.Core.ViewModels.Pagination;
 
 namespace Civilians.Core.ViewModels.Civilians
 {

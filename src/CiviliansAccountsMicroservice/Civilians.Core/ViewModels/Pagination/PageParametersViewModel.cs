@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SharedLib.Pagination.ViewModels
+namespace Civilians.Core.ViewModels.Pagination
 {
     /// <summary>
     /// TODO: Add detailed validation
@@ -9,6 +9,6 @@ namespace SharedLib.Pagination.ViewModels
     public class PageParametersViewModel
     {
         public int PageNumber { get; set; } = 1;
-        public int PageSize { get; set; } = 20;
+        public int PageSize { get; set; } = 20; 
     }
 }
