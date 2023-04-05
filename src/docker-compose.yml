@@ -1,0 +1,26 @@
+version: "3.9"
+services:      
+  authorities-accounts:
+    build:
+      context: .
+      dockerfile: AuthoritiesAccountsMicroservice/Dockerfile
+    networks:
+      - gov-alert-net
+      
+  civilians-accounts:
+    build:
+      context: .
+      dockerfile: CiviliansAccountsMicroservice/Dockerfile 
+    networks:
+      - gov-alert-net
+      
+  communications:
+    build:
+      context: .
+      dockerfile: CommunicationsMicroservice/Dockerfile
+    networks:
+      - gov-alert-net
+      
+networks:
+  gov-alert-net:
+    driver: bridge
