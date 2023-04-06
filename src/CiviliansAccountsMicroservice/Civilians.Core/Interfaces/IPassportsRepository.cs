@@ -6,7 +6,9 @@ namespace Civilians.Core.Interfaces
     public interface IPassportsRepository
     {
         public Task<Passport?> GetByIdAsync(Guid id);
-        public Task<Passport?> GetByPersonalInfo(SearchPassportViewModel passportViewModel);
+        public Task<Passport?> GetByPersonalInfoAsync(SearchPassportViewModel passportViewModel);
         public Task UpdateAsync(UpdatePassportViewModel passportViewModel);
+        public Task CreateAsync(Passport passport);
+        public Task SaveChangesAsync();
     }
 }
