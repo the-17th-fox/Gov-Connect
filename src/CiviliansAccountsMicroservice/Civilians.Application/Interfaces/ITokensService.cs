@@ -12,8 +12,8 @@ namespace Civilians.Application.Interfaces
         public Task<TokensViewModel> RefreshAccessTokenAsync(TokensRefreshingViewModel tokensPairViewModel);
 
         // Refresh tokens management
-        public Task<RefreshToken> IssueRefreshTokenAsync(Guid accountId);
-        public Task RevokeRefreshTokenAsync(Guid accountId);
+        public Task<RefreshToken> IssueRefreshTokenAsync(Guid userId);
+        public Task RevokeRefreshTokenAsync(Guid userId);
         public Task RevokeAllRefreshTokensAsync();
     }
 }

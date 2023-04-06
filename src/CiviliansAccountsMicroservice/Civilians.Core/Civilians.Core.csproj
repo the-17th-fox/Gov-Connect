@@ -12,8 +12,4 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.28.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\SharedLib\SharedLib\SharedLib.csproj" />
-  </ItemGroup>
-
 </Project>

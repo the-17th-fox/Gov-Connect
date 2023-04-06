@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Civilians.Core.Models
 {
-    [Index(nameof(CivilianId), IsUnique = true)]
+    [Index(nameof(UserId), IsUnique = true)]
     public class RefreshToken
     {
         [Key]
@@ -13,18 +13,18 @@ namespace Civilians.Core.Models
         public DateTime IssuedAt { get; set; } = DateTime.UtcNow;
         public bool IsRevoked { get; set; } = false;
 
-        public Guid CivilianId { get; set; }
-        public Civilian Civilian { get; set; } = null!;
+        public Guid UserId { get; set; }
+        public User User { get; set; } = null!;
 
         [NotMapped]
         public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
         [NotMapped]
         public bool IsActive => !(IsExpired || IsRevoked);
 
-        public RefreshToken(DateTime expiresAt, Guid accountId)
+        public RefreshToken(DateTime expiresAt, Guid userId)
         {
             ExpiresAt = expiresAt;
-            CivilianId = accountId;
+            UserId = userId;
         }
     }
 }

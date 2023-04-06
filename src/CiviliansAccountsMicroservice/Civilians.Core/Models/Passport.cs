@@ -8,7 +8,7 @@ namespace Civilians.Core.Models
     {
         public Guid Id { get; set; }
 
-        public Civilian Civilian { get; set; } = null!;
+        public User User { get; set; } = null!;
 
         [Required]
         public string FirstName { get; set; } = string.Empty;

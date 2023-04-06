@@ -2,7 +2,7 @@
 
 namespace Civilians.Core.Models
 {
-    public class Civilian : IdentityUser<Guid>
+    public class User : IdentityUser<Guid>
     {
         public Guid? PassportdId { get; set; }
         public Passport? Passport { get; set; }
