@@ -6,6 +6,8 @@ namespace Civilians.Core.Interfaces
     {
         public Task RevokeRefreshTokenAsync(Guid userId);
         public Task RevokeAllRefreshTokensAsync();
-        public Task<RefreshToken> IssueNewRefreshTokenAsync(RefreshToken newRefreshToken);
+        public Task<RefreshToken> GetByUserIdAsync(Guid id);
+        public Task IssueNewRefreshTokenAsync(RefreshToken newRefreshToken, out Guid tokenId);
+        public Task UpdateExistingRefreshTokenAsync(RefreshToken newRefreshToken, out Guid tokenId);
     }
 }

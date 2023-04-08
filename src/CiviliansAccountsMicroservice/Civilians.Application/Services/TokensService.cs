@@ -15,13 +15,11 @@ namespace Civilians.Application.Services
     public class TokensService : ITokensService
     {
         private readonly JwtConfigModel _jwtConfig;
-        private readonly UserManager<User> _userManager;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TokensService(IOptions<JwtConfigModel> jwtConfig, UserManager<User> userManager, IUnitOfWork unitOfWork)
+        public TokensService(IOptions<JwtConfigModel> jwtConfig, IUnitOfWork unitOfWork)
         {
             _jwtConfig = jwtConfig != null ? jwtConfig.Value : throw new ArgumentNullException(nameof(jwtConfig));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
@@ -40,7 +38,19 @@ namespace Civilians.Application.Services
         public async Task<RefreshToken> IssueRefreshTokenAsync(Guid userId)
         {
             var newRefreshToken = GenerateRefreshToken(userId);
-            return await _unitOfWork.TokensRepository.IssueNewRefreshTokenAsync(newRefreshToken);
+            var tokenId = Guid.Empty;
+
+            var existingRefreshToken = await _unitOfWork.TokensRepository.GetByUserIdAsync(userId);
+
+            if(existingRefreshToken != null)
+                await _unitOfWork.TokensRepository.UpdateExistingRefreshTokenAsync(newRefreshToken, out tokenId);
+            else
+                await _unitOfWork.TokensRepository.IssueNewRefreshTokenAsync(newRefreshToken, out tokenId);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            newRefreshToken.Token = tokenId;
+            return newRefreshToken;
         }
 
         private RefreshToken GenerateRefreshToken(Guid userId)
@@ -97,19 +107,20 @@ namespace Civilians.Application.Services
 
         private async Task<User> FindUserByClaimsAsync(ClaimsPrincipal claimsPrincipal)
         {
-            string? userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrWhiteSpace(userId))
+            string? userIdAsString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(userIdAsString))
                 throw new ArgumentException("Couldn't get the user's id from the claims.");
 
-            var user = await _userManager.Users
-                .Where(a => a.Id == Guid.Parse(userId))
-                .Include(a => a.RefreshToken)
-                .FirstOrDefaultAsync();
+            Guid userId = Guid.Empty;
+            if(!Guid.TryParse(userIdAsString, out userId))
+                throw new ArgumentException("Couldn't parse a userId");
+
+            var user = await _unitOfWork.UsersRepository.GetByIdAsync(userId);
 
             if (user == null)
                 throw new KeyNotFoundException("There is no user with the specified id.");
 
-            return user;
+            return user!;
         }
 
         private static void ValidateRefreshToken(RefreshToken? storedRefreshToken, Guid providedRefreshToken)
@@ -124,8 +135,10 @@ namespace Civilians.Application.Services
                 throw new ArgumentException("User's refresh token doesn't equal to the provided refresh token.");
         }
 
-        public async Task RevokeAllRefreshTokensAsync() => await _unitOfWork.TokensRepository.RevokeAllRefreshTokensAsync();
+        public async Task RevokeAllRefreshTokensAsync() 
+            => await _unitOfWork.TokensRepository.RevokeAllRefreshTokensAsync();
 
-        public async Task RevokeRefreshTokenAsync(Guid userId) => await _unitOfWork.TokensRepository.RevokeRefreshTokenAsync(userId);
+        public async Task RevokeRefreshTokenAsync(Guid userId) 
+            => await _unitOfWork.TokensRepository.RevokeRefreshTokenAsync(userId);
     }
 }
