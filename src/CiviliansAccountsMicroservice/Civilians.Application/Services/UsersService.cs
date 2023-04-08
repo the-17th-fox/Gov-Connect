@@ -1,5 +1,4 @@
 ﻿using Civilians.Application.Interfaces;
-using Civilians.Application.Utilities;
 using Civilians.Core.Auth;
 using Civilians.Core.Interfaces;
 using Civilians.Core.Misc;
@@ -7,11 +6,8 @@ using Civilians.Core.Models;
 using Civilians.Core.ViewModels.Civilians;
 using Civilians.Core.ViewModels.Tokens;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Principal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Civilians.Application.Services
 {
@@ -42,7 +38,9 @@ namespace Civilians.Application.Services
                 Email = registrationParams.Email
             };
 
-            string regionCode = Enum.GetName<RegionCodes>(registrationParams.PassportRegionCode) ?? throw new Exception("Can not get the name of the region");
+            string regionCode = Enum.GetName<RegionCodes>(registrationParams.PassportRegionCode) 
+                ?? throw new Exception("Can not get the name of the region");
+
             var passport = new Passport()
             {
                 User = user,
@@ -68,9 +66,7 @@ namespace Civilians.Application.Services
 
         public async Task<TokensViewModel> LoginAsync(LoginViewModel loginViewModel)
         {
-            var user = await _userManager.Users
-                .Include(a => a.RefreshToken)
-                .FirstOrDefaultAsync(a => a.Email == loginViewModel.Email);
+            var user = await _unitOfWork.UsersRepository.GetByEmailAsync(loginViewModel.Email);
             if (user == null)
                 throw new KeyNotFoundException("There is no user with the specified email.");
 
@@ -115,27 +111,17 @@ namespace Civilians.Application.Services
         // Users management section bellow
 
         public async Task<List<User>> GetAllAsync(UsersPaginationParametersViewModel pageParams)
-        {
-            var query = _userManager.Users;
+            => await _unitOfWork.UsersRepository.GetAllAsync(pageParams);
 
-            if (!pageParams.ShowDeleted)
-                query = query.Where(u => u.IsDeleted == false);
+        public async Task<User> GetByIdAsync(Guid id) 
+            => await GetIfExistsAsync(id);
 
-            if (!pageParams.ShowBlocked)
-                query = query.Where(u => u.LockoutEnabled == false);
-
-            return await PagedList<User>.ToPagedListAsync(query, pageParams.PageNumber, pageParams.PageSize);
-        }
-
-        public async Task<User> GetByIdAsync(Guid id) => await GetIfExistsAsync(id);
-
-        public async Task<IList<string>> GetRolesAsync(User user) => await _userManager.GetRolesAsync(user);
+        public async Task<IList<string>> GetRolesAsync(User user) 
+            => await _userManager.GetRolesAsync(user);
 
         private async Task<User> GetIfExistsAsync(Guid id)
         {
-            var user = await _userManager.Users
-                .Include(a => a.RefreshToken)
-                .FirstOrDefaultAsync(a => a.Id == id);
+            var user = await _unitOfWork.UsersRepository.GetByIdAsync(id);
 
             if (user == null)
                 throw new KeyNotFoundException("There is no user with the specified id.");
@@ -167,11 +153,7 @@ namespace Civilians.Application.Services
             if (user.LockoutEnabled)
                 throw new ArgumentException("User has been already blocked.");
 
-            user.LockoutEnabled = true;
-
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-                throw new Exception($"Updating user's lockout status has failed: {result.Errors.First<IdentityError>().Description}"); 
+            await _unitOfWork.UsersRepository.BlockAsync(user);
         }
 
         public async Task UnblockAsync(Guid id)
@@ -181,11 +163,7 @@ namespace Civilians.Application.Services
             if (!user.LockoutEnabled)
                 throw new ArgumentException("User isn't blocked.");
 
-            user.LockoutEnabled = false;
-
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-                throw new Exception($"Updating user's lockout status has failed: {result.Errors.First<IdentityError>().Description}");
+            await _unitOfWork.UsersRepository.UnblockAsync(user);
         }
     }
 }
