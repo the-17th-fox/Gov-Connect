@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Civilians.Core.Models
 {
-    [Index(nameof(FirstName), nameof(LastName), nameof(Patronymic))]
     public class Passport
     {
         public Guid Id { get; set; }

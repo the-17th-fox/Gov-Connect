@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Civilians.Core.Models
 {
-    [Index(nameof(UserId), IsUnique = true)]
     public class RefreshToken
     {
         [Key]
