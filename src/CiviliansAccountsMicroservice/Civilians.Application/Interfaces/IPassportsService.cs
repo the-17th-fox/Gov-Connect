@@ -1,5 +1,5 @@
-﻿using Civilians.Core.Models;
-using Civilians.Core.ViewModels.Passports;
+﻿using Civilians.Application.ViewModels.Passports;
+using Civilians.Core.Models;
 
 namespace Civilians.Application.Interfaces
 {

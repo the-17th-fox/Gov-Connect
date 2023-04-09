@@ -1,5 +1,5 @@
-﻿using Civilians.Core.Models;
-using Civilians.Core.ViewModels.Tokens;
+﻿using Civilians.Application.ViewModels.Tokens;
+using Civilians.Core.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 

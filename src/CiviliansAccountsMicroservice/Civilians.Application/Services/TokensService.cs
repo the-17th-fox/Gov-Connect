@@ -1,10 +1,8 @@
 ﻿using Civilians.Application.Interfaces;
+using Civilians.Application.ViewModels.Tokens;
 using Civilians.Core.Auth;
 using Civilians.Core.Interfaces;
 using Civilians.Core.Models;
-using Civilians.Core.ViewModels.Tokens;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

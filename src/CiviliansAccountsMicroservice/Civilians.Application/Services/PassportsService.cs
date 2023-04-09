@@ -1,18 +1,21 @@
-﻿using Civilians.Application.Interfaces;
+﻿using AutoMapper;
+using Civilians.Application.Interfaces;
+using Civilians.Application.ViewModels.Passports;
 using Civilians.Core.Interfaces;
 using Civilians.Core.Misc;
 using Civilians.Core.Models;
-using Civilians.Core.ViewModels.Passports;
 
 namespace Civilians.Application.Services
 {
     public class PassportsService : IPassportsService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public PassportsService(IUnitOfWork unitOfWork)
+        public PassportsService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<Passport> GetByIdAsync(Guid id)
@@ -24,7 +27,11 @@ namespace Civilians.Application.Services
 
         public async Task<Passport> GetByPersonalInfo(SearchPassportViewModel passportViewModel)
         {
-            var passport = await _unitOfWork.PassportsRepository.GetByPersonalInfoAsync(passportViewModel);
+            var passport = await _unitOfWork.PassportsRepository.GetByPersonalInfoAsync(
+                passportViewModel.FirstName, 
+                passportViewModel.LastName, 
+                passportViewModel.Patronymic);
+
             if (passport == null)
                 throw new KeyNotFoundException("Passport with the specified information hasn't been found.");
 
@@ -38,7 +45,10 @@ namespace Civilians.Application.Services
             if (passportViewModel.RegionCode == RegionCodes.Undefined)
                 throw new ArgumentException("Region code is undefined.");
 
-            await _unitOfWork.PassportsRepository.UpdateAsync(passportViewModel);
+            passport = _mapper.Map<Passport>(passportViewModel);    
+
+            await _unitOfWork.PassportsRepository.UpdateAsync(passport);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         private async Task<Passport> GetIfExistsAsync(Guid id)

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Civilians.Core.ViewModels.Tokens
+namespace Civilians.Application.ViewModels.Tokens
 {
     /// <summary>
     /// TODO: Add detailed validation

@@ -1,7 +1,7 @@
 ﻿using Civilians.Core.Misc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Civilians.Core.ViewModels.Civilians
+namespace Civilians.Application.ViewModels.Civilians
 {
     /// <summary>
     /// TODO: Add detailed validation

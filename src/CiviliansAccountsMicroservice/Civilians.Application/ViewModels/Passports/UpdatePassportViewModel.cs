@@ -1,7 +1,7 @@
 ﻿using Civilians.Core.Misc;
 using System.ComponentModel.DataAnnotations;
 
-namespace Civilians.Core.ViewModels.Passports
+namespace Civilians.Application.ViewModels.Passports
 {
     /// <summary>
     /// TODO: Add detailed validation

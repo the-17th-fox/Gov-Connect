@@ -1,6 +1,6 @@
-﻿using Civilians.Core.Models;
-using Civilians.Core.ViewModels.Civilians;
-using Civilians.Core.ViewModels.Tokens;
+﻿using Civilians.Application.ViewModels.Civilians;
+using Civilians.Application.ViewModels.Tokens;
+using Civilians.Core.Models;
 
 namespace Civilians.Application.Interfaces
 {

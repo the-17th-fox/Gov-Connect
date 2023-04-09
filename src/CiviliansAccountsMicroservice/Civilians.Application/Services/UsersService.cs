@@ -1,10 +1,10 @@
 ﻿using Civilians.Application.Interfaces;
+using Civilians.Application.ViewModels.Civilians;
+using Civilians.Application.ViewModels.Tokens;
 using Civilians.Core.Auth;
 using Civilians.Core.Interfaces;
 using Civilians.Core.Misc;
 using Civilians.Core.Models;
-using Civilians.Core.ViewModels.Civilians;
-using Civilians.Core.ViewModels.Tokens;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -111,7 +111,13 @@ namespace Civilians.Application.Services
         // Users management section bellow
 
         public async Task<List<User>> GetAllAsync(UsersPaginationParametersViewModel pageParams)
-            => await _unitOfWork.UsersRepository.GetAllAsync(pageParams);
+        {
+            return await _unitOfWork.UsersRepository.GetAllAsync(
+                pageParams.PageNumber, 
+                pageParams.PageSize, 
+                pageParams.ShowDeleted, 
+                pageParams.ShowBlocked);
+        }
 
         public async Task<User> GetByIdAsync(Guid id) 
             => await GetIfExistsAsync(id);

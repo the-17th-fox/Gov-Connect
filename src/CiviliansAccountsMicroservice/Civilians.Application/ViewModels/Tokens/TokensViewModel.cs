@@ -1,4 +1,4 @@
-﻿namespace Civilians.Core.ViewModels.Tokens
+﻿namespace Civilians.Application.ViewModels.Tokens
 {
     public class TokensViewModel : TokensRefreshingViewModel
     {
