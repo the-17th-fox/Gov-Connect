@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Civilians.Infrastructure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Civilians.Api", "Civilians.Api\Civilians.Api.csproj", "{5674464D-5121-4487-B3E5-F624D4F93436}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Civilians.Application", "Civilians.Application\Civilians.Application.csproj", "{CC73B8BF-7A5A-4E43-AF49-53013CE44017}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5674464D-5121-4487-B3E5-F624D4F93436}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5674464D-5121-4487-B3E5-F624D4F93436}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5674464D-5121-4487-B3E5-F624D4F93436}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC73B8BF-7A5A-4E43-AF49-53013CE44017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC73B8BF-7A5A-4E43-AF49-53013CE44017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC73B8BF-7A5A-4E43-AF49-53013CE44017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC73B8BF-7A5A-4E43-AF49-53013CE44017}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
