@@ -1,12 +1,13 @@
 ﻿using Civilians.Core.Interfaces;
 using Civilians.Core.Models;
+using Civilians.Infrastructure.DbContext;
 using Microsoft.AspNetCore.Identity;
 
 namespace Civilians.Infrastructure.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly CiviliansDbContext _context;
+        private readonly CiviliansDbContext _dbContext;
         private readonly UserManager<User> _userManager;
 
         private IPassportsRepository _passportsRepository = null!;
@@ -14,10 +15,10 @@ namespace Civilians.Infrastructure.Repositories
         private IUsersRepository _usersRepository = null!;
 
         public UnitOfWork(
-            CiviliansDbContext context, 
+            CiviliansDbContext dbContext, 
             UserManager<User> userManager)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager ));
         }
 
@@ -26,7 +27,7 @@ namespace Civilians.Infrastructure.Repositories
             get
             {
                 if (_passportsRepository is null)
-                    _passportsRepository = new PassportsRepository(_context);
+                    _passportsRepository = new PassportsRepository(_dbContext);
 
                 return _passportsRepository;
             }
@@ -37,7 +38,7 @@ namespace Civilians.Infrastructure.Repositories
             get
             {
                 if (_tokensRepository is null)
-                    _tokensRepository = new TokensRepository(_context);
+                    _tokensRepository = new TokensRepository(_dbContext);
 
                 return _tokensRepository;
             }
@@ -56,7 +57,7 @@ namespace Civilians.Infrastructure.Repositories
 
         public async Task SaveChangesAsync()
         {
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

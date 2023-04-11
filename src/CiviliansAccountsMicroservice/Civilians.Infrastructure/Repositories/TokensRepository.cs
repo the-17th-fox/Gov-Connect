@@ -1,32 +1,33 @@
 ﻿using Civilians.Core.Interfaces;
 using Civilians.Core.Models;
+using Civilians.Infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace Civilians.Infrastructure.Repositories
 {
     public class TokensRepository : ITokensRepository
     {
-        private readonly CiviliansDbContext _context;
+        private readonly CiviliansDbContext _dbContext;
 
-        public TokensRepository(CiviliansDbContext context)
+        public TokensRepository(CiviliansDbContext dbContext)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task<RefreshToken?> GetByUserIdAsync(Guid id)
-            => await _context.RefreshTokens.FindAsync(id);
+            => await _dbContext.RefreshTokens.FindAsync(id);
 
         public void IssueNewRefreshToken(RefreshToken newRefreshToken)
-            => _context.RefreshTokens.Add(newRefreshToken);
+            => _dbContext.RefreshTokens.Add(newRefreshToken);
 
         public void UpdateExistingRefreshToken(RefreshToken newRefreshToken)
-            => _context.RefreshTokens.Update(newRefreshToken);
+            => _dbContext.RefreshTokens.Update(newRefreshToken);
 
         public async Task RevokeAllRefreshTokensAsync()
-            => await _context.RefreshTokens.ForEachAsync(rt => rt.IsRevoked = true);
+            => await _dbContext.RefreshTokens.ForEachAsync(rt => rt.IsRevoked = true);
 
         public void RevokeRefreshToken(RefreshToken refreshToken)
-            => _context.RefreshTokens.Update(refreshToken);
+            => _dbContext.RefreshTokens.Update(refreshToken);
 
     }
 }

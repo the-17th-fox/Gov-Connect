@@ -3,14 +3,14 @@ using Civilians.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Civilians.Infrastructure
+namespace Civilians.Infrastructure.DbContext
 {
     public class CiviliansDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public CiviliansDbContext(DbContextOptions options) : base(options)
         {
+            Database.Migrate();
             Database.EnsureCreated();
         }
 
@@ -25,7 +25,7 @@ namespace Civilians.Infrastructure
 
             ConfigureUsers(builder);
             ConfigurePassports(builder);
-            ConfigureRefreshTokens(builder);            
+            ConfigureRefreshTokens(builder);
         }
 
         private void ConfigureUsers(ModelBuilder builder)
