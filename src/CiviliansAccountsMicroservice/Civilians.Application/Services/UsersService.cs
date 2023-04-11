@@ -51,7 +51,7 @@ namespace Civilians.Application.Services
                 Number = registrationParams.PassportNumber,
             };
 
-            await _unitOfWork.PassportsRepository.CreateAsync(passport);
+            _unitOfWork.PassportsRepository.Create(passport);
 
             var result = await _userManager.CreateAsync(user, registrationParams.Password);
             if (!result.Succeeded)
@@ -159,7 +159,9 @@ namespace Civilians.Application.Services
             if (user.LockoutEnabled)
                 throw new ArgumentException("User has been already blocked.");
 
-            await _unitOfWork.UsersRepository.BlockAsync(user);
+            user.LockoutEnabled = true;
+
+            await _unitOfWork.UsersRepository.UpdateAsync(user);
         }
 
         public async Task UnblockAsync(Guid id)
@@ -169,7 +171,9 @@ namespace Civilians.Application.Services
             if (!user.LockoutEnabled)
                 throw new ArgumentException("User isn't blocked.");
 
-            await _unitOfWork.UsersRepository.UnblockAsync(user);
+            user.LockoutEnabled = false;
+
+            await _unitOfWork.UsersRepository.UpdateAsync(user);
         }
     }
 }

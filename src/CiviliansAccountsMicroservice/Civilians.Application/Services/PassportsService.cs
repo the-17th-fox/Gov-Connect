@@ -47,7 +47,7 @@ namespace Civilians.Application.Services
 
             passport = _mapper.Map<Passport>(passportViewModel);    
 
-            await _unitOfWork.PassportsRepository.UpdateAsync(passport);
+            _unitOfWork.PassportsRepository.Update(passport);
             await _unitOfWork.SaveChangesAsync();
         }
 

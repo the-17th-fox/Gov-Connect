@@ -9,6 +9,9 @@ namespace Civilians.Application.ViewModels
         public MapperProfile() 
         {
             CreateMap<UpdatePassportViewModel, Passport>();
+
+            CreateMap<RefreshToken, RefreshToken>()
+                .ForMember(refreshToken => refreshToken.Token, opt => opt.Ignore());
         }
     }
 }

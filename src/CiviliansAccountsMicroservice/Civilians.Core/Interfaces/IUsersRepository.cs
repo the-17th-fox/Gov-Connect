@@ -7,7 +7,6 @@ namespace Civilians.Core.Interfaces
         public Task<User?> GetByIdAsync(Guid id);
         public Task<User?> GetByEmailAsync(string email);
         public Task<List<User>> GetAllAsync(short pageNumber, byte pageSize, bool showDeleted = false, bool showBlocked = false);
-        public Task BlockAsync(User user);
-        public Task UnblockAsync(User user);
+        public Task UpdateAsync(User user);
     }
 }

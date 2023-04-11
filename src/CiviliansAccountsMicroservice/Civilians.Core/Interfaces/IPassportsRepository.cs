@@ -6,8 +6,7 @@ namespace Civilians.Core.Interfaces
     {
         public Task<Passport?> GetByIdAsync(Guid id);
         public Task<Passport?> GetByPersonalInfoAsync(string firstName, string lastName, string patronymic);
-        public Task UpdateAsync(Passport passport);
-        public Task CreateAsync(Passport passport);
-        public Task SaveChangesAsync();
+        public void Update(Passport passport);
+        public void Create(Passport passport);
     }
 }
