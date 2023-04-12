@@ -14,8 +14,11 @@ namespace Civilians.Infrastructure.Repositories
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public async Task<RefreshToken?> GetByUserIdAsync(Guid id)
-            => await _dbContext.RefreshTokens.FindAsync(id);
+        public async Task<RefreshToken?> GetByUserIdAsync(Guid userId)
+        {
+            return await _dbContext.RefreshTokens
+                .FirstOrDefaultAsync(rt => rt.UserId == userId);
+        }
 
         public void IssueNewRefreshToken(RefreshToken newRefreshToken)
             => _dbContext.RefreshTokens.Add(newRefreshToken);

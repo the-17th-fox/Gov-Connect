@@ -26,8 +26,7 @@ namespace Civilians.Infrastructure.Repositories
         {
             get
             {
-                if (_passportsRepository is null)
-                    _passportsRepository = new PassportsRepository(_dbContext);
+                _passportsRepository ??= new PassportsRepository(_dbContext);
 
                 return _passportsRepository;
             }
@@ -37,8 +36,7 @@ namespace Civilians.Infrastructure.Repositories
         {
             get
             {
-                if (_tokensRepository is null)
-                    _tokensRepository = new TokensRepository(_dbContext);
+                _tokensRepository ??= new TokensRepository(_dbContext);
 
                 return _tokensRepository;
             }
@@ -48,8 +46,7 @@ namespace Civilians.Infrastructure.Repositories
         {
             get
             {
-                if (_usersRepository is null)
-                    _usersRepository = new UsersRepository(_userManager);
+                _usersRepository ??= new UsersRepository(_userManager);
 
                 return _usersRepository!;
             }

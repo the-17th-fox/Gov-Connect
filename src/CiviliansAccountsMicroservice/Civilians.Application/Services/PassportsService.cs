@@ -33,7 +33,9 @@ namespace Civilians.Application.Services
                 passportViewModel.Patronymic);
 
             if (passport == null)
+            {
                 throw new KeyNotFoundException("Passport with the specified information hasn't been found.");
+            }
 
             return passport;
         }
@@ -43,7 +45,9 @@ namespace Civilians.Application.Services
             var passport = await GetIfExistsAsync(passportViewModel.Id);
 
             if (passportViewModel.RegionCode == RegionCodes.Undefined)
+            {
                 throw new ArgumentException("Region code is undefined.");
+            }
 
             passport = _mapper.Map<Passport>(passportViewModel);    
 
@@ -55,7 +59,9 @@ namespace Civilians.Application.Services
         {
             var passport = await _unitOfWork.PassportsRepository.GetByIdAsync(id);
             if (passport == null)
+            {
                 throw new KeyNotFoundException("Passport with the specified id hasn't been found.");
+            }    
 
             return passport;
         }

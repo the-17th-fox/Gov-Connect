@@ -20,10 +20,14 @@ namespace Civilians.Infrastructure.Repositories
             var query = _userManager.Users;
 
             if (!showDeleted)
+            {
                 query = query.Where(u => u.IsDeleted == false);
+            }
 
             if (!showBlocked)
+            {
                 query = query.Where(u => u.LockoutEnabled == false);
+            }
 
             return await PagedList<User>.ToPagedListAsync(query, pageNumber, pageSize);
         }

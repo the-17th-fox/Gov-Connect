@@ -22,7 +22,8 @@ namespace Civilians.Infrastructure.Repositories
             return await _dbContext.Passports
                 .Where(p => p.FirstName == firstName)
                 .Where(p => p.LastName == lastName)
-                .Where(p => p.Patronymic == patronymic).FirstOrDefaultAsync();
+                .Where(p => p.Patronymic == patronymic)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Passport?> GetByIdAsync(Guid id)
