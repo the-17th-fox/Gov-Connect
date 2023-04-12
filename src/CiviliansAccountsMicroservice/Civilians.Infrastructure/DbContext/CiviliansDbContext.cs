@@ -1,5 +1,6 @@
 ﻿using Civilians.Core.Auth;
 using Civilians.Core.Models;
+using Civilians.Infrastructure.DbContext.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -23,56 +24,9 @@ namespace Civilians.Infrastructure.DbContext
 
             builder.Entity<IdentityRole<Guid>>().HasData(AuthRoles.Roles);
 
-            ConfigureUsers(builder);
-            ConfigurePassports(builder);
-            ConfigureRefreshTokens(builder);
-        }
-
-        private void ConfigureUsers(ModelBuilder builder)
-        {
-            builder.Entity<User>(opt =>
-            {
-                opt.Ignore(u => u.PhoneNumberConfirmed);
-                opt.Ignore(c => c.EmailConfirmed);
-                opt.Ignore(c => c.TwoFactorEnabled);
-                opt.Ignore(c => c.LockoutEnd);
-
-                opt.Property("CreatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()");
-
-                opt.Property("UpdatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()")
-                    .ValueGeneratedOnUpdate();
-            });
-        }
-
-        private void ConfigurePassports(ModelBuilder builder)
-        {
-            builder.Entity<RefreshToken>(opt =>
-            {
-                opt.Property("CreatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()");
-
-                opt.Property("UpdatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()")
-                    .ValueGeneratedOnUpdate();
-            });
-        }
-
-        private void ConfigureRefreshTokens(ModelBuilder builder)
-        {
-            builder.Entity<RefreshToken>(opt =>
-            {
-                opt.Ignore(rt => rt.IsActive);
-                opt.Ignore(rt => rt.IsExpired);
-
-                opt.Property("CreatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()");
-
-                opt.Property("UpdatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()")
-                    .ValueGeneratedOnUpdate();
-            });
+            builder.ConfigureUsersTable();
+            builder.ConfigurePassportsTable();
+            builder.ConfigureRefreshTokensTable();
         }
     }
 }
