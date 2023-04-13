@@ -14,11 +14,12 @@ namespace Civilians.Infrastructure.DbContext.Configuration
             builder.HasKey(rt => rt.Token);
 
             builder.Property<DateTime>("CreatedAt")
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("GETUTCDATE()")
+                .ValueGeneratedOnAdd();
 
             builder.Property<DateTime>("UpdatedAt")
                 .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnUpdate();
+                .ValueGeneratedOnAddOrUpdate();
 
             builder.HasIndex(rt => rt.UserId)
                 .IsUnique();

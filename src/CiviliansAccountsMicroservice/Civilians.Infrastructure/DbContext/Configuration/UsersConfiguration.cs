@@ -9,16 +9,19 @@ namespace Civilians.Infrastructure.DbContext.Configuration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Ignore(u => u.PhoneNumberConfirmed);
-            builder.Ignore(c => c.EmailConfirmed);
-            builder.Ignore(c => c.TwoFactorEnabled);
-            builder.Ignore(c => c.LockoutEnd);
+            builder.Ignore(u => u.EmailConfirmed);
+            builder.Ignore(u => u.TwoFactorEnabled);
+            builder.Ignore(u => u.LockoutEnd);
+            builder.Ignore(u => u.LockoutEnabled);
+            builder.Ignore(u => u.AccessFailedCount);
 
             builder.Property<DateTime>("CreatedAt")
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("GETUTCDATE()")
+                .ValueGeneratedOnAdd();
 
             builder.Property<DateTime>("UpdatedAt")
                 .HasDefaultValueSql("GETUTCDATE()")
-                .ValueGeneratedOnUpdate();
+                .ValueGeneratedOnAddOrUpdate();
         }
     }
 }

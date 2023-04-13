@@ -9,11 +9,12 @@ namespace Civilians.Infrastructure.DbContext.Configuration
         public void Configure(EntityTypeBuilder<Passport> builder)
         {
             builder.Property<DateTime>("CreatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("GETUTCDATE()")
+                .ValueGeneratedOnAdd();
 
             builder.Property<DateTime>("UpdatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()")
-                    .ValueGeneratedOnUpdate();
+                .HasDefaultValueSql("GETUTCDATE()")
+                .ValueGeneratedOnAddOrUpdate();
 
             builder.HasIndex(p => new { p.FirstName, p.LastName, p.Patronymic });
         }

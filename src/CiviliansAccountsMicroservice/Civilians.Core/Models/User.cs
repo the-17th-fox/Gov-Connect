@@ -8,6 +8,7 @@ namespace Civilians.Core.Models
 
         public RefreshToken? RefreshToken { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public bool IsBlocked { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
     }
 }
