@@ -24,9 +24,9 @@ namespace Civilians.Infrastructure.DbContext
 
             builder.Entity<IdentityRole<Guid>>().HasData(AuthRoles.Roles);
 
-            builder.ConfigureUsersTable();
-            builder.ConfigurePassportsTable();
-            builder.ConfigureRefreshTokensTable();
+            builder.ApplyConfiguration(new UsersConfiguration());
+            builder.ApplyConfiguration(new RefreshTokensConfiguration());
+            builder.ApplyConfiguration(new PassportsConfiguration());
         }
     }
 }

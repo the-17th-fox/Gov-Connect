@@ -1,27 +1,27 @@
 ﻿using Civilians.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Civilians.Infrastructure.DbContext.Configuration
 {
-    internal static class RefreshTokensConfiguration
+    internal class RefreshTokensConfiguration : IEntityTypeConfiguration<RefreshToken>
     {
-        internal static void ConfigureRefreshTokensTable(this ModelBuilder builder)
+        public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
-            builder.Entity<RefreshToken>(opt =>
-            {
-                opt.Ignore(rt => rt.IsActive);
-                opt.Ignore(rt => rt.IsExpired);
+            builder.Ignore(rt => rt.IsActive);
+            builder.Ignore(rt => rt.IsExpired);
 
-                opt.Property("CreatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()");
+            builder.HasKey(rt => rt.Token);
 
-                opt.Property("UpdatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()")
-                    .ValueGeneratedOnUpdate();
+            builder.Property<DateTime>("CreatedAt")
+                .HasDefaultValueSql("GETUTCDATE()");
 
-                opt.HasIndex(rt => rt.UserId)
-                    .IsUnique();
-            });
+            builder.Property<DateTime>("UpdatedAt")
+                .HasDefaultValueSql("GETUTCDATE()")
+                .ValueGeneratedOnUpdate();
+
+            builder.HasIndex(rt => rt.UserId)
+                .IsUnique();
         }
     }
 }

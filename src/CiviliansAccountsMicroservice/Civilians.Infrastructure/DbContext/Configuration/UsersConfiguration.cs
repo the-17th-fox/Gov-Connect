@@ -1,26 +1,24 @@
 ﻿using Civilians.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Civilians.Infrastructure.DbContext.Configuration
 {
-    internal static class UsersConfiguration
+    internal class UsersConfiguration : IEntityTypeConfiguration<User>
     {
-        internal static void ConfigureUsersTable(this ModelBuilder builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.Entity<User>(opt =>
-            {
-                opt.Ignore(u => u.PhoneNumberConfirmed);
-                opt.Ignore(c => c.EmailConfirmed);
-                opt.Ignore(c => c.TwoFactorEnabled);
-                opt.Ignore(c => c.LockoutEnd);
+            builder.Ignore(u => u.PhoneNumberConfirmed);
+            builder.Ignore(c => c.EmailConfirmed);
+            builder.Ignore(c => c.TwoFactorEnabled);
+            builder.Ignore(c => c.LockoutEnd);
 
-                opt.Property("CreatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()");
+            builder.Property<DateTime>("CreatedAt")
+                .HasDefaultValueSql("GETUTCDATE()");
 
-                opt.Property("UpdatedAt")
-                    .HasDefaultValueSql("GETUTCDATE()")
-                    .ValueGeneratedOnUpdate();
-            });
+            builder.Property<DateTime>("UpdatedAt")
+                .HasDefaultValueSql("GETUTCDATE()")
+                .ValueGeneratedOnUpdate();
         }
     }
 }

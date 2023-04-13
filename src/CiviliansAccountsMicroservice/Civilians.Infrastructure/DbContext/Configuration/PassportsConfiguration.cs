@@ -1,23 +1,21 @@
 ﻿using Civilians.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Civilians.Infrastructure.DbContext.Configuration
 {
-    internal static class PassportsConfiguration
+    internal class PassportsConfiguration : IEntityTypeConfiguration<Passport>
     {
-        internal static void ConfigurePassportsTable(this ModelBuilder builder)
+        public void Configure(EntityTypeBuilder<Passport> builder)
         {
-            builder.Entity<Passport>(opt =>
-            {
-                opt.Property("CreatedAt")
+            builder.Property<DateTime>("CreatedAt")
                     .HasDefaultValueSql("GETUTCDATE()");
 
-                opt.Property("UpdatedAt")
+            builder.Property<DateTime>("UpdatedAt")
                     .HasDefaultValueSql("GETUTCDATE()")
                     .ValueGeneratedOnUpdate();
 
-                opt.HasIndex(p => new { p.FirstName, p.LastName, p.Patronymic });
-            });
+            builder.HasIndex(p => new { p.FirstName, p.LastName, p.Patronymic });
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Civilians.Core.Models
+﻿namespace Civilians.Core.Models
 {
     public class RefreshToken
     {
