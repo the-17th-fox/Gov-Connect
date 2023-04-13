@@ -11,7 +11,6 @@ namespace Civilians.Infrastructure.DbContext
     {
         public CiviliansDbContext(DbContextOptions options) : base(options)
         {
-            Database.Migrate();
             Database.EnsureCreated();
         }
 
