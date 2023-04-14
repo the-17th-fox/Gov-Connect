@@ -29,7 +29,9 @@ namespace Civilians.Application.Services
         public async Task CreateAsync(RegistrationViewModel registrationParams)
         {
             if (registrationParams.PassportRegionCode == RegionCodes.Undefined)
+            {
                 throw new ArgumentException("Region code is undefined.");
+            }
 
             var user = new User()
             {
@@ -51,15 +53,19 @@ namespace Civilians.Application.Services
                 Number = registrationParams.PassportNumber,
             };
 
-            await _unitOfWork.PassportsRepository.CreateAsync(passport);
+            _unitOfWork.PassportsRepository.Create(passport);
 
             var result = await _userManager.CreateAsync(user, registrationParams.Password);
             if (!result.Succeeded)
+            {
                 throw new Exception("User creation failed: " + result.Errors.First<IdentityError>().Description);
+            }
 
             result = await _userManager.AddToRoleAsync(user, AuthRoles.DefaultUser);
             if (!result.Succeeded)
+            {
                 throw new Exception("Adding to role failed: " + result.Errors.First<IdentityError>().Description);
+            }
 
             await _unitOfWork.SaveChangesAsync();
         }
@@ -68,14 +74,20 @@ namespace Civilians.Application.Services
         {
             var user = await _unitOfWork.UsersRepository.GetByEmailAsync(loginViewModel.Email);
             if (user == null)
+            {
                 throw new KeyNotFoundException("There is no user with the specified email.");
+            }
 
             if (user.IsDeleted || user.LockoutEnabled)
+            {
                 throw new ArgumentException("User is deleted or blocked.");
+            }    
 
             var isCorrect = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
             if (!isCorrect)
+            {
                 throw new UnauthorizedAccessException("Password check has been failed.");
+            }
 
             var userRoles = await _userManager.GetRolesAsync(user);
             var userClaims = GetClaims(user, userRoles);
@@ -130,7 +142,9 @@ namespace Civilians.Application.Services
             var user = await _unitOfWork.UsersRepository.GetByIdAsync(id);
 
             if (user == null)
-                throw new KeyNotFoundException("There is no user with the specified id.");
+            {
+                throw new UnauthorizedAccessException("Password check has been failed.");
+            }
 
             return user;
         }
@@ -140,16 +154,22 @@ namespace Civilians.Application.Services
             var user = await GetIfExistsAsync(id);
 
             if (user.IsDeleted || user.LockoutEnabled)
+            {
                 throw new ArgumentException("User is deleted or blocked.");
+            }
 
             var userRoles = await _userManager.GetRolesAsync(user);
             var result = await _userManager.RemoveFromRolesAsync(user, userRoles);
             if (!result.Succeeded)
+            {
                 throw new Exception("Removing from role failed: " + result.Errors.First<IdentityError>().Description);
+            }
 
             result = await _userManager.AddToRoleAsync(user, roleName);
             if (!result.Succeeded)
+            {
                 throw new Exception("Adding to role failed: " + result.Errors.First<IdentityError>().Description);
+            }
         }
         
         public async Task BlockAsync(Guid id)
@@ -157,9 +177,13 @@ namespace Civilians.Application.Services
             var user = await GetIfExistsAsync(id);
 
             if (user.LockoutEnabled)
+            {
                 throw new ArgumentException("User has been already blocked.");
+            }
 
-            await _unitOfWork.UsersRepository.BlockAsync(user);
+            user.LockoutEnabled = true;
+
+            await _unitOfWork.UsersRepository.UpdateAsync(user);
         }
 
         public async Task UnblockAsync(Guid id)
@@ -167,9 +191,13 @@ namespace Civilians.Application.Services
             var user = await GetIfExistsAsync(id);
 
             if (!user.LockoutEnabled)
+            {
                 throw new ArgumentException("User isn't blocked.");
+            }
 
-            await _unitOfWork.UsersRepository.UnblockAsync(user);
+            user.LockoutEnabled = false;
+
+            await _unitOfWork.UsersRepository.UpdateAsync(user);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Civilians.Application.Interfaces;
+﻿using AutoMapper;
+using Civilians.Application.Interfaces;
 using Civilians.Application.ViewModels.Tokens;
 using Civilians.Core.Auth;
 using Civilians.Core.Interfaces;
@@ -14,11 +15,13 @@ namespace Civilians.Application.Services
     {
         private readonly JwtConfigModel _jwtConfig;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public TokensService(IOptions<JwtConfigModel> jwtConfig, IUnitOfWork unitOfWork)
+        public TokensService(IOptions<JwtConfigModel> jwtConfig, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _jwtConfig = jwtConfig != null ? jwtConfig.Value : throw new ArgumentNullException(nameof(jwtConfig));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public JwtSecurityToken CreateAccessToken(IList<Claim> claims)
@@ -36,18 +39,21 @@ namespace Civilians.Application.Services
         public async Task<RefreshToken> IssueRefreshTokenAsync(Guid userId)
         {
             var newRefreshToken = GenerateRefreshToken(userId);
-            var tokenId = Guid.Empty;
 
             var existingRefreshToken = await _unitOfWork.TokensRepository.GetByUserIdAsync(userId);
 
             if(existingRefreshToken != null)
-                await _unitOfWork.TokensRepository.UpdateExistingRefreshTokenAsync(newRefreshToken, out tokenId);
+            {
+                _unitOfWork.TokensRepository.UpdateExistingRefreshToken(newRefreshToken);
+            }    
             else
-                await _unitOfWork.TokensRepository.IssueNewRefreshTokenAsync(newRefreshToken, out tokenId);
+            {
+                newRefreshToken = _mapper.Map<RefreshToken>(existingRefreshToken);
+                _unitOfWork.TokensRepository.IssueNewRefreshToken(newRefreshToken);
+            }
 
             await _unitOfWork.SaveChangesAsync();
 
-            newRefreshToken.Token = tokenId;
             return newRefreshToken;
         }
 
@@ -61,7 +67,9 @@ namespace Civilians.Application.Services
         {
             var principal = GetClaimsPrincipalFromToken(tokensPairViewModel.AccessToken);
             if (principal == null)
+            {
                 throw new ArgumentException("Invalid access token or refresh token.");
+            }
 
             var user = await FindUserByClaimsAsync(principal);
 
@@ -98,7 +106,9 @@ namespace Civilians.Application.Services
             // Then checking whether the token signature algorithm is correct
             if (securityToken is not JwtSecurityToken jwtSecurityToken
                 || !jwtSecurityToken.Header.Alg.Equals(_jwtConfig.SecurityAlgorithm, StringComparison.InvariantCultureIgnoreCase))
+            {
                 throw new SecurityTokenException("Invalid access token or refresh token.");
+            }
 
             return principal;
         }
@@ -107,16 +117,22 @@ namespace Civilians.Application.Services
         {
             string? userIdAsString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrWhiteSpace(userIdAsString))
+            {
                 throw new ArgumentException("Couldn't get the user's id from the claims.");
+            }
 
             Guid userId = Guid.Empty;
             if(!Guid.TryParse(userIdAsString, out userId))
+            {
                 throw new ArgumentException("Couldn't parse a userId");
+            }
 
             var user = await _unitOfWork.UsersRepository.GetByIdAsync(userId);
 
             if (user == null)
+            {
                 throw new KeyNotFoundException("There is no user with the specified id.");
+            }
 
             return user!;
         }
@@ -124,19 +140,34 @@ namespace Civilians.Application.Services
         private static void ValidateRefreshToken(RefreshToken? storedRefreshToken, Guid providedRefreshToken)
         {
             if (storedRefreshToken == null)
+            {
                 throw new ArgumentException("User's refresh token is null.");
+            }
 
             if (!storedRefreshToken.IsActive)
+            {
                 throw new ArgumentException("User's refresh token is expired or revoked.");
+            }
 
             if (!storedRefreshToken.Token.Equals(providedRefreshToken))
+            {
                 throw new ArgumentException("User's refresh token doesn't equal to the provided refresh token.");
+            }
         }
 
         public async Task RevokeAllRefreshTokensAsync() 
             => await _unitOfWork.TokensRepository.RevokeAllRefreshTokensAsync();
 
-        public async Task RevokeRefreshTokenAsync(Guid userId) 
-            => await _unitOfWork.TokensRepository.RevokeRefreshTokenAsync(userId);
+        public async Task RevokeRefreshTokenAsync(Guid userId)
+        {
+            var refreshToken = await _unitOfWork.TokensRepository.GetByUserIdAsync(userId);
+            if (refreshToken is null)
+            {
+                throw new KeyNotFoundException("Refresh token with specified user id hasn't been found.");
+            }
+
+            _unitOfWork.TokensRepository.RevokeRefreshToken(refreshToken);
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }

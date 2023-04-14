@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Civilians.Infrastructure", "Civilians.Infrastructure\Civilians.Infrastructure.csproj", "{F3BC815E-590E-4A00-89CB-85C5B224391C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Civilians.Api", "Civilians.Api\Civilians.Api.csproj", "{5674464D-5121-4487-B3E5-F624D4F93436}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CC73B8BF-7A5A-4E43-AF49-53013CE44017} = {CC73B8BF-7A5A-4E43-AF49-53013CE44017}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Civilians.Application", "Civilians.Application\Civilians.Application.csproj", "{CC73B8BF-7A5A-4E43-AF49-53013CE44017}"
 EndProject

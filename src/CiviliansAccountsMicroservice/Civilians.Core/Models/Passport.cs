@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Civilians.Core.Models
 {
@@ -7,6 +6,7 @@ namespace Civilians.Core.Models
     {
         public Guid Id { get; set; }
 
+        public Guid UserId { get; set; }
         public User User { get; set; } = null!;
 
         [Required]

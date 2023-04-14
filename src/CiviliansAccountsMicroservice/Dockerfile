@@ -5,6 +5,7 @@ WORKDIR /app
 COPY CiviliansAccountsMicroservice/*.sln ./
 
 COPY CiviliansAccountsMicroservice/Civilians.Core/ ./Civilians.Core/
+COPY CiviliansAccountsMicroservice/Civilians.Application/ ./Civilians.Application/
 COPY CiviliansAccountsMicroservice/Civilians.Infrastructure/ ./Civilians.Infrastructure/
 COPY CiviliansAccountsMicroservice/Civilians.Api/ ./Civilians.Api/
 
