@@ -143,7 +143,7 @@ namespace Civilians.Application.Services
 
             if (user == null)
             {
-                throw new UnauthorizedAccessException("Password check has been failed.");
+                throw new KeyNotFoundException("User with the specified id couldn't been found.");
             }
 
             return user;
@@ -181,7 +181,7 @@ namespace Civilians.Application.Services
                 throw new ArgumentException("User has been already blocked.");
             }
 
-            user.LockoutEnabled = true;
+            user.IsBlocked = true;
 
             await _unitOfWork.UsersRepository.UpdateAsync(user);
         }
@@ -195,7 +195,7 @@ namespace Civilians.Application.Services
                 throw new ArgumentException("User isn't blocked.");
             }
 
-            user.LockoutEnabled = false;
+            user.IsBlocked = false;
 
             await _unitOfWork.UsersRepository.UpdateAsync(user);
         }
