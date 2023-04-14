@@ -17,6 +17,8 @@ services.AddSwaggerGen(opt => opt.ConfigureSwagger());
 
 var app = builder.Build();
 
+app.UseMiddleware<GlobalExceptionsHandler>();
+
 if (app.Environment.IsDevelopment())
 {
     await app.MigrateDatabase();
