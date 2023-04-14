@@ -4,14 +4,11 @@ using Civilians.Core.Models;
 
 namespace Civilians.Application.ViewModels
 {
-    public class MapperProfile : Profile
+    public class CoreMapperProfile : Profile
     {
-        public MapperProfile() 
+        public CoreMapperProfile() 
         {
             CreateMap<UpdatePassportViewModel, Passport>();
-
-            CreateMap<RefreshToken, RefreshToken>()
-                .ForMember(refreshToken => refreshToken.Token, opt => opt.Ignore());
         }
     }
 }
