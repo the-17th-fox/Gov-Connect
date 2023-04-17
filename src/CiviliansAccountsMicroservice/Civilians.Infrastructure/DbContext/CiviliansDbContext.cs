@@ -9,10 +9,7 @@ namespace Civilians.Infrastructure.DbContext
 {
     public class CiviliansDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
-        public CiviliansDbContext(DbContextOptions options) : base(options)
-        {
-            //Database.EnsureCreated();
-        }
+        public CiviliansDbContext(DbContextOptions options) : base(options) {}
 
         public DbSet<Passport> Passports => Set<Passport>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
