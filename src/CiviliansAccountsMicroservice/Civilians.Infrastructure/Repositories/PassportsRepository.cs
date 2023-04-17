@@ -17,7 +17,13 @@ namespace Civilians.Infrastructure.Repositories
         public void Create(Passport passport)
             => _dbContext.Passports.Add(passport);
 
-        public async Task<Passport?> GetByPersonalInfoAsync(string firstName, string lastName, string patronymic)
+        public async Task<Passport?> GetByUserIdAsync(Guid userId)
+        {
+            return await _dbContext.Passports
+                .FirstOrDefaultAsync(p => p.UserId == userId);
+        }
+
+        public async Task<Passport?> GetByPersonalDataAsync(string firstName, string lastName, string patronymic)
         {
             return await _dbContext.Passports
                 .Where(p => p.FirstName == firstName)

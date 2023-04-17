@@ -33,27 +33,40 @@ namespace Civilians.Application.Services
                 notBefore: DateTime.UtcNow,
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(_jwtConfig.AuthTokenLifetimeInMinutes),
-                signingCredentials: new SigningCredentials(symSecurityKey, _jwtConfig.SecurityAlgorithm)); //SecurityAlgorithms.HmacSha256
+                signingCredentials: new SigningCredentials(symSecurityKey, _jwtConfig.SecurityAlgorithm));
         }
 
         public async Task<RefreshToken> IssueRefreshTokenAsync(Guid userId)
         {
+            var existingRefreshToken = await _unitOfWork.TokensRepository.GetByUserIdAsync(userId);
             var newRefreshToken = GenerateRefreshToken(userId);
 
-            var existingRefreshToken = await _unitOfWork.TokensRepository.GetByUserIdAsync(userId);
-
-            if(existingRefreshToken != null)
+            if (existingRefreshToken == null)
             {
-                _unitOfWork.TokensRepository.UpdateExistingRefreshToken(newRefreshToken);
-            }    
+                newRefreshToken = CreateNewRefreshToken(newRefreshToken);
+            }
             else
             {
-                newRefreshToken = _mapper.Map<RefreshToken>(existingRefreshToken);
-                _unitOfWork.TokensRepository.IssueNewRefreshToken(newRefreshToken);
+                newRefreshToken = UpdateExistingRefreshToken(existingRefreshToken, newRefreshToken);
             }
 
             await _unitOfWork.SaveChangesAsync();
+            return newRefreshToken;
+        }
 
+        private RefreshToken UpdateExistingRefreshToken(RefreshToken existingRefreshToken, RefreshToken newRefreshToken)
+        {
+            existingRefreshToken.ExpiresAt = newRefreshToken.ExpiresAt;
+            existingRefreshToken.IssuedAt = newRefreshToken.IssuedAt;
+            existingRefreshToken.IsRevoked = false;
+            _unitOfWork.TokensRepository.UpdateExistingRefreshToken(existingRefreshToken);
+
+            return existingRefreshToken;
+        }
+
+        private RefreshToken CreateNewRefreshToken(RefreshToken newRefreshToken)
+        {
+            _unitOfWork.TokensRepository.IssueNewRefreshToken(newRefreshToken);
             return newRefreshToken;
         }
 

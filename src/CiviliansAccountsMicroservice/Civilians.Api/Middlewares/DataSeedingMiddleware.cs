@@ -6,7 +6,7 @@ namespace Civilians.Api.Middlewares
 {
     public static class DataSeedingMiddleware
     {
-        public async static Task<WebApplication> SeedUsers(this WebApplication app)
+        public static async Task<WebApplication> SeedUsers(this WebApplication app)
         {
             using var scope = app.Services.CreateScope();
             using var userManager = scope.ServiceProvider.GetRequiredService <UserManager<User>>();

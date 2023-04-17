@@ -47,8 +47,5 @@ namespace Civilians.Infrastructure.Repositories
                 .Include(a => a.RefreshToken)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
-
-        public async Task UpdateAsync(User user)
-            => await _userManager.UpdateAsync(user);
     }
 }

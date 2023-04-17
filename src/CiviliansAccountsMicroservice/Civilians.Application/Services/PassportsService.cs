@@ -18,16 +18,20 @@ namespace Civilians.Application.Services
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<Passport> GetByIdAsync(Guid id)
+        public async Task<Passport> GetByUserIdAsync(Guid userId)
         {
-            var passport = await GetIfExistsAsync(id);
+            var passport = await  _unitOfWork.PassportsRepository.GetByUserIdAsync(userId);
+            if (passport == null)
+            {
+                throw new KeyNotFoundException("Passport with the specified user id hasn't been found.");
+            }
 
             return passport;
         }
 
-        public async Task<Passport> GetByPersonalInfo(SearchPassportViewModel passportViewModel)
+        public async Task<Passport> GetByPersonalDataAsync(SearchPassportViewModel passportViewModel)
         {
-            var passport = await _unitOfWork.PassportsRepository.GetByPersonalInfoAsync(
+            var passport = await _unitOfWork.PassportsRepository.GetByPersonalDataAsync(
                 passportViewModel.FirstName, 
                 passportViewModel.LastName, 
                 passportViewModel.Patronymic);
@@ -40,9 +44,9 @@ namespace Civilians.Application.Services
             return passport;
         }
 
-        public async Task UpdateAsync(UpdatePassportViewModel passportViewModel)
+        public async Task UpdateAsync(Guid userId, UpdatePassportViewModel passportViewModel)
         {
-            var passport = await GetIfExistsAsync(passportViewModel.Id);
+            var passport = await GetByUserIdAsync(userId);
 
             if (passportViewModel.RegionCode == RegionCodes.Undefined)
             {
@@ -53,17 +57,6 @@ namespace Civilians.Application.Services
 
             _unitOfWork.PassportsRepository.Update(passport);
             await _unitOfWork.SaveChangesAsync();
-        }
-
-        private async Task<Passport> GetIfExistsAsync(Guid id)
-        {
-            var passport = await _unitOfWork.PassportsRepository.GetByIdAsync(id);
-            if (passport == null)
-            {
-                throw new KeyNotFoundException("Passport with the specified id hasn't been found.");
-            }    
-
-            return passport;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Civilians.Core.Misc;
 
 namespace Civilians.Core.Models
 {
@@ -17,8 +18,8 @@ namespace Civilians.Core.Models
         public string Patronymic { get; set; } = string.Empty;
 
         // Passport number
-        [Required]
-        public string Region { get; set; } = string.Empty;
+        [Required] 
+        public RegionCodes Region { get; set; } = RegionCodes.Undefined;
         [Required]
         public string Number { get; set; } = string.Empty;
     }

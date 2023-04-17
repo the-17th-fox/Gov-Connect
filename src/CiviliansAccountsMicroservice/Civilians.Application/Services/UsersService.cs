@@ -40,16 +40,13 @@ namespace Civilians.Application.Services
                 Email = registrationParams.Email
             };
 
-            string regionCode = Enum.GetName<RegionCodes>(registrationParams.PassportRegionCode) 
-                ?? throw new Exception("Can not get the name of the region");
-
             var passport = new Passport()
             {
                 User = user,
                 FirstName = registrationParams.FirstName.ToUpperInvariant(),
                 LastName = registrationParams.LastName.ToUpperInvariant(),
                 Patronymic = registrationParams.Patronymic.ToUpperInvariant(),
-                Region = regionCode,
+                Region = registrationParams.PassportRegionCode,
                 Number = registrationParams.PassportNumber,
             };
 
@@ -143,7 +140,7 @@ namespace Civilians.Application.Services
 
             if (user == null)
             {
-                throw new UnauthorizedAccessException("Password check has been failed.");
+                throw new KeyNotFoundException("User with the specified id couldn't been found.");
             }
 
             return user;
@@ -181,9 +178,9 @@ namespace Civilians.Application.Services
                 throw new ArgumentException("User has been already blocked.");
             }
 
-            user.LockoutEnabled = true;
+            user.IsBlocked = true;
 
-            await _unitOfWork.UsersRepository.UpdateAsync(user);
+            await UpdateAsync(user);
         }
 
         public async Task UnblockAsync(Guid id)
@@ -195,9 +192,18 @@ namespace Civilians.Application.Services
                 throw new ArgumentException("User isn't blocked.");
             }
 
-            user.LockoutEnabled = false;
+            user.IsBlocked = false;
 
-            await _unitOfWork.UsersRepository.UpdateAsync(user);
+            await UpdateAsync(user);
+        }
+
+        private async Task UpdateAsync(User user)
+        {
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new Exception("User updating has failed: " + result.Errors.First<IdentityError>().Description);
+            }
         }
     }
 }
