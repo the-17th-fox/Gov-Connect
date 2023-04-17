@@ -180,7 +180,7 @@ namespace Civilians.Application.Services
 
             user.IsBlocked = true;
 
-            await _unitOfWork.UsersRepository.UpdateAsync(user);
+            await UpdateAsync(user);
         }
 
         public async Task UnblockAsync(Guid id)
@@ -194,7 +194,16 @@ namespace Civilians.Application.Services
 
             user.IsBlocked = false;
 
-            await _unitOfWork.UsersRepository.UpdateAsync(user);
+            await UpdateAsync(user);
+        }
+
+        private async Task UpdateAsync(User user)
+        {
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new Exception("User updating has failed: " + result.Errors.First<IdentityError>().Description);
+            }
         }
     }
 }
