@@ -40,16 +40,13 @@ namespace Civilians.Application.Services
                 Email = registrationParams.Email
             };
 
-            string regionCode = Enum.GetName<RegionCodes>(registrationParams.PassportRegionCode) 
-                ?? throw new Exception("Can not get the name of the region");
-
             var passport = new Passport()
             {
                 User = user,
                 FirstName = registrationParams.FirstName.ToUpperInvariant(),
                 LastName = registrationParams.LastName.ToUpperInvariant(),
                 Patronymic = registrationParams.Patronymic.ToUpperInvariant(),
-                Region = regionCode,
+                Region = registrationParams.PassportRegionCode,
                 Number = registrationParams.PassportNumber,
             };
 

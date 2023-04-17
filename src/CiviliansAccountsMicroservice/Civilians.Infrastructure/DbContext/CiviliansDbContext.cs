@@ -11,7 +11,7 @@ namespace Civilians.Infrastructure.DbContext
     {
         public CiviliansDbContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         public DbSet<Passport> Passports => Set<Passport>();
