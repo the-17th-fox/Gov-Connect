@@ -28,7 +28,6 @@ namespace Civilians.Api.Middlewares
                 {
                     KeyNotFoundException => (int)HttpStatusCode.NotFound,
 
-                    
                     ArgumentException => (int)HttpStatusCode.BadRequest,
                     
                     UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,

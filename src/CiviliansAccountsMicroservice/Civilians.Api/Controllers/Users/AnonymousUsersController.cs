@@ -23,6 +23,7 @@ namespace Civilians.Api.Controllers.Users
         public async Task<IActionResult> RegisterAsync([FromBody] RegistrationViewModel registrationViewModel)
         {
             await _usersService.CreateAsync(registrationViewModel);
+            
             return Created("register", null);
         }
 
@@ -30,6 +31,7 @@ namespace Civilians.Api.Controllers.Users
         public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel loginViewModel)
         {
             var tokensPair = await _usersService.LoginAsync(loginViewModel);
+            
             return Ok(tokensPair);
         }
     }

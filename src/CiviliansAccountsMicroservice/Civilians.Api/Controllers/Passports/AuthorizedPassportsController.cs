@@ -17,26 +17,32 @@ namespace Civilians.Api.Controllers.Passports
         private readonly IPassportsService _passportsService;
         private readonly IMapper _mapper;
 
-        private Guid _userId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        private readonly Guid _userId;
 
         public AuthorizedPassportsController(IPassportsService passportsService, IMapper mapper)
         {
             _passportsService = passportsService ?? throw new ArgumentNullException(nameof(passportsService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+
+            var userIdAsString = User.FindFirstValue(ClaimTypes.NameIdentifier) ??
+                                 throw new ArgumentNullException(nameof(ClaimTypes.NameIdentifier));
+            _userId = Guid.Parse(userIdAsString);
         }
 
-        [HttpGet("my")]
+        [HttpGet("personal")]
         public async Task<IActionResult> GetMyPassportAsync()
         {
             var passport = await _passportsService.GetByUserIdAsync(_userId);
             var passportViewModel = _mapper.Map<PassportViewModel>(passport);
+
             return Ok(passportViewModel);
         }
 
-        [HttpPut("update/my")]
+        [HttpPut]
         public async Task<IActionResult> UpdatePassportAsync(UpdatePassportViewModel updatePassportViewModel)
         {
             await _passportsService.UpdateAsync(_userId, updatePassportViewModel);
+
             return Ok();
         }
     }

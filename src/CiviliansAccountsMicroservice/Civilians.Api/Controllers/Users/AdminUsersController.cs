@@ -4,10 +4,8 @@ using Civilians.Application.Interfaces;
 using Civilians.Application.ViewModels.Civilians;
 using Civilians.Core.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharedLib.Pagination.ViewModels;
-using System.Security.Claims;
 
 namespace Civilians.Api.Controllers.Users
 {
@@ -35,7 +33,7 @@ namespace Civilians.Api.Controllers.Users
             return Ok(userViewModel);
         }
 
-        [HttpPost("all")]
+        [HttpPost]
         public async Task<IActionResult> GetAllAsync([FromBody] UsersPaginationParametersViewModel paginationParameters)
         {
             var users = await _usersService.GetAllAsync(paginationParameters);
@@ -44,7 +42,7 @@ namespace Civilians.Api.Controllers.Users
             return Ok(usersPage);
         }
 
-        [HttpPatch("block/{id}")]
+        [HttpPatch("{id}/block")]
         public async Task<IActionResult> BlockAsync(Guid id)
         {
             await _usersService.BlockAsync(id);
@@ -52,7 +50,7 @@ namespace Civilians.Api.Controllers.Users
             return Ok();
         }
 
-        [HttpPatch("unblock/{id}")]
+        [HttpPatch("{id}/unblock")]
         public async Task<IActionResult> UnblockAsync(Guid id)
         {
             await _usersService.UnblockAsync(id);
@@ -60,7 +58,7 @@ namespace Civilians.Api.Controllers.Users
             return Ok();
         }
 
-        [HttpPatch("set-role/{id}/{roleName}")]
+        [HttpPatch("{id}/set-role/{roleName}")]
         public async Task<IActionResult> ChangeRoleAsync(Guid id, string newRoleName)
         {
             await _usersService.ChangeRoleAsync(id, newRoleName);

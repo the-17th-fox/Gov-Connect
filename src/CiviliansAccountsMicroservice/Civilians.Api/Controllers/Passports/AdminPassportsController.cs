@@ -22,11 +22,19 @@ namespace Civilians.Api.Controllers.Passports
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet("{personal-data}")]
-        public async Task<IActionResult> GetByPersonalDataAsync(SearchPassportViewModel searchPassportViewModel)
+        [HttpPost("{lastName}-{firstName}-{patronymic}")]
+        public async Task<IActionResult> GetByPersonalDataAsync(string lastName, string firstName, string patronymic)
         {
+            var searchPassportViewModel = new SearchPassportViewModel()
+            {
+                LastName = lastName,
+                FirstName = firstName,
+                Patronymic = patronymic
+            };
+
             var passport = await _passportsService.GetByPersonalDataAsync(searchPassportViewModel);
             var passportViewModel = _mapper.Map<PassportViewModel>(passport);
+            
             return Ok(passportViewModel);
         }
 
@@ -35,6 +43,7 @@ namespace Civilians.Api.Controllers.Passports
         {
             var passport = await _passportsService.GetByUserIdAsync(userId);
             var passportViewModel = _mapper.Map<PassportViewModel>(passport);
+            
             return Ok(passportViewModel);
         }
     }

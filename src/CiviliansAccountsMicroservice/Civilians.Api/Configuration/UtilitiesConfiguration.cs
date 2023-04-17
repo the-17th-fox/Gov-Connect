@@ -9,7 +9,7 @@ namespace Civilians.Api.Configuration
     {
         internal static void ConfigureUtilities(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(CoreMapperProfile), typeof(ApiMapperProfile));
+            services.AddAutoMapper(typeof(ApplicationMapperProfile), typeof(ApiMapperProfile));
         }
 
         internal static void ConfigureSwagger(this SwaggerGenOptions opt)

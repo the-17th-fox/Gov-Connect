@@ -18,23 +18,28 @@ namespace Civilians.Api.Controllers.Users
         private readonly ITokensService _tokensService;
         private readonly IMapper _mapper;
 
-        private Guid _userId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        private readonly Guid _userId;
 
         public AuthorizedUsersController(IUsersService usersService, ITokensService tokensService, IMapper mapper)
         {
             _usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
             _tokensService = tokensService ?? throw new ArgumentNullException(nameof(tokensService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+
+            var userIdAsString = User.FindFirstValue(ClaimTypes.NameIdentifier) ??
+                                 throw new ArgumentNullException(nameof(ClaimTypes.NameIdentifier));
+            _userId = Guid.Parse(userIdAsString);
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> LogoutAsync()
         {
             await _tokensService.RevokeRefreshTokenAsync(_userId);
+
             return Ok();
         }
 
-        [HttpGet("profile")]
+        [HttpGet("personal")]
         public async Task<IActionResult> GetMyInfoAsync()
         {
             var user = await _usersService.GetByIdAsync(_userId);
