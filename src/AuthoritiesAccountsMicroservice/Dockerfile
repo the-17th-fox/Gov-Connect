@@ -5,6 +5,7 @@ WORKDIR /app
 COPY AuthoritiesAccountsMicroservice/*.sln ./
 
 COPY AuthoritiesAccountsMicroservice/Authorities.Core/ ./Authorities.Core/
+COPY AuthoritiesAccountsMicroservice/Authorities.Application/ ./Authorities.Application/
 COPY AuthoritiesAccountsMicroservice/Authorities.Infrastructure/ ./Authorities.Infrastructure/
 COPY AuthoritiesAccountsMicroservice/Authorities.Api/ ./Authorities.Api/
 

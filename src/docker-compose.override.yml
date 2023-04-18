@@ -1,16 +1,44 @@
 version: "3.9"
-services:      
+services:    
+  authorities-db:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "AuthoritiesAccountsDbServerPass17"
+      MSSQL_PID: "Express"
+      MSSQL_TCP_PORT: "9823"
+  
   authorities-accounts:
     ports:
       - "9997:9997"
     environment:
+      ConnectionStrings__DatabaseConnection: "Server=authorities-db,9823;database=authorities-accounts;user id=SA;password=AuthoritiesAccountsDbServerPass17"
       ASPNETCORE_URLS: http://0.0.0.0:9997/    
+      Authentication__Jwt__Key: "dq98PWkmdNWAiMioYIFK3y15PaSMrx1ACHGEzgl2AdREsEzePUQiTndFlUQpbCbF"
+      Authentication__Jwt__Issuer: "authorities-acc-msvc-iss"
+      Authentication__Jwt__Audience: "authorities-acc-msvc-usr"
+      Authentication__Jwt__AuthTokenLifetimeInMinutes: 30
+      Authentication__Jwt__RefreshTokenLifetimeInDays: 7
+      Authentication__Jwt__SecurityAlgorithm: "HS256"
+      
+  civilians-db:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "CiviliansAccountsDbServerPass17"
+      MSSQL_PID: "Express"
+      MSSQL_TCP_PORT: "9824"     
       
   civilians-accounts:
     ports:
       - "9998:9998"
     environment:
+      ConnectionStrings__DatabaseConnection: "Server=civilians-db,9824;database=civilians-accounts;user id=SA;password=CiviliansAccountsDbServerPass17"
       ASPNETCORE_URLS: http://0.0.0.0:9998/    
+      Authentication__Jwt__Key: "x1ACHGEzgl2AdREsEzePUQiTndFlUQpbCbFdq98PWkmdNWAiMioYIFK3y15PaSMr"
+      Authentication__Jwt__Issuer: "civilians-acc-msvc-iss"
+      Authentication__Jwt__Audience: "civilians-acc-msvc-usr"
+      Authentication__Jwt__AuthTokenLifetimeInMinutes: 30
+      Authentication__Jwt__RefreshTokenLifetimeInDays: 7
+      Authentication__Jwt__SecurityAlgorithm: "HS256"
       
   communications:
     ports:
