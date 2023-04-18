@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Classifications\Commands\CreateClassification\" />
+    <Folder Include="Classifications\Commands\DeleteClassification\" />
+    <Folder Include="Classifications\Commands\UpdateClassification\" />
+    <Folder Include="Classifications\Queries\GetAllClassifications\" />
+    <Folder Include="BaseHandlers\" />
+    <Folder Include="Notifications\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Communications.Core\Communications.Core.csproj" />
+  </ItemGroup>
+
+</Project>
