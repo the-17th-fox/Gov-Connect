@@ -52,6 +52,7 @@ namespace Authorities.Application.Services
             }
 
             await _unitOfWork.SaveChangesAsync();
+			
             return newRefreshToken;
         }
 

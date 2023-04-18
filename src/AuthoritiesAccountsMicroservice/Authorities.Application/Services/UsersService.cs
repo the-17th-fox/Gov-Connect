@@ -209,6 +209,7 @@ namespace Authorities.Application.Services
 
             await UpdateAsync(user);
         }
+		
         private async Task<User> GetIfExistsAsync(Guid id)
         {
             var user = await _unitOfWork.UsersRepository.GetByIdAsync(id);
@@ -227,6 +228,7 @@ namespace Authorities.Application.Services
 
             await UpdateAsync(user);
         }
+		
         private async Task UpdateAsync(User user)
         {
             var result = await _userManager.UpdateAsync(user);
