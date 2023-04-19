@@ -1,12 +1,9 @@
-﻿using System.Data;
-using Communications.Core.CustomExceptions;
-using Communications.Core.Interfaces;
-using Communications.Core.Models;
+﻿using Communications.Core.Interfaces;
 using MediatR;
 
 namespace Communications.Application.Classifications.Commands;
 
-public class UpdateClassificationCommandHandler : BaseClassificationsHandler, IRequestHandler<UpdateClassificationCommand>
+public class UpdateClassificationCommandHandler : ClassificationsHandlerBase, IRequestHandler<UpdateClassificationCommand>
 {
     public UpdateClassificationCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {

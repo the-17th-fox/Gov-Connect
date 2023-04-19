@@ -1,9 +1,8 @@
-﻿using Communications.Application.BaseMethods;
-using MediatR;
+﻿using MediatR;
 
 namespace Communications.Application.Classifications.Commands.DeleteClassification;
 
-public class DeleteClassificationCommand : BaseDeleteCommand
+public class DeleteClassificationCommand : IRequest
 {
-
+    public Guid Id { get; set; }
 }

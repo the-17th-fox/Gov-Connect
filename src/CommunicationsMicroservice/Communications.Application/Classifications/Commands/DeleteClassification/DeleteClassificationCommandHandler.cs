@@ -1,10 +1,9 @@
-﻿using Communications.Core.CustomExceptions;
-using Communications.Core.Interfaces;
+﻿using Communications.Core.Interfaces;
 using MediatR;
 
 namespace Communications.Application.Classifications.Commands.DeleteClassification;
 
-public class DeleteClassificationCommandHandler : BaseClassificationsHandler, IRequestHandler<DeleteClassificationCommand>
+public class DeleteClassificationCommandHandler : ClassificationsHandlerBase, IRequestHandler<DeleteClassificationCommand>
 {
     public DeleteClassificationCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {

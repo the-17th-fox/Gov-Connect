@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Communications.Application.Classifications.Queries;
 
-public class GetAllClassificationsQueryHandler : BaseClassificationsHandler, IRequestHandler<GetAllClassificationsQuery, List<Classification>>
+public class GetAllClassificationsQueryHandler : ClassificationsHandlerBase, IRequestHandler<GetAllClassificationsQuery, List<Classification>>
 {
     public GetAllClassificationsQueryHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
