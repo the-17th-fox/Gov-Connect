@@ -348,3 +348,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+src/CommunicationsMicroservice/Communications.Application/Communications.Application.csproj.DotSettings
