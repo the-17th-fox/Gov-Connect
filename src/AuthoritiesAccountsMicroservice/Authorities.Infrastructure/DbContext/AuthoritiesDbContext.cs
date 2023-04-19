@@ -1,4 +1,5 @@
-﻿using Authorities.Core.Auth;
+﻿using System.Reflection;
+using Authorities.Core.Auth;
 using Authorities.Core.Models;
 using Authorities.Infrastructure.DbContext.Configuration;
 using Microsoft.AspNetCore.Identity;
@@ -19,8 +20,7 @@ namespace Authorities.Infrastructure.DbContext
 
             builder.Entity<IdentityRole<Guid>>().HasData(AuthRoles.Roles);
 
-            builder.ApplyConfiguration(new UsersConfiguration());
-            builder.ApplyConfiguration(new RefreshTokensConfiguration());
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }
