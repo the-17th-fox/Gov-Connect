@@ -5,20 +5,15 @@ using MediatR;
 
 namespace Communications.Application.Classifications.Queries;
 
-public class GetClassificationByIdQuery : HandlerBase, IRequestHandler<GetClassificationByIdQuery, Classification>
+public class GetClassificationByIdQueryHandler : BaseClassificationsHandler, IRequestHandler<GetClassificationByIdQuery, Classification>
 {
-    public GetClassificationByIdQuery(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public GetClassificationByIdQueryHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
     }
 
     public async Task<Classification> Handle(GetClassificationByIdQuery request, CancellationToken cancellationToken)
     {
-        var classification = await UnitOfWork.ClassificationsRepository.GetByIdAsync(request.Id);
-
-        if (classification == null)
-        {
-            throw new NotFoundException();
-        }
+        var classification = await GetIfExistsAsync(request.Id);
 
         return classification;
     }

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Communications.Application.Classifications.Commands;
 
-public class UpdateClassificationCommandHandler : HandlerBase, IRequestHandler<UpdateClassificationCommand>
+public class UpdateClassificationCommandHandler : BaseClassificationsHandler, IRequestHandler<UpdateClassificationCommand>
 {
     public UpdateClassificationCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
@@ -14,11 +14,7 @@ public class UpdateClassificationCommandHandler : HandlerBase, IRequestHandler<U
 
     public async Task Handle(UpdateClassificationCommand request, CancellationToken cancellationToken)
     {
-        var classification = await UnitOfWork.ClassificationsRepository.GetByIdAsync(request.Id);
-        if (classification == null)
-        {
-            throw new NotFoundException();
-        }
+        var classification = await GetIfExistsAsync(request.Id);
 
         classification.Name = request.NewName;
 

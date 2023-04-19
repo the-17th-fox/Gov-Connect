@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Communications.Application.Classifications.Commands.DeleteClassification;
 
-public class DeleteClassificationCommandHandler : HandlerBase, IRequestHandler<DeleteClassificationCommand>
+public class DeleteClassificationCommandHandler : BaseClassificationsHandler, IRequestHandler<DeleteClassificationCommand>
 {
     public DeleteClassificationCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
@@ -12,11 +12,7 @@ public class DeleteClassificationCommandHandler : HandlerBase, IRequestHandler<D
 
     public async Task Handle(DeleteClassificationCommand request, CancellationToken cancellationToken)
     {
-        var classification = await UnitOfWork.ClassificationsRepository.GetByIdAsync(request.Id);
-        if (classification == null)
-        {
-            throw new NotFoundException();
-        }
+        var classification = await GetIfExistsAsync(request.Id);
 
         UnitOfWork.ClassificationsRepository.Delete(classification);
 

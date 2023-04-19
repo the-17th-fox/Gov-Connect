@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Communications.Application.Classifications.Commands;
 
-public class CreateClassificationCommandHandler : HandlerBase, IRequestHandler<CreateClassificationCommand>
+public class CreateClassificationCommandHandler : BaseClassificationsHandler, IRequestHandler<CreateClassificationCommand>
 {
     public CreateClassificationCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork) 
     {
