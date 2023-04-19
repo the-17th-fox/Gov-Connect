@@ -7,4 +7,5 @@ public interface IGenericRepository<TEntity> where TEntity : class
     public Task<List<TEntity>> GetAllAsync(short pageNumber, byte pageSize);
     public void Update(TEntity entity);
     public void Delete(TEntity entity);
+    public Task<bool> CheckIfExistsAsync(Guid id);
 }
