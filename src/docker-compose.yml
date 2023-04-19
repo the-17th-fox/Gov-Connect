@@ -1,26 +1,41 @@
 version: "3.9"
-services:      
+services:    
+
+  authorities-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      - gov-connect-net   
+  
   authorities-accounts:
     build:
       context: .
       dockerfile: AuthoritiesAccountsMicroservice/Dockerfile
     networks:
-      - gov-alert-net
+      - gov-connect-net
+    depends_on:
+      - authorities-db
+
+  civilians-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      - gov-connect-net    
       
   civilians-accounts:
     build:
       context: .
       dockerfile: CiviliansAccountsMicroservice/Dockerfile 
     networks:
-      - gov-alert-net
+      - gov-connect-net
+    depends_on:
+      - civilians-db
       
   communications:
     build:
       context: .
       dockerfile: CommunicationsMicroservice/Dockerfile
     networks:
-      - gov-alert-net
+      - gov-connect-net
       
 networks:
-  gov-alert-net:
+  gov-connect-net:
     driver: bridge
