@@ -1,6 +1,4 @@
-﻿using Communications.Application.BaseMethods;
-using Communications.Core.Models;
-using MediatR;
+﻿using MediatR;
 
 namespace Communications.Application.Notifications.Commands;
 

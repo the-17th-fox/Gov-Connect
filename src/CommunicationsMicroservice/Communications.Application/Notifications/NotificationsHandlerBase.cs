@@ -4,9 +4,9 @@ using Communications.Core.Models;
 
 namespace Communications.Application.Notifications;
 
-public class BaseNotificationsHandler : HandlerBase<Notification>
+public class NotificationsHandlerBase : HandlerBase<Notification>
 {
-    public BaseNotificationsHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    public NotificationsHandlerBase(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
     }
 

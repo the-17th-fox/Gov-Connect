@@ -5,7 +5,7 @@ using MediatR;
 namespace Communications.Application.Notifications.Queries;
 
 public class GetNotificationByIdQueryHandler 
-    : BaseNotificationsHandler, IRequestHandler<GetNotificationByIdQuery, Notification>
+    : NotificationsHandlerBase, IRequestHandler<GetNotificationByIdQuery, Notification>
 {
     public GetNotificationByIdQueryHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
@@ -13,8 +13,6 @@ public class GetNotificationByIdQueryHandler
 
     public async Task<Notification> Handle(GetNotificationByIdQuery request, CancellationToken cancellationToken)
     {
-        var notification = await GetIfExistsAsync(request.Id);
-
-        return notification;
+        return await GetIfExistsAsync(request.Id);
     }
 }

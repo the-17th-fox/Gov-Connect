@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Communications.Application.Notifications.Commands;
 
-public class DeleteNotificationCommandHandler : BaseNotificationsHandler, IRequestHandler<DeleteNotificationCommand>
+public class DeleteNotificationCommandHandler : NotificationsHandlerBase, IRequestHandler<DeleteNotificationCommand>
 {
     public DeleteNotificationCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {

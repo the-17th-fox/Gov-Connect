@@ -5,7 +5,7 @@ using MediatR;
 namespace Communications.Application.Notifications.Queries.GetAllNotifications;
 
 public class GetAllNotificationsQueryHandler 
-    : BaseNotificationsHandler, IRequestHandler<GetAllNotificationsQuery, List<Notification>>
+    : NotificationsHandlerBase, IRequestHandler<GetAllNotificationsQuery, List<Notification>>
 {
     public GetAllNotificationsQueryHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {

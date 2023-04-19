@@ -1,10 +1,9 @@
-﻿using Communications.Core.CustomExceptions;
-using Communications.Core.Interfaces;
+﻿using Communications.Core.Interfaces;
 using MediatR;
 
 namespace Communications.Application.Notifications.Commands;
 
-public class UpdateNotificationCommandHandler : BaseNotificationsHandler, IRequestHandler<UpdateNotificationCommand>
+public class UpdateNotificationCommandHandler : NotificationsHandlerBase, IRequestHandler<UpdateNotificationCommand>
 {
     public UpdateNotificationCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
     {
