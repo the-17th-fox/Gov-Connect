@@ -1,5 +1,4 @@
 ﻿using Communications.Core.Interfaces;
-using MediatR;
 
 namespace Communications.Application;
 
