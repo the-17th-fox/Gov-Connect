@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <Folder Include="DbContext\Configurations\" />
+    <Folder Include="Utilities\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,4 +24,5 @@
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
 </Project>
