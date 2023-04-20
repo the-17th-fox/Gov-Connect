@@ -10,6 +10,11 @@ public class ReportsConfiguration : IEntityTypeConfiguration<Report>
     {
         builder.Ignore(r => r.CanBeEdited);
 
+        builder
+            .HasOne(report => report.Reply)
+            .WithOne(reply => reply.Report)
+            .HasForeignKey<Reply>(reply => reply.ReportId);
+
         builder.Property(r => r.CreatedAt)
             .HasDefaultValueSql("GETUTCDATE()")
             .ValueGeneratedOnAdd();
