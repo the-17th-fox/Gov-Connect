@@ -13,14 +13,16 @@ public class ReportsRepository : GenericRepository<Report>, IReportsRepository
     {
     }
 
+    public new async Task<Report?> GetByIdAsync(Guid id)
+    {
+        return await EntityTable
+            .Include(r => r.Classifications)
+            .FirstOrDefaultAsync(r => r.Id == id);
+    }
+
     public override async Task<bool> CheckIfExistsAsync(Guid id)
     {
         return await EntityTable.AnyAsync(c => c.Id == id);
-    }
-
-    public Task<Report?> GetByIdAsync(Guid id, bool includeReply)
-    {
-        throw new NotImplementedException();
     }
 
     public override async Task<List<Report>> GetAllAsync(short pageNumber, byte pageSize)

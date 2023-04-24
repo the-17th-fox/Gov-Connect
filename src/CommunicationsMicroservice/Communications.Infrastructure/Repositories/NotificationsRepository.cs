@@ -12,6 +12,13 @@ public class NotificationsRepository : GenericRepository<Notification>, INotific
     {
     }
 
+    public new async Task<Notification?> GetByIdAsync(Guid id)
+    {
+        return await EntityTable
+            .Include(n => n.Classifications)
+            .FirstOrDefaultAsync(n => n.Id == id);
+    }
+
     public override async Task<List<Notification>> GetAllAsync(short pageNumber, byte pageSize)
     {
         var query = EntityTable
