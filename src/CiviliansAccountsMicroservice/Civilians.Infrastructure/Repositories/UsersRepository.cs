@@ -29,7 +29,7 @@ namespace Civilians.Infrastructure.Repositories
                 query = query.Where(u => u.LockoutEnabled == false);
             }
 
-            return await PagedList<User>.ToPagedListAsync(query, pageNumber, pageSize);
+            return await PagedList<User>.ToPagedListAsync(query, pageNumber, pageSize, u => u.Id);
         }
 
         public async Task<User?> GetByEmailAsync(string email)
