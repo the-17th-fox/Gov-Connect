@@ -1,4 +1,4 @@
-﻿namespace SharedLib.Pagination.ViewModels
+﻿namespace Civilians.Api.ViewModels.Pagination
 {
     public class PageViewModel<T>
     {

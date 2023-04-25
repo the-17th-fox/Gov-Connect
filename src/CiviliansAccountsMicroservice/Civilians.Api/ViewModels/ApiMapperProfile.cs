@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using Civilians.Api.ViewModels.Pagination;
 using Civilians.Api.ViewModels.Passports;
 using Civilians.Api.ViewModels.Users;
 using Civilians.Core.Models;
 using Civilians.Infrastructure.Utilities;
-using SharedLib.Pagination.ViewModels;
 
 namespace Civilians.Api.ViewModels
 {

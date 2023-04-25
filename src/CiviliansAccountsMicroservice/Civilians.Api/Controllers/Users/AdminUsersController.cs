@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Civilians.Api.ViewModels.Users;
+using Civilians.Api.ViewModels.Pagination;
 using Civilians.Application.Interfaces;
 using Civilians.Application.ViewModels.Civilians;
 using Civilians.Core.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharedLib.Pagination.ViewModels;
 
 namespace Civilians.Api.Controllers.Users
 {
