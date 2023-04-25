@@ -79,8 +79,8 @@ namespace Authorities.Application.Services
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("uid", user.Id.ToString()),
+                new Claim("identifyas", "civilians")
             };
 
             foreach (var role in userRoles)
