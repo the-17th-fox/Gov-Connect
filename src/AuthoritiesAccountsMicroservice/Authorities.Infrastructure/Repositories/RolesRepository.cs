@@ -20,7 +20,7 @@ namespace Authorities.Infrastructure.Repositories
             var query = _roleManager.Roles
                 .AsNoTracking();
 
-            return await PagedList<IdentityRole<Guid>>.ToPagedListAsync(query, pageNumber, pageSize);
+            return await PagedList<IdentityRole<Guid>>.ToPagedListAsync(query, pageNumber, pageSize, r => r.Id);
         }
     }
 }
