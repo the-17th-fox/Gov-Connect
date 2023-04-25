@@ -37,6 +37,7 @@ namespace Civilians.Infrastructure.Repositories
             return await _userManager.Users
                 .AsNoTracking()
                 .Include(a => a.RefreshToken)
+                .Include(a => a.Passport)
                 .FirstOrDefaultAsync(a => a.Email == email);
         }
 

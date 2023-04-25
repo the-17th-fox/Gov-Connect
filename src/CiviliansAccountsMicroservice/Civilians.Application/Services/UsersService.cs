@@ -105,8 +105,10 @@ namespace Civilians.Application.Services
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("uid", user.Id.ToString()),
+                new Claim("fname", user.Passport.FirstName),
+                new Claim("pname", user.Passport.Patronymic),
+                new Claim("identifyas", "civilians")
             };
 
             foreach (var role in userRoles)
