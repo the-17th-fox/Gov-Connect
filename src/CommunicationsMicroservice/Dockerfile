@@ -5,6 +5,7 @@ WORKDIR /app
 COPY CommunicationsMicroservice/*.sln ./
 
 COPY CommunicationsMicroservice/Communications.Core/ ./Communications.Core/
+COPY CommunicationsMicroservice/Communications.Application/ ./Communications.Application/
 COPY CommunicationsMicroservice/Communications.Infrastructure/ ./Communications.Infrastructure/
 COPY CommunicationsMicroservice/Communications.Api/ ./Communications.Api/
 

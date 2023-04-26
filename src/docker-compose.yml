@@ -28,7 +28,12 @@ services:
       - gov-connect-net
     depends_on:
       - civilians-db
-      
+  
+  communications-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      - gov-connect-net
+  
   communications:
     build:
       context: .

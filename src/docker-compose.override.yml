@@ -40,8 +40,16 @@ services:
       Authentication__Jwt__RefreshTokenLifetimeInDays: 7
       Authentication__Jwt__SecurityAlgorithm: "HS256"
       
+  communications-db:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "CommunicationsDbServerPass17"
+      MSSQL_PID: "Express"
+      MSSQL_TCP_PORT: "9824"  
+  
   communications:
     ports:
       - "9999:9999"
     environment:
-      ASPNETCORE_URLS: http://0.0.0.0:9999/
+      ConnectionStrings__DatabaseConnection: "Server=communications-db,9824;database=communications;user id=SA;password=CommunicationsDbServerPass17"
+      ASPNETCORE_URLS: http://0.0.0.0:9999/    
