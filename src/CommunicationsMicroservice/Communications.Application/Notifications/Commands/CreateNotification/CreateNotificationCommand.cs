@@ -8,4 +8,5 @@ public class CreateNotificationCommand : IRequest
     public string Organization { get; set; } = string.Empty;
     public string Header { get; set; } = string.Empty;
     public string Body { get; set; } = string.Empty;
+    public List<Guid> ClassificationsIds { get; set; } = new();
 }

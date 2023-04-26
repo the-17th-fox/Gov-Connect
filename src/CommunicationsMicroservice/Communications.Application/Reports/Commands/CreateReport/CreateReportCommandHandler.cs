@@ -18,6 +18,15 @@ public class CreateReportCommandHandler : ReportsHandlerBase, IRequestHandler<Cr
     {
         var report = _mapper.Map<Report>(request);
 
+        foreach (var classificationId in request.ClassificationsIds)
+        {
+            var classification = await UnitOfWork.ClassificationsRepository.GetByIdAsync(classificationId);
+            if (classification != null)
+            {
+                report.Classifications.Add(classification);
+            }
+        }
+
         UnitOfWork.ReportsRepository.Create(report);
 
         await UnitOfWork.SaveChangesAsync();

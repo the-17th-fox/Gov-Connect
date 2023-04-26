@@ -16,6 +16,16 @@ public class UpdateNotificationCommandHandler : NotificationsHandlerBase, IReque
         notification.Header = request.Header;
         notification.Body = request.Body;
 
+        notification.Classifications.Clear();
+        foreach (var classificationId in request.ClassificationsIds)
+        {
+            var classification = await UnitOfWork.ClassificationsRepository.GetByIdAsync(classificationId);
+            if (classification != null)
+            {
+                notification.Classifications.Add(classification);
+            }
+        }
+
         UnitOfWork.NotificationsRepository.Update(notification);
 
         await UnitOfWork.SaveChangesAsync();
