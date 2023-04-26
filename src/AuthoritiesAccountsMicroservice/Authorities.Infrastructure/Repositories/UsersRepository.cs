@@ -30,7 +30,7 @@ namespace Authorities.Infrastructure.Repositories
                 query = query.Where(u => u.LockoutEnabled == false);
             }
 
-            return await PagedList<User>.ToPagedListAsync(query, pageNumber, pageSize);
+            return await PagedList<User>.ToPagedListAsync(query, pageNumber, pageSize, u => u.Id);
         }
 
         public async Task<List<User>> GetNotConfirmedAsync(short pageNumber, byte pageSize)
@@ -41,7 +41,7 @@ namespace Authorities.Infrastructure.Repositories
                 .Where(u => u.IsDeleted == false)
                 .Where(u => u.IsConfirmed == false);
 
-            return await PagedList<User>.ToPagedListAsync(query, pageNumber, pageSize);
+            return await PagedList<User>.ToPagedListAsync(query, pageNumber, pageSize, u => u.Id);
         }
 
         public async Task<User?> GetByEmailAsync(string email)
