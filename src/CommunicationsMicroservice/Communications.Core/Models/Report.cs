@@ -12,7 +12,6 @@ public class Report : MessageBase
 
     public List<Classification> Classifications { get; set; } = new();
 
-    public Guid? ReplyId { get; set; }
     public Reply? Reply { get; set; }
 
     public DateTime UpdatedAt { get; set; }
