@@ -9,13 +9,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Communications.Application\Communications.Application.csproj" />
     <ProjectReference Include="..\Communications.Core\Communications.Core.csproj" />
     <ProjectReference Include="..\Communications.Infrastructure\Communications.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+    <Folder Include="Middlewares\" />
+    <Folder Include="ViewModels\Classifications\" />
+    <Folder Include="ViewModels\Replies\" />
+    <Folder Include="ViewModels\Notifications\" />
+    <Folder Include="ViewModels\Pagination\" />
   </ItemGroup>
 
 </Project>
