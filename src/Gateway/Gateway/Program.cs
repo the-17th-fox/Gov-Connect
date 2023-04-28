@@ -8,6 +8,7 @@ var configuration = builder.Configuration;
 
 configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 configuration.AddJsonFile("docker-configuration.json", optional: true, reloadOnChange: true);
+services.AddOcelot(configuration);
 
 services.AddAuthentication(options =>
 {
@@ -22,9 +23,9 @@ services.AddAuthentication(options =>
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true
         };
-    });
 
-services.AddOcelot(configuration);
+        opt.ConfigurationSection = configuration.GetSection("Authentication").GetSection("Jwt");
+    });
 
 var app = builder.Build();
 

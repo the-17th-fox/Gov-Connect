@@ -7,4 +7,5 @@ public class GovConnectAuthOptions : AuthenticationSchemeOptions
 {
     public const string Scheme = "GovConnectAuthentication";
     public TokenValidationParameters TokenValidationParameters { get; set; } = new TokenValidationParameters();
+    public IConfigurationSection ConfigurationSection { get; set; } = null!;
 }
