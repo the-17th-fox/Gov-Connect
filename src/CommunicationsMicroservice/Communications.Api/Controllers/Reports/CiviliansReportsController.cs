@@ -28,13 +28,6 @@ namespace Communications.Api.Controllers.Reports
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        private void InitializeRequestProperties()
-        {
-            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
-            _firstName = HttpContext.GetValueFromHeader("fname");
-            _patronymic = HttpContext.GetValueFromHeader("pname");
-        }
-
         [HttpPost("new")]
         public async Task<IActionResult> CreateAsync(CreateReportViewModel createReportViewModel)
         {
@@ -82,6 +75,13 @@ namespace Communications.Api.Controllers.Reports
             var reportsPage = _mapper.Map<PageViewModel<ShortReportViewModel>>(reports);
 
             return Ok(reportsPage);
+        }
+
+        private void InitializeRequestProperties()
+        {
+            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
+            _firstName = HttpContext.GetValueFromHeader("fname");
+            _patronymic = HttpContext.GetValueFromHeader("pname");
         }
     }
 }

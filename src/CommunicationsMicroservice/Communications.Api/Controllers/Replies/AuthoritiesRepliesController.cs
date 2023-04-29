@@ -25,13 +25,6 @@ namespace Communications.Api.Controllers.Replies
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        private void InitializeRequestProperties()
-        {
-            _organization = HttpContext.GetValueFromHeader("role");
-
-            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
-        }
-
         [HttpPost("new")]
         public async Task<IActionResult> CreateAsync(CreateReplyViewModel createReplyViewModel)
         {
@@ -70,6 +63,13 @@ namespace Communications.Api.Controllers.Replies
             var replyViewModel = _mapper.Map<PublicReplyViewModel>(reply);
 
             return Ok(replyViewModel);
+        }
+
+        private void InitializeRequestProperties()
+        {
+            _organization = HttpContext.GetValueFromHeader("role");
+
+            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
         }
     }
 }

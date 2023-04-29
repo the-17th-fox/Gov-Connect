@@ -23,13 +23,6 @@ namespace Communications.Api.Controllers.Notifications
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        private void InitializeRequestProperties()
-        {
-            _organization = HttpContext.GetValueFromHeader("role");
-            
-            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
-        }
-
         [HttpPost("new")]
         public async Task<IActionResult> CreateAsync(CreateNotificationViewModel createNotificationViewModel)
         {
@@ -61,6 +54,13 @@ namespace Communications.Api.Controllers.Notifications
             await _mediator.Send(new DeleteNotificationCommand() { Id = id });
 
             return Ok();
+        }
+
+        private void InitializeRequestProperties()
+        {
+            _organization = HttpContext.GetValueFromHeader("role");
+
+            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
         }
     }
 }
