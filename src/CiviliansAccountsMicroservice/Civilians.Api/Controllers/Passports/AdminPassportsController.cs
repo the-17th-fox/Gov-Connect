@@ -2,14 +2,11 @@
 using Civilians.Api.ViewModels.Passports;
 using Civilians.Application.Interfaces;
 using Civilians.Application.ViewModels.Passports;
-using Civilians.Core.Auth;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Civilians.Api.Controllers.Passports
 {
-    [Authorize(Policy = AuthPolicies.Administrators)]
-    [Route("api/passports")]
+    [Route("api/passports/admin")]
     [ApiController]
     public class AdminPassportsController : ControllerBase
     {

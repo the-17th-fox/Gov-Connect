@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using Civilians.Application.Interfaces;
+﻿using Civilians.Application.Interfaces;
 using Civilians.Application.ViewModels.Civilians;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Civilians.Api.Controllers.Users
 {
-    [AllowAnonymous]
-    [Route("api/users")]
+    [Route("api/public/users")]
     [ApiController]
     public class AnonymousUsersController : ControllerBase
     {
