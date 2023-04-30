@@ -2,7 +2,20 @@
 {
     public class AuthPolicies
     {
-        public const string DefaultRights = "DefaultRights"; // All authorized users
-        public const string Administrators = "Administrators"; // Admins only
+        public static List<string> DefaultRights => new() 
+        {
+            AuthRoles.MIA,
+            AuthRoles.MD,
+            AuthRoles.ME,
+            AuthRoles.MES,
+            AuthRoles.MH,
+            AuthRoles.MR
+        };
+
+
+        public static List<string> Administrators => new()
+        {
+            AuthRoles.Administrator
+        };
     }
 }

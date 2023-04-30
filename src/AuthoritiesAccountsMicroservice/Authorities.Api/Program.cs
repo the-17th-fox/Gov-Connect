@@ -7,8 +7,7 @@ var configuration = builder.Configuration;
 
 services.ConfigureApplicationServices();
 services.ConfigureInfrastructure(configuration);
-services.ConfigureAuthentication(configuration);
-services.ConfigureAuthorization();
+services.ConfigureIdentity(configuration);
 services.ConfigureUtilities();
 
 services.AddControllers();
@@ -30,9 +29,6 @@ else
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllers();
 
