@@ -1,6 +1,4 @@
-﻿using Civilians.Core.Models;
-
-namespace Civilians.Api.ViewModels.Users
+﻿namespace Civilians.Api.ViewModels.Users
 {
     public class UserViewModel : ShortUserViewModel
     {
