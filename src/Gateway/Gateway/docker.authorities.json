@@ -1,0 +1,68 @@
+{
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:9000",
+        "RouteIsCaseSensitive": false
+    },
+    "Routes": [
+        // PUBLIC/ANONYMOUS ROUTES
+        {
+            "UpstreamPathTemplate": "/authorities/{resource}/public/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
+            "DownstreamPathTemplate": "/api/authorities/{resource}/public/{url}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "authorities",
+                    "Port": 9997
+                }
+            ]
+        },
+        // AUTHORIZED ROUTES
+        {
+            "UpstreamPathTemplate": "/authorities/{resource}/authorized/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
+            "DownstreamPathTemplate": "/api/authorities/{resource}/authorized/{url}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "authorities",
+                    "Port": 9997
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "GovConnectAuthentication",
+                "AllowedScopes": []
+            },
+            "AddHeadersToRequest": {
+                "uid": "Claims[uid] > value > |",
+                "role": "Claims[userrole] > value > |",
+                "fname": "Claims[pname] > value > |",
+                "pname": "Claims[pname] > value > |"
+            }
+        },
+        // ADMIN ROUTES
+        {
+            "UpstreamPathTemplate": "/authorities/{resource}/admin/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
+            "DownstreamPathTemplate": "/api/admin/{url}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "authorities",
+                    "Port": 9997
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "GovConnectAuthentication",
+                "AllowedScopes": []
+            },
+            "RouteClaimsRequirement": {
+                "policygroup": "administrators"
+            },
+            "AddHeadersToRequest": {
+                "uid": "Claims[uid] > value > |",
+                "role": "Claims[userrole] > value > |"
+            }
+        }
+    ]
+}
