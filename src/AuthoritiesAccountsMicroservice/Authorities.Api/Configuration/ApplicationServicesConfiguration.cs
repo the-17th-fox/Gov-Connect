@@ -9,7 +9,6 @@ namespace Authorities.Api.Configuration
         {
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<ITokensService, TokensService>();
-            services.AddScoped<IRolesService, RolesService>();
         }
     }
 }

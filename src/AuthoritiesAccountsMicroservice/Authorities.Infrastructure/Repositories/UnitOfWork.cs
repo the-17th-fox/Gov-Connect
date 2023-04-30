@@ -13,15 +13,11 @@ namespace Authorities.Infrastructure.Repositories
         
         private IUsersRepository _usersRepository = null!;
         private readonly UserManager<User> _userManager;
-        
-        private IRolesRepository _rolesRepository = null!;
-        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
 
-        public UnitOfWork(AuthoritiesDbContext dbContext, UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
+        public UnitOfWork(AuthoritiesDbContext dbContext, UserManager<User> userManager)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
 
         public ITokensRepository TokensRepository
@@ -41,16 +37,6 @@ namespace Authorities.Infrastructure.Repositories
                 _usersRepository ??= new UsersRepository(_userManager);
 				
                 return _usersRepository;
-            }
-        }
-
-        public IRolesRepository RolesRepository
-        {
-            get
-            {
-                _rolesRepository ??= new RolesRepository(_roleManager);
-				
-                return _rolesRepository;
             }
         }
 

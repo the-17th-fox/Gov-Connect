@@ -1,10 +1,8 @@
 ﻿using Authorities.Api.ViewModels.Pagination;
-using Authorities.Api.ViewModels.Roles;
-using AutoMapper;
 using Authorities.Api.ViewModels.Users;
 using Authorities.Core.Models;
 using Authorities.Infrastructure.Utilities;
-using Microsoft.AspNetCore.Identity;
+using AutoMapper;
 
 namespace Authorities.Api.ViewModels
 {
@@ -17,11 +15,6 @@ namespace Authorities.Api.ViewModels
             CreateMap<User, ShortUserViewModel>();
 
             CreateMap<PagedList<User>, PageViewModel<ShortUserViewModel>>()
-                .ForMember(p => p.Items, opt => opt.MapFrom(src => src.ToList()));
-
-            CreateMap<IdentityRole<Guid>, RoleViewModel>();
-
-            CreateMap<PagedList<IdentityRole<Guid>>, PageViewModel<RoleViewModel>>()
                 .ForMember(p => p.Items, opt => opt.MapFrom(src => src.ToList()));
         }
     }
