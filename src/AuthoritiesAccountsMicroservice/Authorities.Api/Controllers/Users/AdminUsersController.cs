@@ -1,17 +1,14 @@
-﻿using AutoMapper;
+﻿using Authorities.Api.ViewModels.Pagination;
 using Authorities.Api.ViewModels.Users;
-using Authorities.Api.ViewModels.Pagination;
 using Authorities.Application.Interfaces;
 using Authorities.Application.ViewModels.Pagination;
-using Authorities.Core.Auth;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Authorities.Application.ViewModels.Users;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Authorities.Api.Controllers.Users
 {
-    [Authorize(Policy = AuthPolicies.Administrators)]
-    [Route("api/users")]
+    [Route("api/users/admin")]
     [ApiController]
     public class AdminUsersController : ControllerBase
     {

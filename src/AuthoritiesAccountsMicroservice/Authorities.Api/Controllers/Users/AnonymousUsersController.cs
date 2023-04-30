@@ -1,12 +1,10 @@
 ﻿using Authorities.Application.Interfaces;
 using Authorities.Application.ViewModels.Users;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authorities.Api.Controllers.Users
 {
-    [AllowAnonymous]
-    [Route("api/users")]
+    [Route("api/users/public")]
     [ApiController]
     public class AnonymousUsersController : ControllerBase
     {

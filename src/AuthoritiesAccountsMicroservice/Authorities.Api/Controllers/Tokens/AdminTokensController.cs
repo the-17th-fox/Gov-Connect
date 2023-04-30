@@ -1,12 +1,9 @@
 ﻿using Authorities.Application.Interfaces;
-using Authorities.Core.Auth;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authorities.Api.Controllers.Tokens
 {
-    [Authorize(Policy = AuthPolicies.Administrators)]
-    [Route("api/tokens")]
+    [Route("api/tokens/admin")]
     [ApiController]
     public class AdminTokensController : ControllerBase
     {
