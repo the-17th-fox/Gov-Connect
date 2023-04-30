@@ -7,8 +7,7 @@ var configuration = builder.Configuration;
 
 services.ConfigureApplicationServices();
 services.ConfigureInfrastructure(configuration);
-services.ConfigureAuthentication(configuration);
-services.ConfigureAuthorization();
+services.ConfigureIdentity(configuration);
 services.ConfigureUtilities();
 
 services.AddControllers();
@@ -17,8 +16,6 @@ services.AddSwaggerGen(opt => opt.ConfigureSwagger());
 
 var app = builder.Build();
 
-app.UseMiddleware<GlobalExceptionsHandler>();
-
 if (app.Environment.IsDevelopment())
 {
     await app.MigrateDatabase();
@@ -26,11 +23,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseMiddleware<GlobalExceptionsHandler>();
+}
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllers();
 

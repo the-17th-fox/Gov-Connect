@@ -103,20 +103,48 @@ namespace Civilians.Application.Services
 
         private static List<Claim> GetClaims(User user, IList<string> userRoles)
         {
+            var policyGroup = DefinePolicyGroup(userRoles);
+
             var claims = new List<Claim>()
             {
                 new Claim("uid", user.Id.ToString()),
                 new Claim("fname", user.Passport.FirstName),
                 new Claim("pname", user.Passport.Patronymic),
-                new Claim("identifyas", "civilians")
+                new Claim("identifyas", "civilians"),
+                new Claim("policygroup", policyGroup.ToLowerInvariant())
             };
 
             foreach (var role in userRoles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim("userrole", role));
             }
 
             return claims;
+        }
+
+        private static string DefinePolicyGroup(IList<string> userRoles)
+        {
+            string? policyGroup = null;
+
+            var isAdminsPolicy = AuthPolicies.Administrators
+                .Any(adminsRole => userRoles
+                    .Any(userRole => adminsRole == userRole));
+
+            if (isAdminsPolicy)
+            {
+                return nameof(AuthPolicies.Administrators);
+            }
+
+            var isDefaultRightsPolicy = AuthPolicies.DefaultRights
+                .Any(defaultPolicy => userRoles
+                    .Any(userRole => defaultPolicy == userRole));
+
+            if (isDefaultRightsPolicy)
+            {
+                return nameof(AuthPolicies.DefaultRights);
+            }
+
+            return policyGroup ??= "Undefined";
         }
 
         // Users management section bellow
