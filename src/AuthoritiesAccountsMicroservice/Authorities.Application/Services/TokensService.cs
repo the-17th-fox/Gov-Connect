@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Authorities.Application.Interfaces;
+﻿using Authorities.Application.Interfaces;
 using Authorities.Application.ViewModels.Tokens;
 using Authorities.Core.Auth;
 using Authorities.Core.Interfaces;
@@ -15,13 +14,11 @@ namespace Authorities.Application.Services
     {
         private readonly JwtConfigModel _jwtConfig;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public TokensService(IOptions<JwtConfigModel> jwtConfig, IUnitOfWork unitOfWork, IMapper mapper)
+        public TokensService(IOptions<JwtConfigModel> jwtConfig, IUnitOfWork unitOfWork)
         {
             _jwtConfig = jwtConfig != null ? jwtConfig.Value : throw new ArgumentNullException(nameof(jwtConfig));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public JwtSecurityToken CreateAccessToken(IList<Claim> claims)

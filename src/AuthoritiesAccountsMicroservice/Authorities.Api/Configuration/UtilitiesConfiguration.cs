@@ -1,5 +1,4 @@
 ﻿using Authorities.Api.ViewModels;
-using Authorities.Application.ViewModels;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 

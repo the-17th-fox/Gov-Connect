@@ -1,6 +1,4 @@
-﻿using Authorities.Core.Models;
-
-namespace Authorities.Api.ViewModels.Users
+﻿namespace Authorities.Api.ViewModels.Users
 {
     public class UserViewModel : ShortUserViewModel
     {
