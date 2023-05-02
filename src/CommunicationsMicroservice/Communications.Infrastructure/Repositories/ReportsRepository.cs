@@ -52,6 +52,14 @@ public class ReportsRepository : GenericRepository<Report>, IReportsRepository
         return await GetAllByQueryAsync(query, pageNumber, pageSize);
     }
 
+    public async Task<List<Report>> GetAllByCiviliansAsync(IEnumerable<Guid> civiliansIds)
+    {
+        return await EntityTable
+            .AsNoTracking()
+            .Where(r => civiliansIds.Contains(r.Id))
+            .ToListAsync();
+    }
+
     private static async Task<List<Report>> GetAllByQueryAsync(IQueryable<Report> query, short pageNumber, byte pageSize)
     {
         return await PagedList<Report>
