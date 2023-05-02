@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Communications.Api.Controllers.Notifications
 {
-    [Route("api/notifications")]
+    [Route("api/notifications/authorities")]
     [ApiController]
     public class AuthoritiesNotificationsController : ControllerBase
     {

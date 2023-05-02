@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Communications.Api.Controllers.Replies
 {
-    [Route("api/replies")]
+    [Route("api/replies/authorities")]
     [ApiController]
     public class AuthoritiesRepliesController : ControllerBase
     {

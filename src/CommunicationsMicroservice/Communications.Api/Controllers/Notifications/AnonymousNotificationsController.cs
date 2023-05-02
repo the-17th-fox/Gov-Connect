@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Communications.Api.Controllers.Notifications
 {
-    [Route("api/notifications")]
+    [Route("api/notifications/public")]
     [ApiController]
     public class AnonymousNotificationsController : ControllerBase
     {

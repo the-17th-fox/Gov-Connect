@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Communications.Api.Controllers.Reports
 {
-    [Route("api/reports")]
+    [Route("api/reports/public")]
     [ApiController]
     public class AnonymousReportsController : ControllerBase
     {

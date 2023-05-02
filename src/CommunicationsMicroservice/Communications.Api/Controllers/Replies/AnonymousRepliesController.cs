@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Communications.Api.Controllers.Replies
 {
-    [Route("api/replies")]
+    [Route("api/replies/public")]
     [ApiController]
     public class AnonymousRepliesController : ControllerBase
     {
