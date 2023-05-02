@@ -1,24 +1,31 @@
+using Communications.Api.Configuration;
+using Communications.Api.Middlewares;
+
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
 
-// Add services to the container.
+services.ConfigureInfrastructure(configuration);
+services.ConfigureUtilities();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    await app.MigrateDatabase();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseMiddleware<GlobalExceptionsHandler>();
+}
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

@@ -18,6 +18,15 @@ public class CreateNotificationCommandHandler : NotificationsHandlerBase, IReque
     {
         var notification = _mapper.Map<Notification>(request);
 
+        foreach (var classificationId in request.ClassificationsIds)
+        {
+            var classification = await UnitOfWork.ClassificationsRepository.GetByIdAsync(classificationId);
+            if (classification != null)
+            {
+                notification.Classifications.Add(classification);
+            }
+        }
+
         UnitOfWork.NotificationsRepository.Create(notification);
 
         await UnitOfWork.SaveChangesAsync();

@@ -15,5 +15,7 @@ public class RepliesConfiguration : IEntityTypeConfiguration<Reply>
         builder.Property<DateTime>("UpdatedAt")
             .HasDefaultValueSql("GETUTCDATE()")
             .ValueGeneratedOnAddOrUpdate();
+
+        builder.HasKey(r => r.ReportId);
     }
 }

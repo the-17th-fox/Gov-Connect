@@ -9,4 +9,5 @@ public class CreateReportCommand : IRequest
     public Guid CivilianId { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string Patronymic { get; set; } = string.Empty;
+    public List<Guid> ClassificationsIds { get; set; } = new();
 }
