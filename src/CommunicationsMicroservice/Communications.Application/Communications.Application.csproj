@@ -11,7 +11,6 @@
     <Folder Include="Classifications\Commands\DeleteClassification\" />
     <Folder Include="Classifications\Commands\UpdateClassification\" />
     <Folder Include="Classifications\Queries\GetAllClassifications\" />
-    <Folder Include="AutoMapper\" />
     <Folder Include="Notifications\Commands\CreateNotification\" />
     <Folder Include="Notifications\Commands\UpdateNotification\" />
     <Folder Include="Notifications\Queries\GetNotificationById\" />
