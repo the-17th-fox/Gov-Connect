@@ -8,7 +8,7 @@
         {
             "UpstreamPathTemplate": "/communications/{resource}/public/{url}",
             "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
-            "DownstreamPathTemplate": "/api/communications/{resource}/public/{url}",
+            "DownstreamPathTemplate": "/api/{resource}/public/{url}",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
                 {
@@ -21,7 +21,7 @@
         {
             "UpstreamPathTemplate": "/communications/{resource}/authorized/{url}",
             "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
-            "DownstreamPathTemplate": "/api/communications/{resource}/authorized/{url}",
+            "DownstreamPathTemplate": "/api/{resource}/authorized/{url}",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
                 {
@@ -40,35 +40,11 @@
                 "pname": "Claims[pname] > value > |"
             }
         },
-        // ADMIN ROUTES
-        {
-            "UpstreamPathTemplate": "/communications/{resource}/admin/{url}",
-            "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
-            "DownstreamPathTemplate": "/api/admin/{url}",
-            "DownstreamScheme": "https",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 7045
-                }
-            ],
-            "AuthenticationOptions": {
-                "AuthenticationProviderKey": "GovConnectAuthentication",
-                "AllowedScopes": []
-            },
-            "RouteClaimsRequirement": {
-                "policygroup": "administrators"
-            },
-            "AddHeadersToRequest": {
-                "uid": "Claims[uid] > value > |",
-                "role": "Claims[userrole] > value > |"
-            }
-        },
         // FOR AUTHORITIES
         {
             "UpstreamPathTemplate": "/communications/{resource}/{url}/authorities",
             "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
-            "DownstreamPathTemplate": "/api/communications/{resource}/{url}/authorities",
+            "DownstreamPathTemplate": "/api/{resource}/{url}/authorities",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
                 {
@@ -92,7 +68,7 @@
         {
             "UpstreamPathTemplate": "/communications/{resource}/communications/{resource}/civilians",
             "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
-            "DownstreamPathTemplate": "/api/communications/{resource}/communications/{resource}/civilians/",
+            "DownstreamPathTemplate": "/api/{resource}/communications/{resource}/civilians/",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
                 {

@@ -8,7 +8,7 @@
         {
             "UpstreamPathTemplate": "/civilians/{resource}/public/{url}",
             "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
-            "DownstreamPathTemplate": "/api/civilians/{resource}/public/{url}",
+            "DownstreamPathTemplate": "/api/{resource}/public/{url}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -21,7 +21,7 @@
         {
             "UpstreamPathTemplate": "/civilians/{resource}/authorized/{url}",
             "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
-            "DownstreamPathTemplate": "/api/civilians/{resource}/authorized/{url}",
+            "DownstreamPathTemplate": "/api/{resource}/authorized/{url}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {

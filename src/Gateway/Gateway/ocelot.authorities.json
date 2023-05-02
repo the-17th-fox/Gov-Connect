@@ -8,7 +8,7 @@
         {
             "UpstreamPathTemplate": "/authorities/{resource}/public/{url}",
             "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
-            "DownstreamPathTemplate": "/api/authorities/{resource}/public/{url}",
+            "DownstreamPathTemplate": "/api/{resource}/public/{url}",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
                 {
@@ -21,7 +21,7 @@
         {
             "UpstreamPathTemplate": "/authorities/{resource}/authorized/{url}",
             "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
-            "DownstreamPathTemplate": "/api/authorities/{resource}/authorized/{url}",
+            "DownstreamPathTemplate": "/api/{resource}/authorized/{url}",
             "DownstreamScheme": "https",
             "DownstreamHostAndPorts": [
                 {
