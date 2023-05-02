@@ -1,6 +1,7 @@
 ﻿using Communications.Application;
 using Communications.Application.AutoMapper;
 using System.Reflection;
+using Hangfire;
 
 namespace Communications.Api.Configuration;
 
@@ -19,5 +20,7 @@ internal static class UtilitiesConfiguration
         {
             opt.RegisterServicesFromAssembly(typeof(HandlerBase<>).Assembly);
         });
+
+        services.AddHangfireServer();
     }
 }

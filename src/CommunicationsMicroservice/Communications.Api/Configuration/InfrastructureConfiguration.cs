@@ -1,6 +1,7 @@
 ﻿using Communications.Core.Interfaces;
 using Communications.Infrastructure.DbContext;
 using Communications.Infrastructure.Repositories;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 
 namespace Communications.Api.Configuration;
@@ -15,5 +16,10 @@ internal static class InfrastructureConfiguration
             opt.UseSqlServer(dbConnectionString));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddHangfire(opt =>
+        {
+            opt.UseSqlServerStorage(configuration.GetConnectionString("HangfireStorage"));
+        });
     }
 }

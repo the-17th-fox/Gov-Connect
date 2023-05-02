@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Hangfire" Version="1.8.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Communications.Application\Communications.Application.csproj" />
     <ProjectReference Include="..\Communications.Core\Communications.Core.csproj" />
+    <ProjectReference Include="..\Communications.Hangfire\Communications.Hangfire.csproj" />
     <ProjectReference Include="..\Communications.Infrastructure\Communications.Infrastructure.csproj" />
   </ItemGroup>
 

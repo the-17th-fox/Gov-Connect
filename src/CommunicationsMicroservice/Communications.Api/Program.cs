@@ -1,5 +1,6 @@
 using Communications.Api.Configuration;
 using Communications.Api.Middlewares;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -28,5 +29,7 @@ else
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+app.UseHangfireDashboard();
 
 app.Run();
