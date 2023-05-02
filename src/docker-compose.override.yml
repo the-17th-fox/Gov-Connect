@@ -16,8 +16,8 @@ services:
       Authentication__Jwt__Key: "dq98PWkmdNWAiMioYIFK3y15PaSMrx1ACHGEzgl2AdREsEzePUQiTndFlUQpbCbF"
       Authentication__Jwt__Issuer: "authorities-acc-msvc-iss"
       Authentication__Jwt__Audience: "authorities-acc-msvc-usr"
-      Authentication__Jwt__AuthTokenLifetimeInMinutes: 30
-      Authentication__Jwt__RefreshTokenLifetimeInDays: 7
+      Authentication__Jwt__AuthTokenLifetimeInMinutes: 10
+      Authentication__Jwt__RefreshTokenLifetimeInDays: 1
       Authentication__Jwt__SecurityAlgorithm: "HS256"
       
   civilians-db:
@@ -52,4 +52,16 @@ services:
       - "9999:9999"
     environment:
       ConnectionStrings__DatabaseConnection: "Server=communications-db,9824;database=communications;user id=SA;password=CommunicationsDbServerPass17"
-      ASPNETCORE_URLS: http://0.0.0.0:9999/    
+      ASPNETCORE_URLS: http://0.0.0.0:9999/
+      
+  gateway:
+    ports:
+      - "9000:9000"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:9000/
+      Authentication__Jwt__civilians__Key: "x1ACHGEzgl2AdREsEzePUQiTndFlUQpbCbFdq98PWkmdNWAiMioYIFK3y15PaSMr"
+      Authentication__Jwt__civilians__Issuer: "civilians-acc-msvc-iss"
+      Authentication__Jwt__civilians__Audience: "civilians-acc-msvc-usr"
+      Authentication__Jwt__authorities__Key: "dq98PWkmdNWAiMioYIFK3y15PaSMrx1ACHGEzgl2AdREsEzePUQiTndFlUQpbCbF"
+      Authentication__Jwt__authorities__Issuer: "authorities-acc-msvc-iss"
+      Authentication__Jwt__authorities__Audience: "authorities-acc-msvc-usr"
