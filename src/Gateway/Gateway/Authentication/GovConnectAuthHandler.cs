@@ -99,7 +99,6 @@ public class GovConnectAuthHandler : AuthenticationHandler<GovConnectAuthOptions
 
     private SymmetricSecurityKey GetSecurityKey(string accountsServiceName)
     {
-        //var decodedSigningKey = _options.CurrentValue.ConfigurationSection[$"Authentication:Jwt:{accountsServiceName}:Key"];
         var decodedSigningKey = Options.ConfigurationSection.GetSection($"{accountsServiceName}").GetValue<string>("Key");
 
         return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(decodedSigningKey));
