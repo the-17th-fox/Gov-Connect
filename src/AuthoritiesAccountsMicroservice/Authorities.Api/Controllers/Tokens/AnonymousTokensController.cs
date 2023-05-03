@@ -1,12 +1,10 @@
 ﻿using Authorities.Application.Interfaces;
 using Authorities.Application.ViewModels.Tokens;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authorities.Api.Controllers.Tokens
 {
-    [AllowAnonymous]
-    [Route("api/tokens")]
+    [Route("api/tokens/public")]
     [ApiController]
     public class AnonymousTokensController : ControllerBase
     {

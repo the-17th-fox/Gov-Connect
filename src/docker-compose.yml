@@ -41,6 +41,17 @@ services:
     networks:
       - gov-connect-net
       
+  gateway:
+    build:
+      context: .
+      dockerfile: Gateway/Dockerfile
+    networks:
+      - gov-connect-net
+    depends_on:
+      - authorities-accounts
+      - civilians-accounts
+      - communications
+      
 networks:
   gov-connect-net:
     driver: bridge

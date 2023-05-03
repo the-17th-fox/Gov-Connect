@@ -1,10 +1,9 @@
-﻿using System.Reflection;
-using Authorities.Core.Auth;
+﻿using Authorities.Core.Auth;
 using Authorities.Core.Models;
-using Authorities.Infrastructure.DbContext.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Authorities.Infrastructure.DbContext
 {

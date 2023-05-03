@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Communications.Api.Controllers.Reports
 {
-    [Route("api/reports")]
+    [Route("api/reports/civilians")]
     [ApiController]
     public class CiviliansReportsController : ControllerBase
     {

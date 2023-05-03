@@ -30,4 +30,8 @@
     <ProjectReference Include="..\Civilians.Infrastructure\Civilians.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Utilities\" />
+  </ItemGroup>
+
 </Project>

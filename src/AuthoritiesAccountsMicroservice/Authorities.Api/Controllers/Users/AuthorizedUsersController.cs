@@ -1,15 +1,12 @@
-﻿using AutoMapper;
+﻿using Authorities.Api.Utilities;
 using Authorities.Api.ViewModels.Users;
 using Authorities.Application.Interfaces;
-using Authorities.Core.Auth;
-using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Authorities.Api.Controllers.Users
 {
-    [Authorize]
-    [Route("api/users")]
+    [Route("api/authorized/users")]
     [ApiController]
     public class AuthorizedUsersController : ControllerBase
     {
@@ -17,7 +14,7 @@ namespace Authorities.Api.Controllers.Users
         private readonly ITokensService _tokensService;
         private readonly IMapper _mapper;
 
-        private Guid _userId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        private Guid _userId;
 
         public AuthorizedUsersController(IUsersService usersService, ITokensService tokensService, IMapper mapper)
         {
@@ -37,12 +34,19 @@ namespace Authorities.Api.Controllers.Users
         [HttpGet("personal")]
         public async Task<IActionResult> GetMyInfoAsync()
         {
+            InitializeRequestProperties();
+
             var user = await _usersService.GetByIdAsync(_userId);
 
             var userViewModel = _mapper.Map<UserViewModel>(user);
             userViewModel.Roles = await _usersService.GetRolesAsync(user);
 
             return Ok(userViewModel);
+        }
+
+        private void InitializeRequestProperties()
+        {
+            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
         }
     }
 }

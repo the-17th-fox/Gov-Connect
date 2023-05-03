@@ -1,12 +1,13 @@
 ﻿using Authorities.Application.Interfaces;
+using Authorities.Application.ViewModels.Pagination;
 using Authorities.Application.ViewModels.Tokens;
+using Authorities.Application.ViewModels.Users;
+using Authorities.Core.Auth;
 using Authorities.Core.Interfaces;
 using Authorities.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Authorities.Application.ViewModels.Pagination;
-using Authorities.Application.ViewModels.Users;
 
 namespace Authorities.Application.Services
 {
@@ -77,10 +78,13 @@ namespace Authorities.Application.Services
 
         private static List<Claim> GetClaims(User user, IList<string> userRoles)
         {
+            var policyGroup = DefinePolicyGroup(userRoles);
+
             var claims = new List<Claim>()
             {
                 new Claim("uid", user.Id.ToString()),
-                new Claim("identifyas", "civilians")
+                new Claim("identifyas", "authorities"),
+                new Claim("policygroup", policyGroup.ToLowerInvariant())
             };
 
             foreach (var role in userRoles)
@@ -89,6 +93,31 @@ namespace Authorities.Application.Services
             }
 
             return claims;
+        }
+
+        private static string DefinePolicyGroup(IList<string> userRoles)
+        {
+            string? policyGroup = null;
+
+            var isAdminsPolicy = AuthPolicies.Administrators
+                .Any(adminsRole => userRoles
+                        .Any(userRole => adminsRole == userRole));
+
+            if (isAdminsPolicy)
+            {
+                return nameof(AuthPolicies.Administrators);
+            }
+
+            var isDefaultRightsPolicy = AuthPolicies.DefaultRights
+                .Any(defaultPolicy => userRoles
+                    .Any(userRole => defaultPolicy == userRole));
+
+            if (isDefaultRightsPolicy)
+            {
+                return nameof(AuthPolicies.DefaultRights);
+            }
+
+            return policyGroup ??= "Undefined";
         }
 
         // Users management section bellow

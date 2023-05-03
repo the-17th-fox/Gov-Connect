@@ -1,13 +1,9 @@
 ﻿using Civilians.Application.Interfaces;
-using Civilians.Core.Auth;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Civilians.Api.Controllers.Tokens
 {
-    [Authorize(Policy = AuthPolicies.Administrators)]
-    [Route("api/tokens")]
+    [Route("api/tokens/admin")]
     [ApiController]
     public class AdminTokensController : ControllerBase
     {

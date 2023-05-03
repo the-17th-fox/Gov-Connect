@@ -1,14 +1,10 @@
-﻿using System.Security.Claims;
-using Civilians.Application.Interfaces;
+﻿using Civilians.Application.Interfaces;
 using Civilians.Application.ViewModels.Tokens;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Civilians.Api.Controllers.Tokens
 {
-    [AllowAnonymous]
-    [Route("api/tokens")]
+    [Route("api/tokens/public")]
     [ApiController]
     public class AnonymousTokensController : ControllerBase
     {

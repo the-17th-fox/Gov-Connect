@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Communications.Api.Controllers.Classifications
 {
-    [Route("api/classifications")]
+    [Route("api/classifications/authorities")]
     [ApiController]
     public class AuthoritiesClassificationsController : ControllerBase
     {

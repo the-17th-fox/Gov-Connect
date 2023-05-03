@@ -1,16 +1,13 @@
 ﻿using AutoMapper;
-using Civilians.Api.ViewModels.Users;
 using Civilians.Api.ViewModels.Pagination;
+using Civilians.Api.ViewModels.Users;
 using Civilians.Application.Interfaces;
 using Civilians.Application.ViewModels.Civilians;
-using Civilians.Core.Auth;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Civilians.Api.Controllers.Users
 {
-    [Authorize(Policy = AuthPolicies.Administrators)]
-    [Route("api/users")]
+    [Route("api/users/admin")]
     [ApiController]
     public class AdminUsersController : ControllerBase
     {
