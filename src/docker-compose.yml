@@ -1,6 +1,26 @@
 version: "3.9"
 services:    
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    networks:
+      - gov-connect-net
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    networks:
+      - gov-connect-net
+    depends_on:
+      - zookeeper
+      
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    networks:
+      - gov-connect-net
+    depends_on:
+      - kafka
+
   authorities-db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     networks:
@@ -28,6 +48,12 @@ services:
       - gov-connect-net
     depends_on:
       - civilians-db
+      - kafka
+      
+  hangfire-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      - gov-connect-net
   
   communications-db:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -40,6 +66,10 @@ services:
       dockerfile: CommunicationsMicroservice/Dockerfile
     networks:
       - gov-connect-net
+    depends_on:
+      - communications-db
+      - kafka
+      - hangfire-db
       
   gateway:
     build:

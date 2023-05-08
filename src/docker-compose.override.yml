@@ -1,5 +1,34 @@
 version: "3.9"
 services:    
+
+  zookeeper:
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    ports:
+      - "9001:9001"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9001
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_CLEANER_DELETE_RETENTION_MS: 5000
+      KAFKA_BROKER_ID: 1
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: communications
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+
   authorities-db:
     environment:
       ACCEPT_EULA: "Y"
@@ -32,6 +61,7 @@ services:
       - "9998:9998"
     environment:
       ConnectionStrings__DatabaseConnection: "Server=civilians-db,9824;database=civilians-accounts;user id=SA;password=CiviliansAccountsDbServerPass17"
+      ConnectionStrings__KafkaBootstrapServers: "kafka:29092"
       ASPNETCORE_URLS: http://0.0.0.0:9998/    
       Authentication__Jwt__Key: "x1ACHGEzgl2AdREsEzePUQiTndFlUQpbCbFdq98PWkmdNWAiMioYIFK3y15PaSMr"
       Authentication__Jwt__Issuer: "civilians-acc-msvc-iss"
@@ -39,7 +69,14 @@ services:
       Authentication__Jwt__AuthTokenLifetimeInMinutes: 30
       Authentication__Jwt__RefreshTokenLifetimeInDays: 7
       Authentication__Jwt__SecurityAlgorithm: "HS256"
-      
+
+  hangfire-db:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "HangfireDbServerPass17"
+      MSSQL_PID: "Express"
+      MSSQL_TCP_PORT: "9824" 
+
   communications-db:
     environment:
       ACCEPT_EULA: "Y"
@@ -52,6 +89,8 @@ services:
       - "9999:9999"
     environment:
       ConnectionStrings__DatabaseConnection: "Server=communications-db,9824;database=communications;user id=SA;password=CommunicationsDbServerPass17"
+      ConnectionStrings__KafkaBootstrapServers: "kafka:29092"
+      ConnectionStrings__HangfireStorage: "Server=hangfire-db,9824;database=hangfire;user id=SA;password=HangfireDbServerPass17"
       ASPNETCORE_URLS: http://0.0.0.0:9999/
       
   gateway:
