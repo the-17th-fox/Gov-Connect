@@ -7,7 +7,7 @@ namespace Civilians.Api.Configuration
 {
     internal static class InfrastructureConfiguration
     {
-        internal static void ConfigureInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
+        internal static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
             string dbConnectionString = configuration.GetConnectionString("DatabaseConnection");
 
@@ -15,6 +15,8 @@ namespace Civilians.Api.Configuration
                 opt.UseSqlServer(dbConnectionString));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            return services;
         }
     }
 }
