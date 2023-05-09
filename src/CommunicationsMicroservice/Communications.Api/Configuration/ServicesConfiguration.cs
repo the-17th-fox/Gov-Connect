@@ -6,10 +6,12 @@ namespace Communications.Api.Configuration;
 
 public static class ServicesConfiguration
 {
-    public static void ConfigureServices(this IServiceCollection services)
+    public static IServiceCollection ConfigureServices(this IServiceCollection services)
     {
-        services.AddSingleton<ICiviliansInfoConsistencyService, CiviliansInfoConsistencyService>();
+        services.AddTransient<ICiviliansInfoConsistencyService, CiviliansInfoConsistencyService>();
 
         services.AddHostedService<HangfireHostedService>();
+
+        return services;
     }
 }

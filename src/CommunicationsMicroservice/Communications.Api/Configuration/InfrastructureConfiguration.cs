@@ -8,7 +8,7 @@ namespace Communications.Api.Configuration;
 
 internal static class InfrastructureConfiguration
 {
-    internal static void ConfigureInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
+    internal static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
     {
         var dbConnectionString = configuration.GetConnectionString("DatabaseConnection");
 
@@ -21,5 +21,7 @@ internal static class InfrastructureConfiguration
         {
             opt.UseSqlServerStorage(configuration.GetConnectionString("HangfireStorage"));
         });
+
+        return services;
     }
 }

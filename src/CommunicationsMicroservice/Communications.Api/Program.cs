@@ -6,8 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-services.ConfigureInfrastructure(configuration);
-services.ConfigureUtilities();
+services
+    .ConfigureInfrastructure(configuration)
+    .ConfigureServices()
+    .ConfigureUtilities(configuration);
 
 services.AddControllers();
 services.AddEndpointsApiExplorer();
