@@ -1,15 +1,20 @@
 ﻿using Civilians.Api.ViewModels;
 using Civilians.Application.ViewModels;
 using Microsoft.OpenApi.Models;
+using SharedLib.Kafka.Configurations;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Civilians.Api.Configuration
 {
     internal static class UtilitiesConfiguration
     {
-        internal static void ConfigureUtilities(this IServiceCollection services)
+        internal static IServiceCollection ConfigureUtilities(this IServiceCollection services, ConfigurationManager configuration)
         {
             services.AddAutoMapper(typeof(ApplicationMapperProfile), typeof(ApiMapperProfile));
+            
+            services.ConfigureProducers(configuration.GetConnectionString("KafkaBootstrapServers"));
+
+            return services;
         }
 
         internal static void ConfigureSwagger(this SwaggerGenOptions opt)
@@ -39,6 +44,17 @@ namespace Civilians.Api.Configuration
                     new string[] { }
                 }
             });
+        }
+
+        private static IServiceCollection ConfigureProducers(this IServiceCollection services, string bootstrapServers)
+        {
+            services.AddKafkaProducer<string, object>(opt =>
+            {
+                opt.Topic = "civilians-info-in-reports-update";
+                opt.BootstrapServers = bootstrapServers;
+            });
+
+            return services;
         }
     }
 }
