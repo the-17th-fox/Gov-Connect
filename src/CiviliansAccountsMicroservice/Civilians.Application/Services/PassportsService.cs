@@ -4,6 +4,7 @@ using Civilians.Application.ViewModels.Passports;
 using Civilians.Core.Interfaces;
 using Civilians.Core.Misc;
 using Civilians.Core.Models;
+using SharedLib.Kafka.Interfaces;
 
 namespace Civilians.Application.Services
 {
@@ -11,11 +12,13 @@ namespace Civilians.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IKafkaProducer<string, object> _producer;
 
-        public PassportsService(IUnitOfWork unitOfWork, IMapper mapper)
+        public PassportsService(IUnitOfWork unitOfWork, IMapper mapper, IKafkaProducer<string, object> producer)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _producer = producer ?? throw new ArgumentNullException(nameof(producer));
         }
 
         public async Task<Passport> GetByUserIdAsync(Guid userId)
@@ -53,10 +56,25 @@ namespace Civilians.Application.Services
                 throw new ArgumentException("Region code is undefined.");
             }
 
-            passport = _mapper.Map<Passport>(passportViewModel);    
+            _mapper.Map(passportViewModel, passport);
 
             _unitOfWork.PassportsRepository.Update(passport);
+
             await _unitOfWork.SaveChangesAsync();
+
+            await SendUpdateNotification(passport.UserId, passport.FirstName, passport.Patronymic);
+        }
+
+        private async Task SendUpdateNotification(Guid civilianId, string firstName, string patronymic)
+        {
+            var message = new
+            {
+                CivilianId = civilianId,
+                FirstName = firstName,
+                Patronymic = patronymic
+            };
+
+            await _producer.ProduceAsync(civilianId.ToString(), message);
         }
     }
 }

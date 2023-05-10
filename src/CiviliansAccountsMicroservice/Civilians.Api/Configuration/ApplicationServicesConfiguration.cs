@@ -5,11 +5,13 @@ namespace Civilians.Api.Configuration
 {
     internal static class ApplicationServicesConfiguration
     {
-        internal static void ConfigureApplicationServices(this IServiceCollection services)
+        internal static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<ITokensService, TokensService>();
             services.AddScoped<IPassportsService, PassportsService>();
+
+            return services;
         }
     }
 }

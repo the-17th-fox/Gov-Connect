@@ -1,12 +1,15 @@
 ﻿using Communications.Application;
 using Communications.Application.AutoMapper;
+using Communications.Application.AutoMapper.CiviliansInfoConsistency;
+using Hangfire;
+using SharedLib.Kafka.Configurations;
 using System.Reflection;
 
 namespace Communications.Api.Configuration;
 
 internal static class UtilitiesConfiguration
 {
-    internal static void ConfigureUtilities(this IServiceCollection services)
+    internal static IServiceCollection ConfigureUtilities(this IServiceCollection services, ConfigurationManager configuration)
     {
         services.AddAutoMapper(opt =>
         {
@@ -19,5 +22,25 @@ internal static class UtilitiesConfiguration
         {
             opt.RegisterServicesFromAssembly(typeof(HandlerBase<>).Assembly);
         });
+
+        services.AddHangfireServer();
+
+        services.ConfigureKafkaConsumers(configuration.GetConnectionString("KafkaBootstrapServers"));
+
+        return services;
     }
+
+    private static IServiceCollection ConfigureKafkaConsumers(this IServiceCollection services, string bootstrapServers)
+    {
+        services.AddKafkaConsumer<string, CivilianInfoViewModel>(opt =>
+        {
+            opt.Topic = "civilians-info-in-reports-update";
+            opt.GroupId = "civilians-info-in-reports-update-group";
+            opt.BootstrapServers = bootstrapServers;
+            opt.AllowAutoCreateTopics = true;
+        });
+
+        return services;
+    }
+
 }

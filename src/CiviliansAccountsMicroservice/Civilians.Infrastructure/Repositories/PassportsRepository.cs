@@ -20,6 +20,7 @@ namespace Civilians.Infrastructure.Repositories
         public async Task<Passport?> GetByUserIdAsync(Guid userId)
         {
             return await _dbContext.Passports
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.UserId == userId);
         }
 

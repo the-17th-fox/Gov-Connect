@@ -25,6 +25,8 @@ namespace Civilians.Api.Controllers.Passports
         [HttpGet("personal")]
         public async Task<IActionResult> GetMyPassportAsync()
         {
+            InitializeRequestProperties();
+
             var passport = await _passportsService.GetByUserIdAsync(_userId);
             var passportViewModel = _mapper.Map<PassportViewModel>(passport);
 
@@ -34,6 +36,8 @@ namespace Civilians.Api.Controllers.Passports
         [HttpPut]
         public async Task<IActionResult> UpdatePassportAsync(UpdatePassportViewModel updatePassportViewModel)
         {
+            InitializeRequestProperties();
+
             await _passportsService.UpdateAsync(_userId, updatePassportViewModel);
 
             return Ok();

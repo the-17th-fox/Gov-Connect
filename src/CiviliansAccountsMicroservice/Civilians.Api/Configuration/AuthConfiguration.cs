@@ -9,7 +9,7 @@ namespace Civilians.Api.Configuration
 {
     internal static class AuthConfiguration
     {
-        internal static void ConfigureIdentity(this IServiceCollection services, ConfigurationManager configuration)
+        internal static IServiceCollection ConfigureIdentity(this IServiceCollection services, ConfigurationManager configuration)
         {
             services.AddIdentity<User, IdentityRole<Guid>>(opt =>
             {
@@ -26,6 +26,8 @@ namespace Civilians.Api.Configuration
             services.Configure<JwtConfigModel>(configuration.GetSection("Authentication").GetSection("Jwt"));
             services.Configure<JwtConfigModel>(opt =>
                 opt.Key = signingKey);
+
+            return services;
         }
     }
 }
