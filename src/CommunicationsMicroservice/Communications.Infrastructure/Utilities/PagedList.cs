@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Communications.Infrastructure.Utilities;
 
@@ -10,9 +10,9 @@ public class PagedList<T> : List<T>
     public int PageSize { get; private set; }
     public int TotalItemsCount { get; private set; }
 
-    public bool HasPreviousPage => CurrentPage > 1 ? true : false;
-
-    public bool HasNextPage => CurrentPage < TotalPages ? true : false;
+    public bool HasPreviousPage => CurrentPage > 1;
+        
+    public bool HasNextPage => CurrentPage < TotalPages;
 
     private PagedList(List<T> items, int itemsCount, int pageNumber, int pageSize)
     {
@@ -20,7 +20,6 @@ public class PagedList<T> : List<T>
         CurrentPage = pageNumber;
         PageSize = pageSize;
         TotalItemsCount = itemsCount;
-
         AddRange(items);
     }
 
@@ -35,11 +34,16 @@ public class PagedList<T> : List<T>
         IQueryable<T> query, 
         int pageNumber, 
         int pageSize, 
-        Expression<Func<T, TKey>> sortingExpression)
+        Expression<Func<T, TKey>> sortingExpression,
+        bool orderByDescending = true)
     {
         var itemsCount = query.Count();
+
+        query = orderByDescending 
+            ? query.OrderByDescending(sortingExpression) 
+            : query.OrderBy(sortingExpression);
+
         var items = await (query
-            .OrderBy(sortingExpression)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync());
