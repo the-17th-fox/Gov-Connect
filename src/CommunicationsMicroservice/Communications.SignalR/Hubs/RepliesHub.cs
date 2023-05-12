@@ -1,28 +1,14 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿namespace Communications.SignalR.Hubs;
 
-namespace Communications.SignalR.Hubs;
-
-public class RepliesHub : Hub
+public class RepliesHub : BaseCommunicationsHub
 {
-    public const string NewReplyMethodName = "NewReply";
-
-    public async Task JoinReportGroupAsync(string reportId)
+    public async Task JoinGroupAsync(string reportId)
     {
-        if (string.IsNullOrEmpty(reportId))
-        {
-            throw new ArgumentNullException(nameof(reportId));
-        }
-
         await Groups.AddToGroupAsync(Context.ConnectionId, reportId);
     }
 
-    public async Task LeaveReportGroupAsync(string reportId)
+    public async Task LeaveGroupAsync(string reportId)
     {
-        if (string.IsNullOrEmpty(reportId))
-        {
-            throw new ArgumentNullException(nameof(reportId));
-        }
-
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, reportId);
     }
 }
