@@ -40,5 +40,7 @@ app.MapControllers();
 app.UseHangfireDashboard();
 
 app.MapHub<RepliesHub>("/repliesHub");
+app.MapHub<ReportsHub>("/reportsHub");
+app.MapHub<NotificationsHub>("/notificationsHub");
 
 app.Run();
