@@ -4,7 +4,6 @@ using Communications.Api.ViewModels.Pagination;
 using Communications.Api.ViewModels.Replies;
 using Communications.Application.Replies.Commands;
 using Communications.Application.Replies.Queries;
-using Communications.Application.Replies.Queries.GetReplyByReport;
 using Communications.SignalR.Extensions;
 using Communications.SignalR.Hubs;
 using MediatR;
@@ -43,7 +42,7 @@ namespace Communications.Api.Controllers.Replies
 
             await _mediator.Send(createReplyCommand);
 
-            await SendReplyToGroupAsync(createReplyCommand.ReportId);
+            await SendReplyToGroupAsync(createReplyCommand);
 
             return Created("new", null);
         }
@@ -83,15 +82,12 @@ namespace Communications.Api.Controllers.Replies
             _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
         }
 
-        private async Task SendReplyToGroupAsync(Guid reportId)
+        private async Task SendReplyToGroupAsync(CreateReplyCommand reply)
         {
-            var reply = await _mediator.Send(new GetReplyByReportQuery() { ReportId = reportId });
-            var replyViewModel = _mapper.Map<PublicReplyViewModel>(reply);
-
             await _repliesHubContext.SendUpdateToGroup(
                 groupName: reply.ReportId.ToString(),
-                method: RepliesHub.NewReplyMethodName,
-                message: replyViewModel);
+                method: BaseCommunicationsHub.NewMessageMethodName,
+                message: reply);
         }
     }
 }
