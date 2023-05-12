@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Communications.Api.ViewModels.Replies;
-using Communications.Application.Replies.Queries.GetReplyByReport;
+using Communications.Application.Replies.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
