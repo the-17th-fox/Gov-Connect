@@ -31,7 +31,7 @@ namespace Communications.Api.Controllers.Reports
             return Ok(reportViewModel);
         }
 
-        [HttpPost]
+        [HttpPost("all")]
         public async Task<IActionResult> GetAllAsync(GetAllReportsQuery getAllReportsQuery)
         {
             var reports = await _mediator.Send(getAllReportsQuery);

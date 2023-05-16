@@ -32,7 +32,7 @@ namespace Communications.Api.Controllers.Notifications
             _notificationsHubContext = notificationsHubContext ?? throw new ArgumentNullException(nameof(notificationsHubContext));
         }
 
-        [HttpPost("new")]
+        [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateNotificationViewModel createNotificationViewModel)
         {
             InitializeRequestProperties();

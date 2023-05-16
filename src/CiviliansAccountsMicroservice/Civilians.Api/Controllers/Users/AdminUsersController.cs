@@ -30,7 +30,7 @@ namespace Civilians.Api.Controllers.Users
             return Ok(userViewModel);
         }
 
-        [HttpPost]
+        [HttpPost("all")]
         public async Task<IActionResult> GetAllAsync([FromBody] UsersPaginationParametersViewModel paginationParameters)
         {
             var users = await _usersService.GetAllAsync(paginationParameters);

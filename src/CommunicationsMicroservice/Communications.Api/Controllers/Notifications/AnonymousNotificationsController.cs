@@ -31,7 +31,7 @@ namespace Communications.Api.Controllers.Notifications
             return Ok(notificationViewModel);
         }
 
-        [HttpPost]
+        [HttpPost("all")]
         public async Task<IActionResult> GetAllAsync(GetAllNotificationsQuery getAllNotificationsQuery)
         {
             var notifications = await _mediator.Send(getAllNotificationsQuery);

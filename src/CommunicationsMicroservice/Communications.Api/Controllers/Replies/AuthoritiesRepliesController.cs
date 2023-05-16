@@ -31,7 +31,7 @@ namespace Communications.Api.Controllers.Replies
             _repliesHubContext = repliesHubContext ?? throw new ArgumentNullException(nameof(repliesHubContext));
         }
 
-        [HttpPost("new")]
+        [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateReplyViewModel createReplyViewModel)
         {
             InitializeRequestProperties();
@@ -55,7 +55,7 @@ namespace Communications.Api.Controllers.Replies
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("all")]
         public async Task<IActionResult> GetAllAsync(GetAllRepliesQuery getAllRepliesQuery)
         {
             var replies = await _mediator.Send(getAllRepliesQuery);

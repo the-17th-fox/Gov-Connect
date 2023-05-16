@@ -37,7 +37,7 @@ namespace Communications.Api.Controllers.Reports
             _reportsHubContext = reportsHubContext ?? throw new ArgumentNullException(nameof(reportsHubContext));
         }
 
-        [HttpPost("new")]
+        [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateReportViewModel createReportViewModel)
         {
             InitializeRequestProperties();
