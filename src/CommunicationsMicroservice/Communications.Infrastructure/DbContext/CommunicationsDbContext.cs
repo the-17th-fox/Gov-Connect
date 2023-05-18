@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Communications.Core.Models;
+﻿using Communications.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Communications.Infrastructure.DbContext;
 

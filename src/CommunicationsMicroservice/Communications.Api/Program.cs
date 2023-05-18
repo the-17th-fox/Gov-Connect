@@ -1,5 +1,6 @@
 using Communications.Api.Configuration;
 using Communications.Api.Middlewares;
+using Communications.SignalR.Hubs;
 using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,10 +29,18 @@ else
     app.UseMiddleware<GlobalExceptionsHandler>();
 }
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+
 app.UseHttpsRedirection();
 
 app.MapControllers();
 
 app.UseHangfireDashboard();
+
+app.MapHub<RepliesHub>("/repliesHub");
+app.MapHub<ReportsHub>("/reportsHub");
+app.MapHub<NotificationsHub>("/notificationsHub");
 
 app.Run();

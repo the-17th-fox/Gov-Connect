@@ -20,7 +20,7 @@ public class AuthorizedClassificationsController : ControllerBase
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    [HttpPost]
+    [HttpPost("all")]
     public async Task<IActionResult> GetAllAsync(GetAllClassificationsQuery getAllClassificationsQuery)
     {
         var classifications = await _mediator.Send(getAllClassificationsQuery);

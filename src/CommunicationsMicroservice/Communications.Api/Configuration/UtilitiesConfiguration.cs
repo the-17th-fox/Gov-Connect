@@ -27,6 +27,8 @@ internal static class UtilitiesConfiguration
 
         services.ConfigureKafkaConsumers(configuration.GetConnectionString("KafkaBootstrapServers"));
 
+        services.AddSignalR();
+
         return services;
     }
 

@@ -17,7 +17,7 @@ public class RepliesRepository : GenericRepository<Reply>, IRepliesRepository
         var query = EntityTable.AsNoTracking();
 
         return await PagedList<Reply>
-            .ToPagedListAsync(query, pageNumber, pageSize, sortingExpression: n => n.Id);
+            .ToPagedListAsync(query, pageNumber, pageSize, sortingExpression: n => n.CreatedAt);
     }
 
     public override async Task<bool> CheckIfExistsAsync(Guid id)

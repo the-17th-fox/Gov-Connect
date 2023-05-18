@@ -31,7 +31,7 @@ namespace Authorities.Api.Controllers.Users
             return Ok(userViewModel);
         }
 
-        [HttpPost]
+        [HttpPost("all")]
         public async Task<IActionResult> GetAllAsync(UsersPaginationParametersViewModel paginationParameters)
         {
             var users = await _usersService.GetAllAsync(paginationParameters);

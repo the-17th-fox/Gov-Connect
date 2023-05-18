@@ -3,7 +3,7 @@ using Communications.Core.Interfaces;
 using Communications.Core.Models;
 using MediatR;
 
-namespace Communications.Application.Replies.Queries.GetReplyByReport;
+namespace Communications.Application.Replies.Queries;
 
 public class GetReplyByReportQueryHandler : RepliesHandlerBase, IRequestHandler<GetReplyByReportQuery, Reply>
 {

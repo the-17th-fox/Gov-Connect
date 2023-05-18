@@ -6,8 +6,11 @@ using Communications.Application.BaseMethods;
 using Communications.Application.Reports.Commands;
 using Communications.Application.Reports.Queries;
 using Communications.Core.Models;
+using Communications.SignalR.Extensions;
+using Communications.SignalR.Hubs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Communications.Api.Controllers.Reports
 {
@@ -18,17 +21,23 @@ namespace Communications.Api.Controllers.Reports
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
+        private readonly IHubContext<ReportsHub> _reportsHubContext;
+
         private Guid _userId;
         private string _firstName = string.Empty;
         private string _patronymic = string.Empty;
 
-        public CiviliansReportsController(IMediator mediator, IMapper mapper)
+        public CiviliansReportsController(
+            IMediator mediator, 
+            IMapper mapper, 
+            IHubContext<ReportsHub> reportsHubContext)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _reportsHubContext = reportsHubContext ?? throw new ArgumentNullException(nameof(reportsHubContext));
         }
 
-        [HttpPost("new")]
+        [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateReportViewModel createReportViewModel)
         {
             InitializeRequestProperties();
@@ -39,6 +48,8 @@ namespace Communications.Api.Controllers.Reports
             createReportCommand.Patronymic = _patronymic;
 
             await _mediator.Send(createReportCommand);
+
+            await SendReportToGroupAsync(createReportCommand);
 
             return Created("new", null);
         }
@@ -82,6 +93,14 @@ namespace Communications.Api.Controllers.Reports
             _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
             _firstName = HttpContext.GetValueFromHeader("fname");
             _patronymic = HttpContext.GetValueFromHeader("pname");
+        }
+
+        private async Task SendReportToGroupAsync(CreateReportCommand report)
+        {
+            await _reportsHubContext.SendUpdateToGroup(
+                groupName: ReportsHub.GroupName,
+                method: BaseCommunicationsHub.NewMessageMethodName,
+                message: report);
         }
     }
 }

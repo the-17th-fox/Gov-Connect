@@ -30,7 +30,7 @@ namespace Communications.Api.Controllers.Classifications
             return Ok(classificationViewModel);
         }
 
-        [HttpPost("new")]
+        [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateClassificationCommand createClassificationCommand)
         {
             await _mediator.Send(createClassificationCommand);

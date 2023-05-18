@@ -38,6 +38,7 @@ public class ReportsRepository : GenericRepository<Report>, IReportsRepository
     {
         var query = EntityTable
             .AsNoTracking()
+            .Include(n => n.Classifications)
             .Where(r => r.CivilianId == civilianId);
 
         return await GetAllByQueryAsync(query, pageNumber, pageSize);
@@ -47,6 +48,7 @@ public class ReportsRepository : GenericRepository<Report>, IReportsRepository
     {
         var query = EntityTable
             .AsNoTracking()
+            .Include(n => n.Classifications)
             .Where(r => r.ReportStatus == ReportStatuses.Pending);
 
         return await GetAllByQueryAsync(query, pageNumber, pageSize);
@@ -63,6 +65,6 @@ public class ReportsRepository : GenericRepository<Report>, IReportsRepository
     private static async Task<List<Report>> GetAllByQueryAsync(IQueryable<Report> query, short pageNumber, byte pageSize)
     {
         return await PagedList<Report>
-            .ToPagedListAsync(query, pageNumber, pageSize, r => r.Id);
+            .ToPagedListAsync(query, pageNumber, pageSize, r => r.UpdatedAt);
     }
 }

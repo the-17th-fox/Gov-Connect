@@ -26,7 +26,7 @@ public class NotificationsRepository : GenericRepository<Notification>, INotific
             .Include(n => n.Classifications);
 
         return await PagedList<Notification>
-            .ToPagedListAsync(query, pageNumber, pageSize, sortingExpression: n => n.Id);
+            .ToPagedListAsync(query, pageNumber, pageSize, sortingExpression: n => n.CreatedAt);
     }
 
     public override async Task<bool> CheckIfExistsAsync(Guid id)
