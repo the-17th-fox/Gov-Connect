@@ -76,6 +76,27 @@ services:
       SA_PASSWORD: "HangfireDbServerPass17"
       MSSQL_PID: "Express"
       MSSQL_TCP_PORT: "9824" 
+      
+  elastic-search-node:
+    ports:
+      - "9200:9200"
+    environment:
+      ELASTIC_PASSWORD: "SomeElasticPass1"
+      discovery.type: single-node
+      xpack.security.enabled: 'false'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+      
+  kibana:
+    ports:
+      - "5601:5601"
 
   communications-db:
     environment:
@@ -91,7 +112,11 @@ services:
       ConnectionStrings__DatabaseConnection: "Server=communications-db,9824;database=communications;user id=SA;password=CommunicationsDbServerPass17"
       ConnectionStrings__KafkaBootstrapServers: "kafka:29092"
       ConnectionStrings__HangfireStorage: "Server=hangfire-db,9824;database=hangfire;user id=SA;password=HangfireDbServerPass17"
+      ConnectionStrings__ElasticSearchNode: "http://elastic-search-node:9200"
       ASPNETCORE_URLS: http://0.0.0.0:9999/
+      ElasticSearch__ReportsIndexName: "reports"
+      ElasticSearch__NotificationsIndexName: "notifications"
+      ElasticSearch__QueriedElementsAmount: 10      
       
   gateway:
     ports:
