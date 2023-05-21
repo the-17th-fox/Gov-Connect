@@ -1,13 +1,25 @@
-﻿using Communications.Core.CustomExceptions;
+﻿using Communications.Application.Utilities;
+using Communications.Core.CustomExceptions;
 using Communications.Core.Interfaces;
 using MediatR;
+using Microsoft.Extensions.Options;
+using Nest;
+using SharedLib.ElasticSearch.Extensions;
 
 namespace Communications.Application.Reports.Commands;
 
 public class DeleteReportCommandHandler : ReportsHandlerBase, IRequestHandler<DeleteReportCommand>
 {
-    public DeleteReportCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IElasticClient _elasticSearchClient;
+    private readonly string _reportsIndexName;
+
+    public DeleteReportCommandHandler(
+        IUnitOfWork unitOfWork, 
+        IElasticClient elasticSearchClient,
+        IOptions<ElasticSearchIndexesOptions> elasticSearchIndexesOptions) : base(unitOfWork)
     {
+        _elasticSearchClient = elasticSearchClient ?? throw new ArgumentNullException(nameof(elasticSearchClient));
+        _reportsIndexName = elasticSearchIndexesOptions.Value.ReportsIndexName;
     }
 
     public async Task Handle(DeleteReportCommand request, CancellationToken cancellationToken)
@@ -22,5 +34,6 @@ public class DeleteReportCommandHandler : ReportsHandlerBase, IRequestHandler<De
         UnitOfWork.ReportsRepository.Delete(report);
 
         await UnitOfWork.SaveChangesAsync();
+        await _elasticSearchClient.DeleteIndexedDataAsync(_reportsIndexName, report.Id);
     }
 }
