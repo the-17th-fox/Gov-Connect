@@ -1,7 +1,9 @@
 ﻿using Communications.Application;
-using Communications.Application.AutoMapper;
-using Communications.Application.AutoMapper.CiviliansInfoConsistency;
+using Communications.Application.Utilities;
+using Communications.Application.ViewModels;
+using Communications.Application.ViewModels.CiviliansInfoConsistency;
 using Hangfire;
+using SharedLib.ElasticSearch.Extensions;
 using SharedLib.Kafka.Configurations;
 using System.Reflection;
 
@@ -29,6 +31,8 @@ internal static class UtilitiesConfiguration
 
         services.AddSignalR();
 
+        services.ConfigureElasticSearchService(configuration);
+
         return services;
     }
 
@@ -45,4 +49,14 @@ internal static class UtilitiesConfiguration
         return services;
     }
 
+    private static IServiceCollection ConfigureElasticSearchService(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        var uri = configuration.GetConnectionString("ElasticSearchNode");
+        services.ConfigureElasticSearchClient(uri);
+
+        var elasticSearchSection = configuration.GetSection("ElasticSearch");
+        services.Configure<ElasticSearchIndexesOptions>(elasticSearchSection);
+
+        return services;
+    }
 }

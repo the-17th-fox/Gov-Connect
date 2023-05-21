@@ -1,7 +1,9 @@
 using Communications.Api.Configuration;
 using Communications.Api.Middlewares;
+using Communications.Application.ViewModels.ElasticSearch;
 using Communications.SignalR.Hubs;
 using Hangfire;
+using SharedLib.ElasticSearch.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -29,9 +31,12 @@ else
     app.UseMiddleware<GlobalExceptionsHandler>();
 }
 
+await app.CreateIndexesAsync(
+    new(configuration["ElasticSearch:ReportsIndexName"], typeof(IndexedMessageViewModel)), 
+    new(configuration["ElasticSearch:NotificationsIndexName"], typeof(IndexedMessageViewModel)));
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
 
 app.UseHttpsRedirection();
 
