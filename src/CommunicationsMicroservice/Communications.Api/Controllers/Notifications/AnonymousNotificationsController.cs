@@ -40,5 +40,18 @@ namespace Communications.Api.Controllers.Notifications
 
             return Ok(notificationsPage);
         }
+
+        [HttpGet("search/{query}")]
+        public async Task<IActionResult> SearchByQueryAsync(string query)
+        {
+            var searchNotificationsByHeaderQuery = new SearchNotificationsByHeaderQuery()
+            {
+                Query = query
+            };
+
+            var notifications = await _mediator.Send(searchNotificationsByHeaderQuery);
+
+            return Ok(notifications);
+        }
     }
 }

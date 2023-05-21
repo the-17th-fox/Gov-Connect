@@ -40,5 +40,18 @@ namespace Communications.Api.Controllers.Reports
 
             return Ok(reportsPage);
         }
+
+        [HttpGet("search/{query}")]
+        public async Task<IActionResult> SearchByQueryAsync(string query)
+        {
+            var searchReportsByHeaderQuery = new SearchReportsByHeaderQuery()
+            {
+                Query = query
+            };
+
+            var reports = await _mediator.Send(searchReportsByHeaderQuery);
+
+            return Ok(reports);
+        }
     }
 }
