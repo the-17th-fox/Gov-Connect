@@ -1,4 +1,4 @@
-﻿namespace Communications.Application.AutoMapper.CiviliansInfoConsistency;
+﻿namespace Communications.Application.ViewModels.CiviliansInfoConsistency;
 
 public class CivilianInfoViewModel
 {

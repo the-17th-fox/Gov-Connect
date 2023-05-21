@@ -4,7 +4,7 @@ using Communications.Application.Replies.Commands;
 using Communications.Application.Reports.Commands;
 using Communications.Core.Models;
 
-namespace Communications.Application.AutoMapper;
+namespace Communications.Application.ViewModels;
 
 public class ApplicationMapperProfile : Profile
 {
