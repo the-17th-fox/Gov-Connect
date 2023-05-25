@@ -1,12 +1,25 @@
-﻿using Communications.Core.Interfaces;
+﻿using Communications.Application.Utilities;
+using Communications.Application.ViewModels.ElasticSearch;
+using Communications.Core.Interfaces;
 using MediatR;
+using Microsoft.Extensions.Options;
+using Nest;
+using SharedLib.ElasticSearch.Extensions;
 
 namespace Communications.Application.Notifications.Commands;
 
 public class UpdateNotificationCommandHandler : NotificationsHandlerBase, IRequestHandler<UpdateNotificationCommand>
 {
-    public UpdateNotificationCommandHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+    private readonly IElasticClient _elasticSearchClient;
+    private readonly string _notificationsIndexName;
+
+    public UpdateNotificationCommandHandler(
+        IUnitOfWork unitOfWork,
+        IElasticClient elasticSearchClient,
+        IOptions<ElasticSearchIndexesOptions> elasticSearchIndexesOptions) : base(unitOfWork)
     {
+        _elasticSearchClient = elasticSearchClient ?? throw new ArgumentNullException(nameof(elasticSearchClient));
+        _notificationsIndexName = elasticSearchIndexesOptions.Value.NotificationsIndexName;
     }
 
     public async Task Handle(UpdateNotificationCommand request, CancellationToken cancellationToken)
@@ -29,5 +42,12 @@ public class UpdateNotificationCommandHandler : NotificationsHandlerBase, IReque
         UnitOfWork.NotificationsRepository.Update(notification);
 
         await UnitOfWork.SaveChangesAsync();
+        await IndexNotificationsAsync(notification.Id, notification.Header, notification.CreatedAt);
+    }
+
+    private async Task IndexNotificationsAsync(Guid id, string header, DateTime createdAt)
+    {
+        var indexedMessageViewModel = new IndexedMessageViewModel(id, header, createdAt);
+        await _elasticSearchClient.IndexDataAsync(_notificationsIndexName, indexedMessageViewModel);
     }
 }

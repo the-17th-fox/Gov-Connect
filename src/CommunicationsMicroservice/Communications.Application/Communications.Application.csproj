@@ -11,6 +11,8 @@
     <Folder Include="Classifications\Commands\DeleteClassification\" />
     <Folder Include="Classifications\Commands\UpdateClassification\" />
     <Folder Include="Classifications\Queries\GetAllClassifications\" />
+    <Folder Include="Reports\Queries\SearchReportsByHeader\" />
+    <Folder Include="Utilities\" />
     <Folder Include="Notifications\Commands\CreateNotification\" />
     <Folder Include="Notifications\Commands\UpdateNotification\" />
     <Folder Include="Notifications\Queries\GetNotificationById\" />
@@ -31,9 +33,12 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="NEST" Version="7.17.5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SharedLib\SharedLib.ElasticSearch\SharedLib.ElasticSearch.csproj" />
     <ProjectReference Include="..\Communications.Core\Communications.Core.csproj" />
   </ItemGroup>
 

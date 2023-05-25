@@ -1,4 +1,4 @@
-﻿using Communications.Application.AutoMapper.CiviliansInfoConsistency;
+﻿using Communications.Application.ViewModels.CiviliansInfoConsistency;
 using MediatR;
 
 namespace Communications.Application.Reports.Commands;

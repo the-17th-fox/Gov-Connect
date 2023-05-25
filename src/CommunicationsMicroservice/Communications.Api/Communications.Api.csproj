@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SharedLib\SharedLib.ElasticSearch\SharedLib.ElasticSearch.csproj" />
     <ProjectReference Include="..\Communications.Application\Communications.Application.csproj" />
     <ProjectReference Include="..\Communications.Core\Communications.Core.csproj" />
     <ProjectReference Include="..\Communications.Hangfire\Communications.Hangfire.csproj" />
