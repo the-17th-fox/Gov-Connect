@@ -75,7 +75,7 @@ services:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "HangfireDbServerPass17"
       MSSQL_PID: "Express"
-      MSSQL_TCP_PORT: "9824" 
+      MSSQL_TCP_PORT: "9825" 
       
   elastic-search-node:
     ports:
@@ -103,15 +103,15 @@ services:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "CommunicationsDbServerPass17"
       MSSQL_PID: "Express"
-      MSSQL_TCP_PORT: "9824"  
+      MSSQL_TCP_PORT: "9826"  
   
   communications:
     ports:
       - "9999:9999"
     environment:
-      ConnectionStrings__DatabaseConnection: "Server=communications-db,9824;database=communications;user id=SA;password=CommunicationsDbServerPass17"
+      ConnectionStrings__DatabaseConnection: "Server=communications-db,9826;database=communications;user id=SA;password=CommunicationsDbServerPass17"
       ConnectionStrings__KafkaBootstrapServers: "kafka:29092"
-      ConnectionStrings__HangfireStorage: "Server=hangfire-db,9824;database=hangfire;user id=SA;password=HangfireDbServerPass17"
+      ConnectionStrings__HangfireStorage: "Server=hangfire-db,9825;database=hangfire;user id=SA;password=HangfireDbServerPass17"
       ConnectionStrings__ElasticSearchNode: "http://elastic-search-node:9200"
       ASPNETCORE_URLS: http://0.0.0.0:9999/
       ElasticSearch__ReportsIndexName: "reports"
