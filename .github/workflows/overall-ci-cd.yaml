@@ -21,7 +21,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
     uses: the-17th-fox/GovConnect/.github/workflows/ci-cd-communications.yaml@main
-  Gateway Deploy:
+  Gateway-Deploy:
     permissions:
       contents: 'read'
       id-token: 'write'
