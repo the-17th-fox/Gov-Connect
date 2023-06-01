@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: civilians-configmap
+  labels:
+    app: civilians
+data:
+  ConnectionStrings__DatabaseConnection: "Server=civilians-db,9824;database=civilians-accounts;user id=SA;password=CiviliansAccountsDbServerPass17"
+  ConnectionStrings__KafkaBootstrapServers: "kafka:29092"
+  ASPNETCORE_URLS: http://0.0.0.0:9998/    
+  Authentication__Jwt__Key: "x1ACHGEzgl2AdREsEzePUQiTndFlUQpbCbFdq98PWkmdNWAiMioYIFK3y15PaSMr"
+  Authentication__Jwt__Issuer: "civilians-acc-msvc-iss"
+  Authentication__Jwt__Audience: "civilians-acc-msvc-usr"
+  Authentication__Jwt__AuthTokenLifetimeInMinutes: 30
+  Authentication__Jwt__RefreshTokenLifetimeInDays: 7
+  Authentication__Jwt__SecurityAlgorithm: "HS256"
