@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: communications
+  labels:
+    app: communications
+spec:
+  selector:
+    app: communications
+  ports:
+    - name: http
+      port: 9999
+      targetPort: 9999
