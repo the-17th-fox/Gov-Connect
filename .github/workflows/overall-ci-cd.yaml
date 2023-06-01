@@ -1,0 +1,17 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Authorities-Deploy:
+    uses: the-17th-fox/GovConnect/.github/workflows/ci-cd-authorities.yaml@main
+  Civilians-Deploy:
+    uses: the-17th-fox/GovConnect/.github/workflows/ci-cd-civilians.yaml@main
+  Communications-Deploy:
+    uses: the-17th-fox/GovConnect/.github/workflows/ci-cd-communications.yaml@main
+  Gateway Deploy:
+    needs: Authorities-Deploy, Civilians-Deploy, Communications-Deploy
+    uses: the-17th-fox/GovConnect/.github/workflows/ci-cd-gateway.yaml@main
