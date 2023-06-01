@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hangfire-configmap
+  labels:
+    app: hangfire
+data:
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: "HangfireDbServerPass17"
+  MSSQL_PID: "Express"
+  MSSQL_TCP_PORT: "9825"
