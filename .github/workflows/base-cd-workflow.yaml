@@ -1,13 +1,18 @@
-name: (Authorities) Build and Deploy to GKE
+name: Base Build and Deploy to GKE
 
 on:
-  push:
-    branches: 
-      - main
+  workflow_call:
+    inputs:
+      IMAGE_NAME:
+        required: true
+        type: string
+      SERVICE_NAME:
+        required: true
+        type: string
 
 env:
-  IMAGE_NAME: authorities-img
-  SERVICE_NAME: authorities
+  IMAGE_NAME: ${{ inputs.IMAGE_NAME }}
+  SERVICE_NAME: ${{ inputs.SERVICE_NAME }}
   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
   CLUSTER_NAME: ${{ vars.GKE_CLUSTER_NAME }}
   CLUSTER_LOCATION: ${{ vars.GKE_CLUSTER_LOCATION }}
@@ -28,7 +33,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Configure Workload Identity Federation and generate an access token.
     - id: auth
       uses: 'google-github-actions/auth@v1'
       with:
@@ -73,6 +77,6 @@ jobs:
         sed -i "s|image:.*|image: $REGISTRY_LOCATION-docker.pkg.dev/$PROJECT_ID/$REGISTRY_NAME/$IMAGE_NAME:${{ github.sha }}|g" \ 
         ./src/Kubernetes/$SERVICE_NAME/$SERVICE_NAME-deployment.yaml
         ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REGISTRY_NAME/IMAGE:TAG=$REGISTRY_LOCATION-docker.pkg.dev/$PROJECT_ID/$REGISTRY_NAME/$IMAGE_NAME:${{ github.sha }}
-        ./kustomize build .\src\Kubernetes | kubectl apply -f -
+        ./kustomize build -k .\src\Kubernetes\kustomization-$SERVICE_NAME.yaml | kubectl apply -f -
         kubectl rollout status deployment/$SERVICE_NAME
         kubectl get services -o wide
