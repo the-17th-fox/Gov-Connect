@@ -1,39 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: authorities-accounts
+  name: authorities
+  labels:
+    app: authorities
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: authorities-accounts
+      app: authorities
   template:
     metadata:
       labels:
-        app: authorities-accounts
+        app: authorities
     spec:
       containers:
-        - name: authorities-accounts
-          image: authorities-accounts-img
+        - name: authorities
+          image: authorities-img
           ports:
             - containerPort: 9997
-          env:
-            - name: ConnectionStrings__DatabaseConnection
-              value: "Server=authorities-db,9823;database=authorities-accounts;user id=SA;password=AuthoritiesAccountsDbServerPass17"
-            - name: ASPNETCORE_URLS
-              value: "http://0.0.0.0:9997/"
-            - name: Authentication__Jwt__Key
-              value: "dq98PWkmdNWAiMioYIFK3y15PaSMrx1ACHGEzgl2AdREsEzePUQiTndFlUQpbCbF"
-            - name: Authentication__Jwt__Issuer
-              value: "authorities-acc-msvc-iss"
-            - name: Authentication__Jwt__Audience
-              value: "authorities-acc-msvc-usr"
-            - name: Authentication__Jwt__AuthTokenLifetimeInMinutes
-              value: "10"
-            - name: Authentication__Jwt__RefreshTokenLifetimeInDays
-              value: "1"
-            - name: Authentication__Jwt__SecurityAlgorithm
-              value: "HS256"
+          type: ClusterIP
+          envFrom:
+            - configMapRef:
+                name: authorities-configmap
           resources:
             limits:
               cpu: 500m

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authorities-configmap
+  labels:
+    app: authorities
+data:
+  ConnectionStrings__DatabaseConnection: "Server=authorities-db,9823;database=authorities-accounts;user id=SA;password=AuthoritiesAccountsDbServerPass17"
+  ASPNETCORE_URLS: "http://0.0.0.0:9997/"
+  Authentication__Jwt__Key: "dq98PWkmdNWAiMioYIFK3y15PaSMrx1ACHGEzgl2AdREsEzePUQiTndFlUQpbCbF"
+  Authentication__Jwt__Issuer: "authorities-acc-msvc-iss"
+  Authentication__Jwt__Audience: "authorities-acc-msvc-usr"
+  Authentication__Jwt__AuthTokenLifetimeInMinutes: "10"
+  Authentication__Jwt__RefreshTokenLifetimeInDays: "1"
+  Authentication__Jwt__SecurityAlgorithm: "HS256"
