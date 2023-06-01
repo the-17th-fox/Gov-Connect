@@ -21,10 +21,11 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Find Solution Files
-        id: find-solutions
+      - name: Find .sln files
+        id: find-solution
         run: |
-          echo "::set-output name=solutions::$(find src -name '*.sln' -type f -print0 | xargs -0 echo)"
+          echo "::set-output name=solutions::$(find src -path 'src/*/[^/]*.sln' -print0 | xargs -0 echo)"
+          
       - name: Restore Solutions
         run: |
           for solution in ${{ steps.find-solutions.outputs.solutions }}; do
