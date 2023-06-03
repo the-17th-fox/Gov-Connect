@@ -24,7 +24,7 @@ jobs:
       - name: Find .sln files
         id: find-solution
         run: |
-          echo "::set-output name=solutions::$(find src -path 'src/*/[^/]*.sln' -print0 | xargs -0 echo)"
+          echo "solutions=(find src -path 'src/*/[^/]*.sln' -print0 | xargs -0 echo)" >> "$GITHUB_OUTPUT"
           
       - name: Restore Solutions
         run: |
