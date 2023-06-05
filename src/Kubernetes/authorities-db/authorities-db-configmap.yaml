@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authorities-db-configmap
+  labels:
+    app: authorities-db
+data:
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: "AuthoritiesAccountsDbServerPass17"
+  MSSQL_PID: "Express"
+  MSSQL_TCP_PORT: "9823"

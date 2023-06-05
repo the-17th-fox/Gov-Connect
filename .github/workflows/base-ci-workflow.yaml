@@ -1,0 +1,48 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+    types: [opened, reopened, synchronize]
+  workflow_call:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Find .sln files
+        id: find-solution
+        run: |
+          echo "solutions=(find src -path 'src/*/[^/]*.sln' -print0 | xargs -0 echo)" >> "$GITHUB_OUTPUT"
+          
+      - name: Restore Solutions
+        run: |
+          for solution in ${{ steps.find-solutions.outputs.solutions }}; do
+            echo "Restoring solution: $solution"
+            dotnet restore "$solution"
+          done
+            
+      - name: Build Solutions
+        run: |
+          for solution in ${{ steps.find-solutions.outputs.solutions }}; do
+            echo "Building solution: $solution"
+            dotnet build "$solution" --configuration Release
+          done
+            
+      - name: Test Solutions
+        run: |
+          for solution in ${{ steps.find-solutions.outputs.solutions }}; do
+            echo "Testing solution: $solution"
+            dotnet test "$solution" --configuration Release
+          done

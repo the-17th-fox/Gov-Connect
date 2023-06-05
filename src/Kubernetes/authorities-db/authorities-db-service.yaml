@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: authorities-db
+  labels:
+    app: authorities-db
+spec:
+  selector:
+    app: authorities-db
+  ports:
+    - name: http
+      port: 9823
+      targetPort: 9823

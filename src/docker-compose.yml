@@ -27,6 +27,7 @@ services:
       - gov-connect-net   
   
   authorities-accounts:
+    image: authorities-img
     build:
       context: .
       dockerfile: AuthoritiesAccountsMicroservice/Dockerfile
@@ -41,6 +42,7 @@ services:
       - gov-connect-net    
       
   civilians-accounts:
+    image: civilians-img
     build:
       context: .
       dockerfile: CiviliansAccountsMicroservice/Dockerfile 
@@ -73,6 +75,7 @@ services:
       - gov-connect-net
   
   communications:
+    image: communications-img
     build:
       context: .
       dockerfile: CommunicationsMicroservice/Dockerfile
@@ -85,6 +88,7 @@ services:
       - elastic-search-node
       
   gateway:
+    image: gateway-img
     build:
       context: .
       dockerfile: Gateway/Dockerfile

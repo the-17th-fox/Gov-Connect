@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: civilians-db
+  labels:
+    app: civilians-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: civilians-db
+  template:
+    metadata:
+      labels:
+        app: civilians-db
+    spec:
+      containers:
+        - name: civilians-db
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          ports:
+            - containerPort: 9824
+          type: ClusterIP
+          envFrom:
+            - configMapRef:
+                name: civilians-db-configmap
+          volumeMounts:
+            - name: civilians-storage
+              mountPath: /var/opt/mssql/data
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+      volumes:
+        - name: civilians-db
+          persistentVolumeClaim:
+            claimName: civilians-db-pvc

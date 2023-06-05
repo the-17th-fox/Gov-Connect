@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: communications-db-configmap
+  labels:
+    app: communications-db
+data:
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: "CommunicationsAccountsDbServerPass17"
+  MSSQL_PID: "Express"
+  MSSQL_TCP_PORT: "9826"

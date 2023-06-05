@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: communications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: communications
+  template:
+    metadata:
+      labels:
+        app: communications
+    spec:
+      containers:
+        - name: communications
+          image: communications-img
+          ports:
+            - containerPort: 9999
+          envFrom:
+           - configMapRef:
+                name: communications-configmap

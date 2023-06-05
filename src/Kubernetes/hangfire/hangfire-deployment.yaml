@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hangfire
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hangfire
+  template:
+    metadata:
+      labels:
+        app: hangfire
+    spec:
+      containers:
+        - name: hangfire
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          ports:
+            - containerPort: 9825
+          envFrom:
+            - configMapRef:
+                name: hangfire-configmap
+          volumeMounts:
+            - name: hangfire-storage
+              mountPath: /var/opt/mssql/data
+      volumes:
+        - name: hangfire-storage
+          persistentVolumeClaim:
+            claimName: hangfire-pvc

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: civilians
+  labels:
+    app: civilians
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: civilians
+  template:
+    metadata:
+      labels:
+        app: civilians
+    spec:
+      containers:
+        - name: civilians
+          image: civilians-img
+          ports:
+            - containerPort: 9998
+          type: ClusterIP
+          envFrom:
+            - configMapRef:
+                name: civilians-configmap
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi

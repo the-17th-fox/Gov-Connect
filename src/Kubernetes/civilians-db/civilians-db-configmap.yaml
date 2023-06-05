@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: civilians-db-configmap
+  labels:
+    app: civilians-db
+data:
+  ACCEPT_EULA: "Y"
+  SA_PASSWORD: "CiviliansAccountsDbServerPass17"
+  MSSQL_PID: "Express"
+  MSSQL_TCP_PORT: "9823"

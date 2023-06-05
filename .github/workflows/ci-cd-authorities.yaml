@@ -1,0 +1,20 @@
+name: CI/CD Authorities
+
+on:
+  workflow_call:
+
+jobs:
+  CI:
+    uses: the-17th-fox/GovConnect/.github/workflows/ci-workflow.yaml@main
+  CD:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    needs: CI
+    uses: the-17th-fox/GovConnect/.github/workflows/base-cd-workflow.yaml@main
+    with:
+      IMAGE_NAME: "authorities-img"
+      SERVICE_NAME: "authorities"
+      DOCKERFILE_PATH: src/CommunicationsMicroservice/Dockerfile
+    secrets:
+      JSON_KEY: ${{ secrets.JSON_KEY }}

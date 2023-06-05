@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: communications-db
+  labels:
+    app: communications-db
+spec:
+  selector:
+    app: communications-db
+  ports:
+    - name: http
+      port: 9826
+      targetPort: 9826
