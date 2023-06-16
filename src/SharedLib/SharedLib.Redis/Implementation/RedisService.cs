@@ -1,6 +1,6 @@
-﻿using System.Globalization;
-using SharedLib.Redis.Interfaces;
+﻿using SharedLib.Redis.Interfaces;
 using StackExchange.Redis;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace SharedLib.Redis.Implementation;
 
@@ -26,9 +26,7 @@ public class RedisService : IRedisService
 
     public async Task<TaskStatus> SetCacheAsync<TValue>(string cacheKey, TValue cacheValue, short timeToLiveSeconds)
     {
-        CheckStorageConnection(cacheKey);
-
-        var parsedValue = Convert.ToString(cacheValue, CultureInfo.InvariantCulture);
+        var parsedValue = JsonSerializer.Serialize(cacheValue);
 
         return await SetCacheAsync(cacheKey, parsedValue!, timeToLiveSeconds);
     }
@@ -45,7 +43,7 @@ public class RedisService : IRedisService
         var transaction = _redis.CreateTransaction(new());
 
         _ = transaction.StringSetAsync(cacheKey, cacheValue);
-        _ = transaction.KeyExpireAsync(cacheKey, DateTime.UtcNow.AddMinutes(timeToLiveSeconds));
+        _ = transaction.KeyExpireAsync(cacheKey, DateTime.UtcNow.AddSeconds(timeToLiveSeconds));
 
         await transaction.ExecuteAsync();
 
@@ -58,16 +56,11 @@ public class RedisService : IRedisService
         {
             throw new ArgumentNullException(nameof(connectionMultiplexer));
         }
-
-        if (!connectionMultiplexer.IsConnected)
-        {
-            throw new RedisConnectionException(ConnectionFailureType.UnableToConnect, string.Empty);
-        }
     }
 
     private void CheckStorageConnection(string key)
     {
-        if (!_redis.IsConnected(key))
+        if (!_redis.Multiplexer.IsConnected)
         {
             throw new RedisConnectionException(ConnectionFailureType.ConnectionDisposed, $"Key:[{key}]");
         }

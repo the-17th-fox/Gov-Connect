@@ -1,11 +1,11 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SharedLib.Redis.Configurations;
 using SharedLib.Redis.Interfaces;
+using SharedLib.Redis.Utilities;
 
 namespace SharedLib.Redis.Attributes;
 
@@ -19,6 +19,9 @@ public class CachedAttribute : Attribute, IAsyncActionFilter
         _timeToLiveSeconds = timeToLiveSeconds;
     }
 
+    /// <summary>
+    /// If no TTL has been provided - uses DefaultTTL from appsettings.
+    /// </summary>
     public CachedAttribute() {}
 
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -31,12 +34,12 @@ public class CachedAttribute : Attribute, IAsyncActionFilter
             return;
         }
 
-        // If the parameterless constructor was used ==> TTL is unassigned (null)
-        _timeToLiveSeconds ??= cacheSettings.TimeToLiveSeconds;
+        // If the parameterless constructor has been used ==> TTL is unassigned (null)
+        _timeToLiveSeconds ??= cacheSettings.DefaultTTLSeconds;
         
         var redisService = GetRedisService(context.HttpContext.RequestServices);
 
-        var cacheKey = GenerateCacheKeyFromRequest(context.HttpContext.Request);
+        var cacheKey = CacheBuilderHelper.GenerateCacheKey(context.HttpContext.Request);
 
         var cachedResponse = await redisService.TryGetFromCacheAsync(cacheKey);
 
@@ -54,35 +57,21 @@ public class CachedAttribute : Attribute, IAsyncActionFilter
         }
     }
 
-    private RedisCacheConfiguration GetRedisCacheConfiguration(IServiceProvider serviceProvider)
+    private static RedisCacheConfiguration GetRedisCacheConfiguration(IServiceProvider serviceProvider)
     {
         var cacheConfig = serviceProvider.GetRequiredService<IOptions<RedisCacheConfiguration>>().Value;
 
         return cacheConfig ?? throw new ArgumentNullException(nameof(cacheConfig));
     }
 
-    private IRedisService GetRedisService(IServiceProvider serviceProvider)
+    private static IRedisService GetRedisService(IServiceProvider serviceProvider)
     {
         var redisService = serviceProvider.GetRequiredService<IRedisService>();
 
         return redisService ?? throw new ArgumentException(nameof(redisService));
     }
 
-    private string GenerateCacheKeyFromRequest(HttpRequest request)
-    {
-        var keyBuilder = new StringBuilder();
-
-        keyBuilder.Append($"{request.Path}");
-
-        foreach (var (key, value) in request.Query.OrderBy(p => p.Key))
-        {
-            keyBuilder.Append($"|[{key}]-[{value}]");
-        }
-
-        return keyBuilder.ToString();
-    }
-
-    private void SetCachedResponse(ActionExecutingContext context, string cachedResponse)
+    private static void SetCachedResponse(ActionExecutingContext context, string cachedResponse)
     {
         var contentResult = new ContentResult()
         {

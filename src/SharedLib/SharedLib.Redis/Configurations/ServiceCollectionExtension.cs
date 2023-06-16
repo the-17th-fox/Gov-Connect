@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SharedLib.Redis.Implementation;
 using SharedLib.Redis.Interfaces;
 using StackExchange.Redis;
 
@@ -10,7 +11,7 @@ public static class ServiceCollectionExtension
     {
         services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(connectionString));
 
-        services.AddScoped<IRedisService, IRedisService>();
+        services.AddScoped<IRedisService, RedisService>();
         
         return services;
     }
