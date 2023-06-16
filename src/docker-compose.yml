@@ -21,6 +21,11 @@ services:
     depends_on:
       - kafka
 
+  redis:
+    image: redis
+    networks:
+      - gov-connect-net
+
   authorities-db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     networks:
@@ -86,6 +91,7 @@ services:
       - kafka
       - hangfire-db
       - elastic-search-node
+      - redis
       
   gateway:
     image: gateway-img
