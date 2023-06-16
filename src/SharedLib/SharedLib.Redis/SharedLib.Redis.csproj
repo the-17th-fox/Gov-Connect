@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Configurations\" />
     <Folder Include="Attributes\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
 
   <ItemGroup>
