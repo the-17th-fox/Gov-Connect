@@ -1,5 +1,5 @@
-﻿using Communications.Application.AutoMapper.CiviliansInfoConsistency;
-using Communications.Application.Reports.Commands;
+﻿using Communications.Application.Reports.Commands;
+using Communications.Application.ViewModels.CiviliansInfoConsistency;
 using Communications.Hangfire.Interfaces;
 using MediatR;
 using SharedLib.Kafka.Interfaces;
