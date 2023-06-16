@@ -2,10 +2,8 @@
 using Communications.Api.Utilities;
 using Communications.Api.ViewModels.Pagination;
 using Communications.Api.ViewModels.Reports;
-using Communications.Application.BaseMethods;
 using Communications.Application.Reports.Commands;
 using Communications.Application.Reports.Queries;
-using Communications.Core.Models;
 using Communications.SignalR.Extensions;
 using Communications.SignalR.Hubs;
 using MediatR;
@@ -73,13 +71,17 @@ namespace Communications.Api.Controllers.Reports
             return Ok();
         }
 
-        [HttpPost("personal")]
-        public async Task<IActionResult> GetAllByCivilianAsync(BaseGetAllQuery<Report> baseGetAllQuery)
+        [HttpGet("personal")]
+        public async Task<IActionResult> GetAllByCivilianAsync(short pageNumber, byte pageSize)
         {
             InitializeRequestProperties();
 
-            var getAllReportsByCivilianQuery = _mapper.Map<GetAllReportsByCivilianQuery>(baseGetAllQuery);
-            getAllReportsByCivilianQuery.CivilianId = _userId;
+            var getAllReportsByCivilianQuery = new GetAllReportsByCivilianQuery()
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                CivilianId = _userId
+            };
 
             var reports = await _mediator.Send(getAllReportsByCivilianQuery);
 

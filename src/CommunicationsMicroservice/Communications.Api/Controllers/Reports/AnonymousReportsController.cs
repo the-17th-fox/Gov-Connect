@@ -5,6 +5,7 @@ using Communications.Application.Reports.Queries;
 using Communications.Application.Reports.Queries.GetReportById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedLib.Redis.Attributes;
 
 namespace Communications.Api.Controllers.Reports
 {
@@ -21,6 +22,7 @@ namespace Communications.Api.Controllers.Reports
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        [Cached]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
@@ -31,9 +33,16 @@ namespace Communications.Api.Controllers.Reports
             return Ok(reportViewModel);
         }
 
-        [HttpPost("all")]
-        public async Task<IActionResult> GetAllAsync(GetAllReportsQuery getAllReportsQuery)
+        [Cached(15)]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllAsync(short pageNumber, byte pageSize)
         {
+            var getAllReportsQuery = new GetAllReportsQuery()
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
             var reports = await _mediator.Send(getAllReportsQuery);
 
             var reportsPage = _mapper.Map<PageViewModel<ShortReportViewModel>>(reports);
@@ -41,6 +50,7 @@ namespace Communications.Api.Controllers.Reports
             return Ok(reportsPage);
         }
 
+        [Cached]
         [HttpGet("search/{query}")]
         public async Task<IActionResult> SearchByQueryAsync(string query)
         {
