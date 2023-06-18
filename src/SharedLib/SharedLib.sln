@@ -5,7 +5,9 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLib.Kafka", "SharedLib.Kafka\SharedLib.Kafka.csproj", "{104EF403-7182-42C9-ACD2-616322B7268F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLib.ElasticSearch", "SharedLib.ElasticSearch\SharedLib.ElasticSearch.csproj", "{B454582E-FBCC-40DF-86C2-7AB01F0270FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLib.ElasticSearch", "SharedLib.ElasticSearch\SharedLib.ElasticSearch.csproj", "{B454582E-FBCC-40DF-86C2-7AB01F0270FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLib.Redis", "SharedLib.Redis\SharedLib.Redis.csproj", "{B93B4C1B-36D1-49D3-8A6E-3DA5559D1244}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B454582E-FBCC-40DF-86C2-7AB01F0270FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B454582E-FBCC-40DF-86C2-7AB01F0270FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B454582E-FBCC-40DF-86C2-7AB01F0270FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B93B4C1B-36D1-49D3-8A6E-3DA5559D1244}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B93B4C1B-36D1-49D3-8A6E-3DA5559D1244}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B93B4C1B-36D1-49D3-8A6E-3DA5559D1244}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B93B4C1B-36D1-49D3-8A6E-3DA5559D1244}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

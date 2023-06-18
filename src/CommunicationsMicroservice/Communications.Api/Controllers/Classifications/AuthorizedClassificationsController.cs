@@ -4,6 +4,7 @@ using Communications.Api.ViewModels.Pagination;
 using Communications.Application.Classifications.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedLib.Redis.Attributes;
 
 namespace Communications.Api.Controllers.Classifications;
 
@@ -20,9 +21,16 @@ public class AuthorizedClassificationsController : ControllerBase
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    [HttpPost("all")]
-    public async Task<IActionResult> GetAllAsync(GetAllClassificationsQuery getAllClassificationsQuery)
+    [Cached]
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAllAsync(short pageNumber, byte pageSize)
     {
+        var getAllClassificationsQuery = new GetAllClassificationsQuery()
+        {
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
+
         var classifications = await _mediator.Send(getAllClassificationsQuery);
         var classificationsViewModel = _mapper.Map<PageViewModel<ClassificationViewModel>>(classifications);
 

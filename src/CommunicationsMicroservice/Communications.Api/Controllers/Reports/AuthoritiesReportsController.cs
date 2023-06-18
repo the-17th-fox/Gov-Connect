@@ -4,6 +4,7 @@ using Communications.Api.ViewModels.Reports;
 using Communications.Application.Reports.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedLib.Redis.Attributes;
 
 namespace Communications.Api.Controllers.Reports
 {
@@ -20,9 +21,16 @@ namespace Communications.Api.Controllers.Reports
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpPost("pending")]
-        public async Task<IActionResult> GetAllPendingAsync(GetAllPendingReportsQuery getAllPendingReportsQuery)
+        [Cached(5)]
+        [HttpGet("pending")]
+        public async Task<IActionResult> GetAllPendingAsync(short pageNumber, byte pageSize)
         {
+            var getAllPendingReportsQuery = new GetAllPendingReportsQuery()
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
             var reports = await _mediator.Send(getAllPendingReportsQuery);
 
             var reportsPage = _mapper.Map<PageViewModel<ShortReportViewModel>>(reports);

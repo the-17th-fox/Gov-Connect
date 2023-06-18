@@ -9,6 +9,7 @@ using Communications.SignalR.Hubs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using SharedLib.Redis.Attributes;
 
 namespace Communications.Api.Controllers.Replies
 {
@@ -55,9 +56,16 @@ namespace Communications.Api.Controllers.Replies
             return Ok();
         }
 
-        [HttpPost("all")]
-        public async Task<IActionResult> GetAllAsync(GetAllRepliesQuery getAllRepliesQuery)
+        [Cached]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllAsync(short pageNumber, byte pageSize)
         {
+            var getAllRepliesQuery = new GetAllRepliesQuery()
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
             var replies = await _mediator.Send(getAllRepliesQuery);
 
             var repliesPage = _mapper.Map<PageViewModel<ShortReplyViewModel>>(replies); 
@@ -65,6 +73,7 @@ namespace Communications.Api.Controllers.Replies
             return Ok(repliesPage);
         }
 
+        [Cached(10)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {

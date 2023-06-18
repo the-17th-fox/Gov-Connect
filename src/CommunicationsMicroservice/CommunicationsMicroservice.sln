@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Communications.SignalR", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLib.ElasticSearch", "..\SharedLib\SharedLib.ElasticSearch\SharedLib.ElasticSearch.csproj", "{C62D249F-2389-4C95-9DE4-096471F72B62}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLib.Redis", "..\SharedLib\SharedLib.Redis\SharedLib.Redis.csproj", "{2876A1F8-3793-4212-AB4F-D27305592DB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{C62D249F-2389-4C95-9DE4-096471F72B62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C62D249F-2389-4C95-9DE4-096471F72B62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C62D249F-2389-4C95-9DE4-096471F72B62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2876A1F8-3793-4212-AB4F-D27305592DB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2876A1F8-3793-4212-AB4F-D27305592DB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2876A1F8-3793-4212-AB4F-D27305592DB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2876A1F8-3793-4212-AB4F-D27305592DB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

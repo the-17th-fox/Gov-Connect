@@ -5,6 +5,7 @@ using Communications.Application.Notifications.Queries;
 using Communications.Application.Notifications.Queries.GetAllNotifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedLib.Redis.Attributes;
 
 namespace Communications.Api.Controllers.Notifications
 {
@@ -21,6 +22,7 @@ namespace Communications.Api.Controllers.Notifications
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        [Cached(10)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
@@ -31,9 +33,16 @@ namespace Communications.Api.Controllers.Notifications
             return Ok(notificationViewModel);
         }
 
-        [HttpPost("all")]
-        public async Task<IActionResult> GetAllAsync(GetAllNotificationsQuery getAllNotificationsQuery)
+        [Cached(10)]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllAsync(short pageNumber, byte pageSize)
         {
+            var getAllNotificationsQuery = new GetAllNotificationsQuery()
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
             var notifications = await _mediator.Send(getAllNotificationsQuery);
 
             var notificationsPage = _mapper.Map<PageViewModel<ShortNotificationViewModel>>(notifications);
@@ -41,6 +50,7 @@ namespace Communications.Api.Controllers.Notifications
             return Ok(notificationsPage);
         }
 
+        [Cached(15)]
         [HttpGet("search/{query}")]
         public async Task<IActionResult> SearchByQueryAsync(string query)
         {

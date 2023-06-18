@@ -5,6 +5,7 @@ using Communications.Application.Classifications.Commands.DeleteClassification;
 using Communications.Application.Classifications.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedLib.Redis.Attributes;
 
 namespace Communications.Api.Controllers.Classifications
 {
@@ -21,6 +22,7 @@ namespace Communications.Api.Controllers.Classifications
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        [Cached]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {

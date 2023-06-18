@@ -5,13 +5,14 @@ using Communications.Application.ViewModels.CiviliansInfoConsistency;
 using Hangfire;
 using SharedLib.ElasticSearch.Extensions;
 using SharedLib.Kafka.Configurations;
+using SharedLib.Redis.Configurations;
 using System.Reflection;
 
 namespace Communications.Api.Configuration;
 
 internal static class UtilitiesConfiguration
 {
-    internal static IServiceCollection ConfigureUtilities(this IServiceCollection services, ConfigurationManager configuration)
+    internal static IServiceCollection ConfigureUtilities(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAutoMapper(opt =>
         {
@@ -33,6 +34,8 @@ internal static class UtilitiesConfiguration
 
         services.ConfigureElasticSearchService(configuration);
 
+        services.ConfigureRedisCaching(configuration);
+
         return services;
     }
 
@@ -49,13 +52,28 @@ internal static class UtilitiesConfiguration
         return services;
     }
 
-    private static IServiceCollection ConfigureElasticSearchService(this IServiceCollection services, ConfigurationManager configuration)
+    private static IServiceCollection ConfigureElasticSearchService(this IServiceCollection services, IConfiguration configuration)
     {
         var uri = configuration.GetConnectionString("ElasticSearchNode");
         services.ConfigureElasticSearchClient(uri);
 
-        var elasticSearchSection = configuration.GetSection("ElasticSearch");
+        var elasticSearchSection = configuration.GetSection("ElasticSearchConfiguration");
         services.Configure<ElasticSearchIndexesOptions>(elasticSearchSection);
+
+        return services;
+    }
+
+    private static IServiceCollection ConfigureRedisCaching(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddRedis(configuration.GetConnectionString("RedisService"));
+
+        var redisSection = configuration.GetSection("RedisServiceConfiguration");
+
+        services.AddRedisConfiguration(opt =>
+        {
+            opt.IsEnabled = redisSection.GetValue<bool>("IsEnabled");
+            opt.DefaultTTLSeconds = redisSection.GetValue<short>("DefaultTTLSeconds");
+        });
 
         return services;
     }

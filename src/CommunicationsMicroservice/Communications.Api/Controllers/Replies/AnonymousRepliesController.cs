@@ -3,6 +3,7 @@ using Communications.Api.ViewModels.Replies;
 using Communications.Application.Replies.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedLib.Redis.Attributes;
 
 namespace Communications.Api.Controllers.Replies
 {
@@ -19,6 +20,7 @@ namespace Communications.Api.Controllers.Replies
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        [Cached(5)]
         [HttpGet("reports/{reportId}")]
         public async Task<IActionResult> GetByReportIdAsync(Guid reportId)
         {
