@@ -5,6 +5,7 @@ using Authorities.Core.Interfaces;
 using Authorities.Core.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SharedLib.ExceptionsHandler.CustomExceptions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -82,16 +83,16 @@ namespace Authorities.Application.Services
             var principal = GetClaimsPrincipalFromToken(tokensPairViewModel.AccessToken);
             if (principal == null)
             {
-                throw new ArgumentException("Invalid access token or refresh token.");
+                throw new BadRequestException("Invalid access token or refresh token.");
             }
 
             var user = await FindUserByClaimsAsync(principal);
 
-            ValidateRefreshToken(user?.RefreshToken, tokensPairViewModel.RefreshToken);
+            ValidateRefreshToken(user.RefreshToken, tokensPairViewModel.RefreshToken);
 
-            var newRefreshToken = await IssueRefreshTokenAsync(user!.Id);
+            var newRefreshToken = await IssueRefreshTokenAsync(user.Id);
 
-            var newAccessToken = CreateAccessToken(principal!.Claims.ToList());
+            var newAccessToken = CreateAccessToken(principal.Claims.ToList());
 
             return new()
             {
@@ -132,40 +133,39 @@ namespace Authorities.Application.Services
             string? userIdAsString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrWhiteSpace(userIdAsString))
             {
-                throw new ArgumentException("Couldn't get the user's id from the claims.");
+                throw new BadRequestException("Couldn't get the user's id from the claims.");
             }
 
-            Guid userId = Guid.Empty;
-            if (!Guid.TryParse(userIdAsString, out userId))
+            if (!Guid.TryParse(userIdAsString, out var userId))
             {
-                throw new ArgumentException("Couldn't parse a userId");
+                throw new BadRequestException("Couldn't parse a userId.");
             }
 
             var user = await _unitOfWork.UsersRepository.GetByIdAsync(userId);
 
             if (user == null)
             {
-                throw new KeyNotFoundException("There is no user with the specified id.");
+                throw new NotFoundException("There is no user with the specified id.");
             }
 
-            return user!;
+            return user;
         }
 
         private static void ValidateRefreshToken(RefreshToken? storedRefreshToken, Guid providedRefreshToken)
         {
             if (storedRefreshToken == null)
             {
-                throw new ArgumentException("User's refresh token is null.");
+                throw new BadRequestException("User's refresh token is null.");
             }
 
             if (!storedRefreshToken.IsActive)
             {
-                throw new ArgumentException("User's refresh token is expired or revoked.");
+                throw new BadRequestException("User's refresh token is expired or revoked.");
             }
 
             if (!storedRefreshToken.Token.Equals(providedRefreshToken))
             {
-                throw new ArgumentException("User's refresh token doesn't equal to the provided refresh token.");
+                throw new BadRequestException("User's refresh token doesn't equal to the provided refresh token.");
             }
         }
 
@@ -177,7 +177,7 @@ namespace Authorities.Application.Services
             var refreshToken = await _unitOfWork.TokensRepository.GetByUserIdAsync(userId);
             if (refreshToken is null)
             {
-                throw new KeyNotFoundException("Refresh token with specified user id hasn't been found.");
+                throw new NotFoundException("Refresh token with specified user id hasn't been found.");
             }
 
             _unitOfWork.TokensRepository.RevokeRefreshToken(refreshToken);
