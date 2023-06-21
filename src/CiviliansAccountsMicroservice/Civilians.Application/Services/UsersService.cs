@@ -6,6 +6,7 @@ using Civilians.Core.Interfaces;
 using Civilians.Core.Misc;
 using Civilians.Core.Models;
 using Microsoft.AspNetCore.Identity;
+using SharedLib.ExceptionsHandler.CustomExceptions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -30,7 +31,7 @@ namespace Civilians.Application.Services
         {
             if (registrationParams.PassportRegionCode == RegionCodes.Undefined)
             {
-                throw new ArgumentException("Region code is undefined.");
+                throw new BadRequestException("Region code is undefined.");
             }
 
             var user = new User()
@@ -72,13 +73,10 @@ namespace Civilians.Application.Services
             var user = await _unitOfWork.UsersRepository.GetByEmailAsync(loginViewModel.Email);
             if (user == null)
             {
-                throw new KeyNotFoundException("There is no user with the specified email.");
+                throw new NotFoundException("There is no user with the specified email.");
             }
 
-            if (user.IsDeleted || user.LockoutEnabled)
-            {
-                throw new ArgumentException("User is deleted or blocked.");
-            }    
+            CheckIsBlockedOrDeleted(user);
 
             var isCorrect = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
             if (!isCorrect)
@@ -164,26 +162,11 @@ namespace Civilians.Application.Services
         public async Task<IList<string>> GetRolesAsync(User user) 
             => await _userManager.GetRolesAsync(user);
 
-        private async Task<User> GetIfExistsAsync(Guid id)
-        {
-            var user = await _unitOfWork.UsersRepository.GetByIdAsync(id);
-
-            if (user == null)
-            {
-                throw new KeyNotFoundException("User with the specified id couldn't been found.");
-            }
-
-            return user;
-        }
-
         public async Task ChangeRoleAsync(Guid id, string roleName)
         {
             var user = await GetIfExistsAsync(id);
 
-            if (user.IsDeleted || user.LockoutEnabled)
-            {
-                throw new ArgumentException("User is deleted or blocked.");
-            }
+            CheckIsBlockedOrDeleted(user);
 
             var userRoles = await _userManager.GetRolesAsync(user);
             var result = await _userManager.RemoveFromRolesAsync(user, userRoles);
@@ -205,7 +188,7 @@ namespace Civilians.Application.Services
 
             if (user.LockoutEnabled)
             {
-                throw new ArgumentException("User has been already blocked.");
+                throw new BadRequestException("User has been already blocked.");
             }
 
             user.IsBlocked = true;
@@ -227,12 +210,32 @@ namespace Civilians.Application.Services
             await UpdateAsync(user);
         }
 
+        private async Task<User> GetIfExistsAsync(Guid id)
+        {
+            var user = await _unitOfWork.UsersRepository.GetByIdAsync(id);
+
+            if (user == null)
+            {
+                throw new NotFoundException("User with the specified id couldn't been found.");
+            }
+
+            return user;
+        }
+
         private async Task UpdateAsync(User user)
         {
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
                 throw new Exception("User updating has failed: " + result.Errors.First<IdentityError>().Description);
+            }
+        }
+
+        private static void CheckIsBlockedOrDeleted(User user)
+        {
+            if (user.IsDeleted || user.LockoutEnabled)
+            {
+                throw new BadRequestException("User is deleted or blocked.");
             }
         }
     }
