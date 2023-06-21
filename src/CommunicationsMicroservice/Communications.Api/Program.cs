@@ -2,6 +2,7 @@ using Communications.Api.Configuration;
 using Communications.Api.Middlewares;
 using Communications.SignalR.Hubs;
 using Hangfire;
+using SharedLib.ExceptionsHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
