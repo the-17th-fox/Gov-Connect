@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Communications.Api.Utilities;
 using Communications.Api.ViewModels.Pagination;
 using Communications.Api.ViewModels.Reports;
 using Communications.Application.Reports.Commands;
@@ -21,10 +20,6 @@ namespace Communications.Api.Controllers.Reports
 
         private readonly IHubContext<ReportsHub> _reportsHubContext;
 
-        private Guid _userId;
-        private string _firstName = string.Empty;
-        private string _patronymic = string.Empty;
-
         public CiviliansReportsController(
             IMediator mediator, 
             IMapper mapper, 
@@ -36,14 +31,16 @@ namespace Communications.Api.Controllers.Reports
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateReportViewModel createReportViewModel)
+        public async Task<IActionResult> CreateAsync(
+            [FromHeader(Name = "fname")] string firstName,
+            [FromHeader(Name = "pname")] string patronymic,
+            [FromHeader(Name = "uid")] Guid userId,
+            CreateReportViewModel createReportViewModel)
         {
-            InitializeRequestProperties();
-
             var createReportCommand = _mapper.Map<CreateReportCommand>(createReportViewModel);
-            createReportCommand.CivilianId = _userId;
-            createReportCommand.FirstName = _firstName;
-            createReportCommand.Patronymic = _patronymic;
+            createReportCommand.CivilianId = userId;
+            createReportCommand.FirstName = firstName;
+            createReportCommand.Patronymic = patronymic;
 
             await _mediator.Send(createReportCommand);
 
@@ -72,15 +69,16 @@ namespace Communications.Api.Controllers.Reports
         }
 
         [HttpGet("personal")]
-        public async Task<IActionResult> GetAllByCivilianAsync(short pageNumber, byte pageSize)
+        public async Task<IActionResult> GetAllByCivilianAsync(
+            [FromHeader(Name = "uid")] Guid userId, 
+            short pageNumber, 
+            byte pageSize)
         {
-            InitializeRequestProperties();
-
             var getAllReportsByCivilianQuery = new GetAllReportsByCivilianQuery()
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
-                CivilianId = _userId
+                CivilianId = userId
             };
 
             var reports = await _mediator.Send(getAllReportsByCivilianQuery);
@@ -88,13 +86,6 @@ namespace Communications.Api.Controllers.Reports
             var reportsPage = _mapper.Map<PageViewModel<ShortReportViewModel>>(reports);
 
             return Ok(reportsPage);
-        }
-
-        private void InitializeRequestProperties()
-        {
-            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
-            _firstName = HttpContext.GetValueFromHeader("fname");
-            _patronymic = HttpContext.GetValueFromHeader("pname");
         }
 
         private async Task SendReportToGroupAsync(CreateReportCommand report)

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Communications.Api.Utilities;
 using Communications.Api.ViewModels.Pagination;
 using Communications.Api.ViewModels.Replies;
 using Communications.Application.Replies.Commands;
@@ -22,9 +21,6 @@ namespace Communications.Api.Controllers.Replies
 
         private readonly IHubContext<RepliesHub> _repliesHubContext;
 
-        private string _organization = string.Empty;
-        private Guid _userId;
-
         public AuthoritiesRepliesController(IMediator mediator, IMapper mapper, IHubContext<RepliesHub> repliesHubContext)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -33,13 +29,14 @@ namespace Communications.Api.Controllers.Replies
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateReplyViewModel createReplyViewModel)
+        public async Task<IActionResult> CreateAsync(
+            [FromHeader(Name = "role")] string organization,
+            [FromHeader(Name = "uid")] Guid userId, 
+            CreateReplyViewModel createReplyViewModel)
         {
-            InitializeRequestProperties();
-
             var createReplyCommand = _mapper.Map<CreateReplyCommand>(createReplyViewModel);
-            createReplyCommand.AuthorityId = _userId;
-            createReplyCommand.Organization = _organization;
+            createReplyCommand.AuthorityId = userId;
+            createReplyCommand.Organization = organization;
 
             await _mediator.Send(createReplyCommand);
 
@@ -82,13 +79,6 @@ namespace Communications.Api.Controllers.Replies
             var replyViewModel = _mapper.Map<PublicReplyViewModel>(reply);
 
             return Ok(replyViewModel);
-        }
-
-        private void InitializeRequestProperties()
-        {
-            _organization = HttpContext.GetValueFromHeader("role");
-
-            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
         }
 
         private async Task SendReplyToGroupAsync(CreateReplyCommand reply)

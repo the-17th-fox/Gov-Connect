@@ -1,3 +1,4 @@
+using System.Net;
 using Communications.Api.Configuration;
 using Communications.Api.Middlewares;
 using Communications.SignalR.Hubs;
