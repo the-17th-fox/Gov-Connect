@@ -73,7 +73,7 @@ namespace Civilians.Application.Services
             var user = await _unitOfWork.UsersRepository.GetByEmailAsync(loginViewModel.Email);
             if (user == null)
             {
-                throw new NotFoundException("There is no user with the specified email.");
+                throw new UnauthorizedAccessException("There is no user with the specified email.");
             }
 
             CheckIsBlockedOrDeleted(user);

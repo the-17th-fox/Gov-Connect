@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Authorities.Infrastructure.Utilities
 {
@@ -30,6 +30,7 @@ namespace Authorities.Infrastructure.Utilities
         /// <param name="query"></param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
+        /// <param name="sortingExpression"></param>
         /// <returns></returns>
         public static async Task<PagedList<T>> ToPagedListAsync<TKey>(
             IQueryable<T> query,

@@ -1,7 +1,7 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Authorities.Application.ViewModels.Tokens;
+﻿using Authorities.Application.ViewModels.Tokens;
 using Authorities.Core.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Authorities.Application.Interfaces
 {

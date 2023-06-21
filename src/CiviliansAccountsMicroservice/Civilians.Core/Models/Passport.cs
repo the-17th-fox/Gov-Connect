@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Civilians.Core.Misc;
+﻿using Civilians.Core.Misc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Civilians.Core.Models
 {

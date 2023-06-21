@@ -5,7 +5,7 @@ namespace Authorities.Application.ViewModels.Tokens
     /// <summary>
     /// TODO: Add detailed validation
     /// </summary>
-   
+
     public class TokensRefreshingViewModel
     {
         [Required]
