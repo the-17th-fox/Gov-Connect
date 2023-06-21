@@ -27,7 +27,10 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseMiddleware<GlobalExceptionsHandler>();
+    app.UseMiddleware<GlobalExceptionsHandler>(new[]
+    {
+        new ExceptionAndStatusPair(typeof(UnauthorizedAccessException), (int)HttpStatusCode.Unauthorized)
+    });
 }
 
 await app.ConfigureElasticIndexes(configuration, elasticSearchSectionPath: "ElasticSearchConfiguration");
