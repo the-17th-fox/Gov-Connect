@@ -9,13 +9,18 @@ public class GlobalExceptionsHandler
 {
     private readonly RequestDelegate _next;
 
-    private readonly List<ExceptionAndStatusPair> _exceptions;
+    private readonly List<ExceptionAndStatusPair> _exceptions = new()
+    {
+        new(typeof(NotFoundException), (int)HttpStatusCode.NotFound),
+        new(typeof(BadRequestException), (int)HttpStatusCode.BadRequest),
+        new(typeof(AlreadyExistsException), (int)HttpStatusCode.BadRequest)
+    };
 
-    public GlobalExceptionsHandler(RequestDelegate next, params ExceptionAndStatusPair[] extraExceptionsTypes)
+    public GlobalExceptionsHandler(RequestDelegate next, ICollection<ExceptionAndStatusPair>? additionalExceptions)
     {
         _next = next;
 
-        _exceptions = AssignExceptions(extraExceptionsTypes);
+        AssignExceptions(additionalExceptions);
     }
 
     public async Task Invoke(HttpContext context)
@@ -43,30 +48,22 @@ public class GlobalExceptionsHandler
         }
     }
 
-    private static List<ExceptionAndStatusPair> AssignExceptions(params ExceptionAndStatusPair[] extraExceptionsTypes)
+    private void AssignExceptions(in ICollection<ExceptionAndStatusPair>? extraExceptionsTypes)
     {
-        var exceptions = new List<ExceptionAndStatusPair>()
+        if (extraExceptionsTypes != null && extraExceptionsTypes.Count > 0)
         {
-            new(typeof(NotFoundException), (int)HttpStatusCode.NotFound),
-            new(typeof(BadRequestException), (int)HttpStatusCode.BadRequest),
-            new(typeof(AlreadyExistsException), (int)HttpStatusCode.BadRequest)
-        };
-
-        if (extraExceptionsTypes.Length > 0)
-        {
-            exceptions.AddRange(extraExceptionsTypes);
+            _exceptions.AddRange(extraExceptionsTypes);
         }
-
-        return exceptions;
     }
 
     private int ExceptionsSwitch(Type exceptionType)
     {
-        ExceptionAndStatusPair? exception = _exceptions.FirstOrDefault(ep => ep.ExceptionType == exceptionType);
+        var exists = _exceptions.Exists(ep => ep.ExceptionType == exceptionType);
 
-        if (exception.HasValue)
+        if (exists)
         {
-            return exception.Value.ExceptionStatusCode;
+            return _exceptions.Find(ep => ep.ExceptionType == exceptionType)
+                .ExceptionStatusCode;
         }
 
         return (int)HttpStatusCode.InternalServerError;
