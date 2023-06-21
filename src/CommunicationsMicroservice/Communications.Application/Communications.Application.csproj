@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SharedLib\SharedLib.ElasticSearch\SharedLib.ElasticSearch.csproj" />
+    <ProjectReference Include="..\..\SharedLib\SharedLib.ExceptionsHandler\SharedLib.ExceptionsHandler.csproj" />
     <ProjectReference Include="..\Communications.Core\Communications.Core.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
-﻿using Communications.Core.CustomExceptions;
-using Communications.Core.Interfaces;
+﻿using Communications.Core.Interfaces;
 using Communications.Core.Models;
 using MediatR;
+using SharedLib.ExceptionsHandler.CustomExceptions;
 
 namespace Communications.Application.Classifications.Commands;
 

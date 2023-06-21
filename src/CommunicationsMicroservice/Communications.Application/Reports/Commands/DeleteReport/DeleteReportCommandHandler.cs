@@ -1,10 +1,10 @@
 ﻿using Communications.Application.Utilities;
-using Communications.Core.CustomExceptions;
 using Communications.Core.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Nest;
 using SharedLib.ElasticSearch.Extensions;
+using SharedLib.ExceptionsHandler.CustomExceptions;
 
 namespace Communications.Application.Reports.Commands;
 
