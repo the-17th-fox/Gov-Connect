@@ -53,6 +53,8 @@ It allows state authorities to create global notifications (example: hurricane, 
 | `Elastic Search` | Is used for **indexing** Reports and Notifications main properties. Also, it is configured for **searching them by their Header** |
 | `SignalR` | Is used for **real-time viewing** of new Reports, Replies and Notifications |
 | `Ocelot` | Is used for **Gateway operating**, handles **headers and claims transfering** |
+| `Kubernetes` | Is used for **orchestration** of the project. Uses config in the src folder |
+| `Github Actions` | Is used for **Bulding, Testing (CI) and Deploing (CD)** the app |
 
 #### System that keeps users info in Communications-DB consistent
 | Tool | Description |
