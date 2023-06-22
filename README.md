@@ -4,8 +4,12 @@ GovConnect — is an app that connects government agencies with civilians via mi
 
 It allows state authorities to create global notifications (example: hurricane, storm, extreme tempreture, etc) and respond to the civilians reports (consequently, citizens have the opportunity to create them).
 
-## Contents
+### Contents
+
 1. [Features](#Features)
+2. [Frameworks and Tools](#Frameworks-and-Tools)
+3. [Structure](#Structure)
+4. [How To Run](#How-To-Run)
 
 # Features
 
@@ -131,7 +135,7 @@ To run this project you need to complete next steps.
 ```gitattributes
 git clone https://github.com/the-17th-fox/Gov-Connect.git
 ```
-2. In the /src/ folder using Docker, run docker-compose files:
+2. In the /src/ folder using Docker, run docker-compose files (`-d` starts containers in detached mode):
 ```gitattributes
 docker compose -f docker-compose.yml -f docker-compose.override.yml run -d
 ```
