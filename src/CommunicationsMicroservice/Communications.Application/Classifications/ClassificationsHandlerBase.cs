@@ -1,6 +1,6 @@
-﻿using Communications.Core.CustomExceptions;
-using Communications.Core.Interfaces;
+﻿using Communications.Core.Interfaces;
 using Communications.Core.Models;
+using SharedLib.ExceptionsHandler.CustomExceptions;
 
 namespace Communications.Application.Classifications;
 

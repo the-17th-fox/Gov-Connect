@@ -1,7 +1,9 @@
+using System.Net;
 using Communications.Api.Configuration;
 using Communications.Api.Middlewares;
 using Communications.SignalR.Hubs;
 using Hangfire;
+using SharedLib.ExceptionsHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -26,7 +28,10 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseMiddleware<GlobalExceptionsHandler>();
+    app.UseMiddleware<GlobalExceptionsHandler>(new[]
+    {
+        new ExceptionAndStatusPair(typeof(UnauthorizedAccessException), (int)HttpStatusCode.Unauthorized)
+    });
 }
 
 await app.ConfigureElasticIndexes(configuration, elasticSearchSectionPath: "ElasticSearchConfiguration");

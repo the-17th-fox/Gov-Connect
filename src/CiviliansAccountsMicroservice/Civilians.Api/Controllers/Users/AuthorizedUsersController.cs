@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Civilians.Api.Utilities;
 using Civilians.Api.ViewModels.Users;
 using Civilians.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +13,6 @@ namespace Civilians.Api.Controllers.Users
         private readonly ITokensService _tokensService;
         private readonly IMapper _mapper;
 
-        private Guid _userId;
-
         public AuthorizedUsersController(IUsersService usersService, ITokensService tokensService, IMapper mapper)
         {
             _usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
@@ -24,30 +21,21 @@ namespace Civilians.Api.Controllers.Users
         }
 
         [HttpPost("logout")]
-        public async Task<IActionResult> LogoutAsync()
+        public async Task<IActionResult> LogoutAsync([FromHeader(Name = "uid")] Guid userId)
         {
-            InitializeRequestProperties();
-
-            await _tokensService.RevokeRefreshTokenAsync(_userId);
+            await _tokensService.RevokeRefreshTokenAsync(userId);
 
             return Ok();
         }
 
         [HttpGet("personal")]
-        public async Task<IActionResult> GetMyInfoAsync()
+        public async Task<IActionResult> GetMyInfoAsync([FromHeader(Name = "uid")] Guid userId)
         {
-            InitializeRequestProperties();
-
-            var user = await _usersService.GetByIdAsync(_userId);
+            var user = await _usersService.GetByIdAsync(userId);
             var userViewModel = _mapper.Map<UserViewModel>(user);
             userViewModel.Roles = await _usersService.GetRolesAsync(user);
 
             return Ok(userViewModel);
-        }
-
-        private void InitializeRequestProperties()
-        {
-            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
         }
     }
 }

@@ -21,6 +21,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SharedLib\SharedLib.ExceptionsHandler\SharedLib.ExceptionsHandler.csproj" />
     <ProjectReference Include="..\Authorities.Application\Authorities.Application.csproj" />
     <ProjectReference Include="..\Authorities.Core\Authorities.Core.csproj" />
     <ProjectReference Include="..\Authorities.Infrastructure\Authorities.Infrastructure.csproj" />
@@ -28,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Configuration\" />
-    <Folder Include="Utilities\" />
   </ItemGroup>
 
 </Project>

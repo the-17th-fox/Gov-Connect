@@ -6,6 +6,7 @@ using Authorities.Core.Auth;
 using Authorities.Core.Interfaces;
 using Authorities.Core.Models;
 using Microsoft.AspNetCore.Identity;
+using SharedLib.ExceptionsHandler.CustomExceptions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -47,13 +48,10 @@ namespace Authorities.Application.Services
             var user = await _unitOfWork.UsersRepository.GetByEmailAsync(loginViewModel.Email);
             if (user == null)
             {
-                throw new KeyNotFoundException("There is no user with the specified email.");
+                throw new UnauthorizedAccessException("There is no user with the specified email.");
             }
 
-            if (user.IsDeleted || user.LockoutEnabled)
-            {
-                throw new ArgumentException("User is deleted or blocked.");
-            }
+            CheckIsBlockedOrDeleted(user);
 
             var isCorrect = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
             if (!isCorrect)
@@ -148,10 +146,7 @@ namespace Authorities.Application.Services
         {
             var user = await GetIfExistsAsync(id);
 
-            if (user.IsDeleted || user.LockoutEnabled)
-            {
-                throw new ArgumentException("User is deleted or blocked.");
-            }
+            CheckIsBlockedOrDeleted(user);
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -179,10 +174,7 @@ namespace Authorities.Application.Services
         {
             var user = await GetIfExistsAsync(id);
 
-            if (user.IsDeleted || user.LockoutEnabled)
-            {
-                throw new ArgumentException("User is deleted or blocked.");
-            }
+            CheckIsBlockedOrDeleted(user);
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -195,6 +187,7 @@ namespace Authorities.Application.Services
         /// Removes all user's roles without changing user's confirmation status.
         /// </summary>
         /// <param name="user"></param>
+        /// <param name="roles"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         private async Task RemoveRolesAsync(User user, IList<string> roles)
@@ -217,7 +210,7 @@ namespace Authorities.Application.Services
 
             if (user.LockoutEnabled)
             {
-                throw new ArgumentException("User has been already blocked.");
+                throw new BadRequestException("User has been already blocked.");
             }
 
             user.IsBlocked = true;
@@ -231,7 +224,7 @@ namespace Authorities.Application.Services
 
             if (!user.LockoutEnabled)
             {
-                throw new ArgumentException("User isn't blocked.");
+                throw new BadRequestException("User isn't blocked.");
             }
 
             user.IsBlocked = false;
@@ -245,7 +238,7 @@ namespace Authorities.Application.Services
 
             if (user == null)
             {
-                throw new KeyNotFoundException("User with the specified id couldn't been found.");
+                throw new NotFoundException("User with the specified id couldn't been found.");
             }
 
             return user;
@@ -264,6 +257,14 @@ namespace Authorities.Application.Services
             if (!result.Succeeded)
             {
                 throw new Exception("User updating has failed: " + result.Errors.First<IdentityError>().Description);
+            }
+        }
+
+        private static void CheckIsBlockedOrDeleted(User user)
+        {
+            if (user.IsDeleted || user.LockoutEnabled)
+            {
+                throw new BadRequestException("User is deleted or blocked.");
             }
         }
     }

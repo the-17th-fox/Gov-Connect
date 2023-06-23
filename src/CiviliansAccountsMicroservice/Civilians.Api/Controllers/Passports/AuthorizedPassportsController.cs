@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Civilians.Api.Utilities;
 using Civilians.Api.ViewModels.Passports;
 using Civilians.Application.Interfaces;
 using Civilians.Application.ViewModels.Passports;
@@ -14,8 +13,6 @@ namespace Civilians.Api.Controllers.Passports
         private readonly IPassportsService _passportsService;
         private readonly IMapper _mapper;
 
-        private Guid _userId;
-
         public AuthorizedPassportsController(IPassportsService passportsService, IMapper mapper)
         {
             _passportsService = passportsService ?? throw new ArgumentNullException(nameof(passportsService));
@@ -23,29 +20,22 @@ namespace Civilians.Api.Controllers.Passports
         }
 
         [HttpGet("personal")]
-        public async Task<IActionResult> GetMyPassportAsync()
+        public async Task<IActionResult> GetMyPassportAsync([FromHeader(Name = "uid")] Guid userId)
         {
-            InitializeRequestProperties();
-
-            var passport = await _passportsService.GetByUserIdAsync(_userId);
+            var passport = await _passportsService.GetByUserIdAsync(userId);
             var passportViewModel = _mapper.Map<PassportViewModel>(passport);
 
             return Ok(passportViewModel);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdatePassportAsync(UpdatePassportViewModel updatePassportViewModel)
+        public async Task<IActionResult> UpdatePassportAsync(
+            [FromHeader(Name = "uid")] Guid userId, 
+            UpdatePassportViewModel updatePassportViewModel)
         {
-            InitializeRequestProperties();
-
-            await _passportsService.UpdateAsync(_userId, updatePassportViewModel);
+            await _passportsService.UpdateAsync(userId, updatePassportViewModel);
 
             return Ok();
-        }
-
-        private void InitializeRequestProperties()
-        {
-            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
         }
     }
 }

@@ -4,6 +4,7 @@ using Civilians.Application.ViewModels.Passports;
 using Civilians.Core.Interfaces;
 using Civilians.Core.Misc;
 using Civilians.Core.Models;
+using SharedLib.ExceptionsHandler.CustomExceptions;
 using SharedLib.Kafka.Interfaces;
 
 namespace Civilians.Application.Services
@@ -26,7 +27,7 @@ namespace Civilians.Application.Services
             var passport = await  _unitOfWork.PassportsRepository.GetByUserIdAsync(userId);
             if (passport == null)
             {
-                throw new KeyNotFoundException("Passport with the specified user id hasn't been found.");
+                throw new NotFoundException("Passport with the specified user id hasn't been found.");
             }
 
             return passport;
@@ -53,7 +54,7 @@ namespace Civilians.Application.Services
 
             if (passportViewModel.RegionCode == RegionCodes.Undefined)
             {
-                throw new ArgumentException("Region code is undefined.");
+                throw new BadRequestException("Region code is undefined.");
             }
 
             _mapper.Map(passportViewModel, passport);

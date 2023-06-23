@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Communications.Core.CustomExceptions;
 using Communications.Core.Interfaces;
 using Communications.Core.Misc;
 using Communications.Core.Models;
 using MediatR;
+using SharedLib.ExceptionsHandler.CustomExceptions;
 
 namespace Communications.Application.Replies.Commands;
 

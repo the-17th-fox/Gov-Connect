@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SharedLib\SharedLib.ExceptionsHandler\SharedLib.ExceptionsHandler.csproj" />
     <ProjectReference Include="..\..\SharedLib\SharedLib.Kafka\SharedLib.Kafka.csproj" />
     <ProjectReference Include="..\Civilians.Core\Civilians.Core.csproj" />
   </ItemGroup>

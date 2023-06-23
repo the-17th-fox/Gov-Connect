@@ -17,4 +17,8 @@
     <ProjectReference Include="..\..\CommunicationsMicroservice\Communications.Core\Communications.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CustomExceptions\" />
+  </ItemGroup>
+
 </Project>

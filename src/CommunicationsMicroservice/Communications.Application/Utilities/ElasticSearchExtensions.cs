@@ -1,6 +1,6 @@
 ﻿using Communications.Application.ViewModels.ElasticSearch;
-using Communications.Core.CustomExceptions;
 using Nest;
+using SharedLib.ElasticSearch.CustomExceptions;
 
 namespace Communications.Application.Utilities;
 

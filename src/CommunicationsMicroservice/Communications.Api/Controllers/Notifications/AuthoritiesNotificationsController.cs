@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Communications.Api.Utilities;
 using Communications.Api.ViewModels.Notifications;
 using Communications.Application.Notifications.Commands;
 using Communications.SignalR.Extensions;
@@ -19,9 +18,6 @@ namespace Communications.Api.Controllers.Notifications
 
         private readonly IHubContext<NotificationsHub> _notificationsHubContext;
 
-        private string _organization = string.Empty;
-        private Guid _userId;
-
         public AuthoritiesNotificationsController(
             IMediator mediator, 
             IMapper mapper, 
@@ -33,13 +29,14 @@ namespace Communications.Api.Controllers.Notifications
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateNotificationViewModel createNotificationViewModel)
+        public async Task<IActionResult> CreateAsync(
+            [FromHeader(Name = "role")] string organization,
+            [FromHeader(Name = "uid")] Guid userId,
+            CreateNotificationViewModel createNotificationViewModel)
         {
-            InitializeRequestProperties();
-
             var createNotificationCommand = _mapper.Map<CreateNotificationCommand>(createNotificationViewModel);
-            createNotificationCommand.Organization = _organization;
-            createNotificationCommand.AuthorityId = _userId;
+            createNotificationCommand.Organization = organization;
+            createNotificationCommand.AuthorityId = userId;
 
             await _mediator.Send(createNotificationCommand);
 
@@ -65,13 +62,6 @@ namespace Communications.Api.Controllers.Notifications
             await _mediator.Send(new DeleteNotificationCommand() { Id = id });
 
             return Ok();
-        }
-
-        private void InitializeRequestProperties()
-        {
-            _organization = HttpContext.GetValueFromHeader("role");
-
-            _userId = Guid.Parse(HttpContext.GetValueFromHeader("uid"));
         }
 
         private async Task SendReplyToGroupAsync(CreateNotificationCommand notification)

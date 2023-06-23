@@ -25,14 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SharedLib\SharedLib.ExceptionsHandler\SharedLib.ExceptionsHandler.csproj" />
     <ProjectReference Include="..\..\SharedLib\SharedLib.Kafka\SharedLib.Kafka.csproj" />
     <ProjectReference Include="..\Civilians.Application\Civilians.Application.csproj" />
     <ProjectReference Include="..\Civilians.Core\Civilians.Core.csproj" />
     <ProjectReference Include="..\Civilians.Infrastructure\Civilians.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Utilities\" />
   </ItemGroup>
 
 </Project>

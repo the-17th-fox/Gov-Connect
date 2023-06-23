@@ -12,6 +12,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SharedLib\SharedLib.ExceptionsHandler\SharedLib.ExceptionsHandler.csproj" />
     <ProjectReference Include="..\Authorities.Core\Authorities.Core.csproj" />
   </ItemGroup>
 
