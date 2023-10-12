@@ -2,7 +2,7 @@
 
 GovConnect — is an app that connects government agencies with civilians via microservice RESTful WebAPI.
 
-It allows state authorities to create global notifications (example: hurricane, storm, extreme tempreture, etc) and respond to the civilians reports (consequently, citizens have the opportunity to create them).
+It allows state authorities to create global notifications (example: hurricane, storm, extreme temperature, etc) and respond to the civilians reports (consequently, citizens have the opportunity to create them).
 
 ### Contents
 
