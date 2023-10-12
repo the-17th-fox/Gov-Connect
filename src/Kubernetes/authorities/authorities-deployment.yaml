@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authorities
+  labels:
+    app: authorities
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authorities
+  template:
+    metadata:
+      labels:
+        app: authorities
+    spec:
+      containers:
+        - name: authorities
+          image: authorities-img
+          ports:
+            - containerPort: 9997
+          type: ClusterIP
+          envFrom:
+            - configMapRef:
+                name: authorities-configmap
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi

@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>d57b08ec-97ab-4f24-87e0-4118600f2002</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Hangfire" Version="1.8.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SharedLib\SharedLib.ElasticSearch\SharedLib.ElasticSearch.csproj" />
+    <ProjectReference Include="..\..\SharedLib\SharedLib.ExceptionsHandler\SharedLib.ExceptionsHandler.csproj" />
+    <ProjectReference Include="..\..\SharedLib\SharedLib.Redis\SharedLib.Redis.csproj" />
+    <ProjectReference Include="..\Communications.Application\Communications.Application.csproj" />
+    <ProjectReference Include="..\Communications.Core\Communications.Core.csproj" />
+    <ProjectReference Include="..\Communications.Hangfire\Communications.Hangfire.csproj" />
+    <ProjectReference Include="..\Communications.Infrastructure\Communications.Infrastructure.csproj" />
+    <ProjectReference Include="..\Communications.SignalR\Communications.SignalR.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+    <Folder Include="Middlewares\" />
+    <Folder Include="ViewModels\Classifications\" />
+    <Folder Include="ViewModels\Replies\" />
+    <Folder Include="ViewModels\Notifications\" />
+    <Folder Include="ViewModels\Pagination\" />
+  </ItemGroup>
+
+</Project>

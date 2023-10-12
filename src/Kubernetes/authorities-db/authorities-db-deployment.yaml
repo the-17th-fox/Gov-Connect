@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authorities-db
+  labels:
+    app: authorities-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authorities-db
+  template:
+    metadata:
+      labels:
+        app: authorities-db
+    spec:
+      containers:
+        - name: authorities-db
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          ports:
+            - containerPort: 9823
+          type: ClusterIP
+          envFrom:
+            - configMapRef:
+                name: authorities-db-configmap
+          volumeMounts:
+            - name: authorities-storage
+              mountPath: /var/opt/mssql/data
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+      volumes:
+        - name: authorities-db
+          persistentVolumeClaim:
+            claimName: authorities-db-pvc

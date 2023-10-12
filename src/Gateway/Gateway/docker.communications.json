@@ -1,0 +1,94 @@
+{
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:9000",
+        "RouteIsCaseSensitive": false
+    },
+    "Routes": [
+        // PUBLIC/ANONYMOUS ROUTES
+        {
+            "UpstreamPathTemplate": "/communications/{resource}/public/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
+            "DownstreamPathTemplate": "/api/{resource}/public/{url}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "communications",
+                    "Port": 9999
+                }
+            ]
+        },
+        // AUTHORIZED ROUTES
+        {
+            "UpstreamPathTemplate": "/communications/{resource}/authorized/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
+            "DownstreamPathTemplate": "/api/{resource}/authorized/{url}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "communications", 
+                    "Port": 9999
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "GovConnectAuthentication",
+                "AllowedScopes": []
+            },
+            "AddHeadersToRequest": {
+                "uid": "Claims[uid] > value > |",
+                "role": "Claims[userrole] > value > |",
+                "fname": "Claims[pname] > value > |",
+                "pname": "Claims[pname] > value > |"
+            }
+        },
+        // FOR AUTHORITIES
+        {
+            "UpstreamPathTemplate": "/communications/{resource}/authorities/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
+            "DownstreamPathTemplate": "/api/{resource}/{url}/authorities",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "communications",
+                    "Port": 9999
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "GovConnectAuthentication",
+                "AllowedScopes": []
+            },
+            "RouteClaimsRequirement": {
+                "identifyas": "authorities"
+            },
+            "AddHeadersToRequest": {
+                "uid": "Claims[uid] > value > |",
+                "role": "Claims[userrole] > value > |"
+            }
+        },
+        // FOR CIVILIANS
+        {
+            "UpstreamPathTemplate": "/communications/{resource}/civilians/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Patch", "Delete" ],
+            "DownstreamPathTemplate": "/api/{resource}/civilians/{url}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "communications",
+                    "Port": 9999
+                }
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "GovConnectAuthentication",
+                "AllowedScopes": []
+            },
+            "RouteClaimsRequirement": {
+                "identifyas": "civilians"
+            },
+            "AddHeadersToRequest": {
+                "uid": "Claims[uid] > value > |",
+                "role": "Claims[userrole] > value > |",
+                "fname": "Claims[pname] > value > |",
+                "pname": "Claims[pname] > value > |"
+            }
+        }
+    ]
+}

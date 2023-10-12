@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SignalR Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script>
+        $(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("/reportsHub").build();
+
+            connection.start().then( result => { 
+              console.log("SignalR is now connected")
+            }).then( result => {
+              connection.invoke('JoinGroupAsync')
+            });
+
+            connection.on('NewMessage', function (report) {
+                console.log(report);
+            });
+
+            $(window).on('unload', function () {
+                connection.invoke('LeaveGroupAsync');
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>SignalR Test</h1>
+    <div id="messages"></div>
+</body>
+</html>

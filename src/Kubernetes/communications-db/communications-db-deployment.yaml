@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: communications-db
+  labels:
+    app: communications-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: communications-db
+  template:
+    metadata:
+      labels:
+        app: communications-db
+    spec:
+      containers:
+        - name: communications-db
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          ports:
+            - containerPort: 9826
+          type: ClusterIP
+          envFrom:
+            - configMapRef:
+                name: communications-db-configmap
+          volumeMounts:
+            - name: communications-storage
+              mountPath: /var/opt/mssql/data
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+      volumes:
+        - name: communications-db
+          persistentVolumeClaim:
+            claimName: communications-db-pvc

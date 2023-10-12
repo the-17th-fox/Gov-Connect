@@ -1,0 +1,29 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Authorities-Deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    uses: the-17th-fox/GovConnect/.github/workflows/ci-cd-authorities.yaml@main
+  Civilians-Deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    uses: the-17th-fox/GovConnect/.github/workflows/ci-cd-civilians.yaml@main
+  Communications-Deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    uses: the-17th-fox/GovConnect/.github/workflows/ci-cd-communications.yaml@main
+  Gateway-Deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    needs: [ Authorities-Deploy, Civilians-Deploy, Communications-Deploy ]
+    uses: the-17th-fox/GovConnect/.github/workflows/ci-cd-gateway.yaml@main

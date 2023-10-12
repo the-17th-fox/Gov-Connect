@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: authorities
+  labels:
+    app: authorities
+spec:
+  selector:
+    app: authorities
+  ports:
+    - name: http
+      port: 9997
+      targetPort: 9997
