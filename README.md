@@ -139,6 +139,6 @@ git clone https://github.com/the-17th-fox/Gov-Connect.git
 ```
 2. In the /src/ folder using Docker, run docker-compose files (`-d` starts containers in detached mode):
 ```gitattributes
-docker compose -f docker-compose.yml -f docker-compose.override.yml run -d
+docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
 ```
 Now you can access the app using permitted and configured endpoints.
