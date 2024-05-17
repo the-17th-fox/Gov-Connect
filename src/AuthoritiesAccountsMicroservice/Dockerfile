@@ -2,16 +2,16 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 WORKDIR /app
 
-COPY AuthoritiesAccountsMicroservice/*.sln ./
+COPY ../AuthoritiesAccountsMicroservice/*.sln ./AuthoritiesAccountsMicroservice/
 
-COPY AuthoritiesAccountsMicroservice/Authorities.Core/ ./Authorities.Core/
-COPY AuthoritiesAccountsMicroservice/Authorities.Application/ ./Authorities.Application/
-COPY AuthoritiesAccountsMicroservice/Authorities.Infrastructure/ ./Authorities.Infrastructure/
-COPY AuthoritiesAccountsMicroservice/Authorities.Api/ ./Authorities.Api/
+COPY ../AuthoritiesAccountsMicroservice/Authorities.Core/ ./AuthoritiesAccountsMicroservice/Authorities.Core/
+COPY ../AuthoritiesAccountsMicroservice/Authorities.Application/ ./AuthoritiesAccountsMicroservice/Authorities.Application/
+COPY ../AuthoritiesAccountsMicroservice/Authorities.Infrastructure/ ./AuthoritiesAccountsMicroservice/Authorities.Infrastructure/
+COPY ../AuthoritiesAccountsMicroservice/Authorities.Api/ ./AuthoritiesAccountsMicroservice/Authorities.Api/
 
-COPY SharedLib/SharedLib.ExceptionsHandler/ ./SharedLib.ExceptionsHandler/
+COPY ../SharedLib/SharedLib.ExceptionsHandler/ ./SharedLib/SharedLib.ExceptionsHandler/
 
-RUN dotnet publish Authorities.Api/Authorities.Api.csproj -c Release -o out /p:UseAppHost=false
+RUN dotnet publish AuthoritiesAccountsMicroservice/Authorities.Api/Authorities.Api.csproj -c Release -o out /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
